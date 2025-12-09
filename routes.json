@@ -1,0 +1,7 @@
+{
+  "/interngo/login": "/interngo/login",
+
+  "/interngo/profile/:role/:userId": "/interngo/profile/:role/:userId",
+
+  "/interngo/professional/:userId": "/interngo/professional/:userId"
+}
