@@ -29,6 +29,7 @@ import ResourcesList from "../pages/common/ResourcesList";
 import ResourcesBatchSelect from "../pages/Admin/ResourcesBatchSelect";
 import BatchSelect from "../pages/common/BatchSelect";
 import YearSelect from "../pages/common/YearSelect"
+import YearBatchSelect from "../pages/common/YearBatchSelect";
 import RoleSelect from "../pages/common/RoleSelect";
 export default function AppRoutes() {
   const location = useLocation();
@@ -51,8 +52,10 @@ export default function AppRoutes() {
           <Route path="pending-tickets" element={<PendingTickets />} />
          <Route path="resources" element={<RoleSelect />} />
 
-<Route path="resources/intern/years" element={<YearSelect />} />
-<Route path="resources/intern/batches/:year" element={<BatchSelect />} />
+{/* <Route path="resources/intern/years" element={<YearSelect />} /> */}
+{/* <Route path="resources/intern/batches/:year" element={<BatchSelect />} /> */}
+<Route path="resources/intern/select" element={<YearBatchSelect />} />
+<Route path="resources/intern/list/all/all" element={<ResourcesList />} />
 <Route path="resources/intern/list/:year/:batch" element={<ResourcesList />} />
 
 <Route path="resources/mentor/list" element={<ResourcesList />} />

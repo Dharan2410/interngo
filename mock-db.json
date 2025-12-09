@@ -51,6 +51,14 @@
       "role": "intern",
       "token": "mock-token",
       "id": "e5vYykP"
+    },
+    {
+      "uid": "uid-1765267535343",
+      "email": "roobha@finestcoder.com",
+      "password": "123456",
+      "role": "intern",
+      "token": "mock-token",
+      "id": "uXEqki-"
     }
   ],
   "profiles": [
@@ -84,7 +92,7 @@
         ]
       },
       "userId": "uid-1765031171746",
-      "role": "mentor",
+      "role": "intern",
       "id": 1
     },
     {

@@ -487,10 +487,29 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ClipboardList, MessageSquare } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useState,useEffect } from "react";
+
 
 const InternDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [profilePic, setProfilePic] = useState("");
+  
+    useEffect(() => {
+    if (!user?.role || !user?.uid) return;
+  
+    fetch(`http://localhost:8080/interngo/profile/${user.role}/${user.uid}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setProfilePic(data?.user?.profilePicture || "");
+      })
+      .catch((err) => console.log(err));
+  }, [user]);
+  
+   const finalProfileImage =
+    profilePic?.trim()
+      ? profilePic
+      : "https://i.ibb.co/4pDNDk1/avatar.png"; // default
 
   return (
     <>
@@ -511,16 +530,27 @@ const InternDashboard: React.FC = () => {
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* HEADER */}
-      <div className="mb-8 relative z-10">
-        <h2 className="text-3xl font-bold text-[#1E2A35]">
-          Welcome, <span className="text-[#3B6E8F]">{user?.email}</span>
-        </h2>
-        <p className="text-lg mt-1 text-[#3A4750]">
-          You are logged in as{" "}
-          <span className="font-semibold text-[#3B6E8F]">{user?.role}</span>.
-        </p>
-      </div>
+     {/* PROFILE + HEADER */}
+<div className="flex items-center gap-4 mb-8 relative z-10">
+
+  {/* Profile Image */}
+  <img
+    src={finalProfileImage}
+    alt="Profile"
+    className="w-20 h-20 rounded-full object-cover border-4 border-[#96C2DB]"
+  />
+
+  <div>
+    <h2 className="text-3xl font-bold text-[#1E2A35]">
+      Welcome, <span className="text-[#3B6E8F]">{user?.email}</span>
+    </h2>
+    <p className="text-lg mt-1 text-[#3A4750]">
+      You are logged in as{" "}
+      <span className="font-semibold text-[#3B6E8F]">{user?.role}</span>.
+    </p>
+  </div>
+
+</div>
 
       {/* CARDS */}
       <div className="grid sm:grid-cols-2 gap-6 relative z-10">

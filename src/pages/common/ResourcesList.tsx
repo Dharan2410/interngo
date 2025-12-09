@@ -1,337 +1,244 @@
 // import React, { useEffect, useState } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-// import InternCard from "../../components/Resources/InternCard";
-// import { ChevronLeft } from "lucide-react";
-// import { useAuth } from "../../context/AuthContext";
-
-// const BASE = "http://localhost:8080/interngo";
-
-// const extractYear = (value: string): string => {
-//   if (!value) return "";
-//   const year = value.replace(/\D/g, "");
-//   return year.length === 4 ? year : "";
-// };
-
-// const ITEMS_PER_PAGE = 12;
-
-// const ResourcesList: React.FC = () => {
-//   const { batch } = useParams(); // this will be "2025"
-//   const navigate = useNavigate();
-//   const { user } = useAuth();
-
-//   const [interns, setInterns] = useState<any[]>([]);
-//   const [page, setPage] = useState(1);
-
-//   useEffect(() => {
-//     // 1. Load all professional info
-//     fetch(`${BASE}/professional`)
-//       .then((res) => res.json())
-//       .then((profList) => {
-//         // filter interns by batch year
-//         const filtered = profList.filter(
-//           (p: any) => extractYear(p.batch) === batch
-//         );
-
-//         // 2. Fetch profile info for each intern
-//         Promise.all(
-//           filtered.map(async (prof: any) => {
-//             const res = await fetch(
-//               `${BASE}/profile/intern/${prof.userId}`
-//             );
-//             const profile = await res.json();
-
-//             // return {
-//             //   name: profile?.user?.name || "Unknown",
-//             //   empId: prof.empId,
-//             //   designation: prof.designation,
-//             //   batch: prof.batch,
-//             //   status: prof.status,
-//             //   userId: prof.userId
-//             // };
-//           return {
-//   name: profile?.user?.name || "Unknown",
-//   empId: prof.empId,
-//   designation: prof.designation,
-//   batch: prof.batch,
-//   status: prof.status,
-//   userId: prof.userId,
-//   profilePicture: profile?.user?.profilePicture || ""
-// };
-
-
-//           })
-//         ).then((final) => setInterns(final));
-//       });
-//   }, [batch]);
-
-//   const pageStart = (page - 1) * ITEMS_PER_PAGE;
-//   const visibleInterns = interns.slice(pageStart, pageStart + ITEMS_PER_PAGE);
-
-//   const goBack = () => {
-//     if (user?.role === "admin") navigate("/admin/resources");
-//     else if (user?.role === "mentor") navigate("/mentor/resources");
-//     else if (user?.role === "interviewer") navigate("/interviewer/resources");
-//   };
-
-//   const openProfile = (uid: string) => {
-//     navigate(`/admin/profile/intern/${uid}`); // open profile module
-//   };
-
-//   return (
-//     <>
-//       {/* BACK BUTTON */}
-//       <button
-//         onClick={goBack}
-//         className="flex items-center gap-2 mb-4 text-[#3B6E8F] hover:underline"
-//       >
-//         <ChevronLeft size={20} /> Back
-//       </button>
-
-//       {/* HEADER */}
-//       <h2 className="text-3xl font-bold text-[#1E2A35] mb-6">
-//         Interns of Batch <span className="text-[#3B6E8F]">{batch}</span>
-//       </h2>
-
-//       {/* GRID */}
-//       <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
-//         {visibleInterns.map((intern) => (
-//           <InternCard
-//             key={intern.userId}
-//             intern={intern}
-//             onClick={() => openProfile(intern.userId)}
-//           />
-//         ))}
-//       </div>
-
-//       {/* PAGINATION */}
-//       <div className="flex justify-center gap-4 mt-8">
-//         <button
-//           onClick={() => setPage((p) => Math.max(1, p - 1))}
-//           disabled={page === 1}
-//           className="px-4 py-2 bg-[#96C2DB] text-white rounded-xl disabled:bg-gray-300"
-//         >
-//           Prev
-//         </button>
-
-//         <button
-//           onClick={() =>
-//             setPage((p) =>
-//               p < Math.ceil(interns.length / ITEMS_PER_PAGE) ? p + 1 : p
-//             )
-//           }
-//           disabled={page === Math.ceil(interns.length / ITEMS_PER_PAGE)}
-//           className="px-4 py-2 bg-[#96C2DB] text-white rounded-xl disabled:bg-gray-300"
-//         >
-//           Next
-//         </button>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default ResourcesList;
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
 // import { useNavigate, useParams, useLocation } from "react-router-dom";
 // import InternCard from "../../components/Resources/InternCard";
 // import { ChevronLeft } from "lucide-react";
 // import { useAuth } from "../../context/AuthContext";
 
-// const BASE = "http://localhost:8080/interngo";
-
-// // Extracts "2025" from "Batch 2025", "2025", etc.
-// const extractYear = (value: string): string => {
-//   if (!value) return "";
-//   const year = value.replace(/\D/g, "");
-//   return year.length === 4 ? year : "";
-// };
+// const BASE = "http://localhost:8080";
 
 // const ITEMS_PER_PAGE = 12;
 
 // const ResourcesList: React.FC = () => {
-//   const { batch } = useParams();
+//   const { year, batch } = useParams();
 //   const navigate = useNavigate();
 //   const location = useLocation();
 //   const { user } = useAuth();
 
 //   const [list, setList] = useState<any[]>([]);
 //   const [page, setPage] = useState(1);
+//   const topRef = React.useRef<HTMLDivElement>(null);
+//   const [searchName, setSearchName] = useState("");
+// const [searchDesignation, setSearchDesignation] = useState("");
 
-//   // Determine what page we are on
-//   const path = location.pathname;
 
-//   const isInternList = path.includes("/intern/list");
-//   const isMentorList = path.includes("/mentor/list");
-//   const isInterviewerList = path.includes("/interviewer/list");
+
+//   const isInternList = location.pathname.includes("/intern/list");
+//   const isMentorList = location.pathname.includes("/mentor/list");
+//   const isInterviewerList = location.pathname.includes("/interviewer/list");
+//   const scrollToTop = () => {
+//   topRef.current?.scrollIntoView({ behavior: "smooth" });
+// };
+
+// useEffect(() => {
+//   scrollToTop();
+// }, [page]);
+
 
 //   useEffect(() => {
-//     if (isInternList) {
-//       loadInterns();
-//     } else if (isMentorList) {
-//       loadMentors();
-//     } else if (isInterviewerList) {
-//       loadInterviewers();
-//     }
-//   }, [batch, path]);
+//     if (isInternList) loadInterns();
+//     if (isMentorList) loadMentors();
+//     if (isInterviewerList) loadInterviewers();
+//   }, [year, batch, location.pathname]);
 
-//   // ---------------------------
-//   // 🔹 INTERN LIST MODE
-//   // ---------------------------
+//   // ----------------------------------------
+//   // 🟩 LOAD INTERNS (Year + Batch filter)
+//   // ----------------------------------------
 //   const loadInterns = async () => {
-//     const profRes = await fetch(`${BASE}/professional`);
+//     const profRes = await fetch(`${BASE}/interngo/professional`);
 //     const profList = await profRes.json();
 
-//     // Filter by selected batch
 //     const filtered = profList.filter(
-//       (p: any) => extractYear(p.batch) === batch
+//       (p: any) =>
+//         p.year === year &&
+//         p.batch.toLowerCase() === batch?.toLowerCase()
 //     );
 
-//     // Fetch profile details for each intern
-//     const final = await Promise.all(
-//       filtered.map(async (prof: any) => {
-//         const res = await fetch(`${BASE}/profile/intern/${prof.userId}`);
-//         const profile = await res.json();
+//     const profileRes = await fetch(`${BASE}/profiles`);
+//     const profiles = await profileRes.json();
 
-//         return {
-//           name: profile?.user?.name || "Unknown",
-//           empId: prof.empId,
-//           designation: prof.designation,
-//           batch: prof.batch,
-//           status: prof.status,
-//           userId: prof.userId,
-//           profilePicture: profile?.user?.profilePicture || "",
-//         };
-//       })
-//     );
+//     const final = filtered.map((prof: any) => {
+//       const profile = profiles.find((p: any) => p.userId === prof.userId);
+
+//       return {
+//         role: "intern",
+//         name: profile?.user?.name || "Unknown",
+//         email: profile?.user?.email || "",
+//         empId: prof.empId,
+//         designation: prof.designation,
+//         batch: prof.batch,
+//         status: prof.status,
+//         year: prof.year,
+//         userId: prof.userId,
+//         profilePicture: profile?.user?.profilePicture || "",
+//       };
+//     });
 
 //     setList(final);
 //   };
 
-//   // ---------------------------
-//   // 🔹 MENTOR LIST MODE
-//   // ---------------------------
+//   // ----------------------------------------
+//   // 🟦 LOAD MENTORS
+//   // ----------------------------------------
 //   const loadMentors = async () => {
-//     const userRes = await fetch(`${BASE.replace("/interngo", "")}/interngo/users`);
-//     const users = await userRes.json();
+//     const profileRes = await fetch(`${BASE}/profiles`);
+//     const profiles = await profileRes.json();
 
-//     const mentors = users.filter((u: any) => u.role === "mentor");
+//     const mentors = profiles.filter((p: any) => p.role === "mentor");
 
-//     const final = await Promise.all(
-//       mentors.map(async (mentor: any) => {
-//         const res = await fetch(`${BASE}/profile/mentor/${mentor.uid}`).catch(() => null);
-//         const profile = res ? await res.json() : null;
-
-//         return {
-//           name: profile?.user?.name || mentor.email,
-//           empId: mentor.uid,
-//           designation: "Mentor",
-//           batch: "",
-//           status: "Active",
-//           userId: mentor.uid,
-//           profilePicture: profile?.user?.profilePicture || "",
-//         };
-//       })
-//     );
+//     const final = mentors.map((m: any) => ({
+//       role: "mentor",
+//       name: m.user.name,
+//       email: m.user.email,
+//       primarySkill: m.skills?.primarySkills?.[0] || "Not Provided",
+//       userId: m.userId,
+//       profilePicture: m.user.profilePicture || "",
+//     }));
 
 //     setList(final);
 //   };
 
-//   // ---------------------------
-//   // 🔹 INTERVIEWER LIST MODE
-//   // ---------------------------
+//   // ----------------------------------------
+//   // 🟧 LOAD INTERVIEWERS
+//   // ----------------------------------------
 //   const loadInterviewers = async () => {
-//     const userRes = await fetch(`${BASE.replace("/interngo", "")}/interngo/users`);
-//     const users = await userRes.json();
+//     const profileRes = await fetch(`${BASE}/profiles`);
+//     const profiles = await profileRes.json();
 
-//     const interviewers = users.filter((u: any) => u.role === "interviewer");
+//     const interviewers = profiles.filter((p: any) => p.role === "interviewer");
 
-//     const final = await Promise.all(
-//       interviewers.map(async (inter: any) => {
-//         const res = await fetch(`${BASE}/profile/interviewer/${inter.uid}`).catch(() => null);
-//         const profile = res ? await res.json() : null;
-
-//         return {
-//           name: profile?.user?.name || inter.email,
-//           empId: inter.uid,
-//           designation: "Interviewer",
-//           batch: "",
-//           status: "Active",
-//           userId: inter.uid,
-//           profilePicture: profile?.user?.profilePicture || "",
-//         };
-//       })
-//     );
+//     const final = interviewers.map((m: any) => ({
+//       role: "interviewer",
+//       name: m.user.name,
+//       email: m.user.email,
+//       primarySkill: m.skills?.primarySkills?.[0] || "Not Provided",
+//       userId: m.userId,
+//       profilePicture: m.user.profilePicture || "",
+//     }));
 
 //     setList(final);
 //   };
 
+
+//   const filteredList = list.filter((item) => {
+//   const nameMatch = item.name.toLowerCase().includes(searchName.toLowerCase());
+//   const designationMatch = item.designation
+//     ?.toLowerCase()
+//     .includes(searchDesignation.toLowerCase());
+
+//   return nameMatch && designationMatch;
+// });
+
+//   // Pagination
 //   const pageStart = (page - 1) * ITEMS_PER_PAGE;
-//   const visibleList = list.slice(pageStart, pageStart + ITEMS_PER_PAGE);
+//   // const visibleList = list.slice(pageStart, pageStart + ITEMS_PER_PAGE);
+//   const visibleList = filteredList.slice(pageStart, pageStart + ITEMS_PER_PAGE);
+
 
 //   const goBack = () => {
 //     if (user?.role === "admin") navigate("/admin/resources");
-//     else if (user?.role === "mentor") navigate("/mentor/resources");
-//     else if (user?.role === "interviewer") navigate("/interviewer/resources");
-//   };
-
-//   const openProfile = (uid: string) => {
-//     navigate(`/admin/profile/${uid}`);
+//     if (user?.role === "mentor") navigate("/mentor/resources");
+//     if (user?.role === "interviewer") navigate("/interviewer/resources");
 //   };
 
 //   return (
 //     <>
-//       {/* Back Button */}
+//     <div ref={topRef}></div>
 //       <button
 //         onClick={goBack}
 //         className="flex items-center gap-2 mb-4 text-[#3B6E8F] hover:underline"
 //       >
 //         <ChevronLeft size={20} /> Back
 //       </button>
+//       {/* HEADER + FILTERS */}
+// <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
 
-//       {/* Header Title */}
-//       <h2 className="text-3xl font-bold text-[#1E2A35] mb-6">
-//         {isInternList && <>Interns of Batch <span className="text-[#3B6E8F]">{batch}</span></>}
-//         {isMentorList && <>All <span className="text-[#3B6E8F]">Mentors</span></>}
-//         {isInterviewerList && <>All <span className="text-[#3B6E8F]">Interviewers</span></>}
-//       </h2>
+//   {/* Title */}
+//   <h2 className="text-3xl font-bold text-[#1E2A35]">
+//     {isInternList && (
+//       <>
+//         Interns of <span className="text-[#3B6E8F]">{batch}</span> —{" "}
+//         <span className="text-[#3B6E8F]">{year}</span>
+//       </>
+//     )}
+//     {isMentorList && <>All <span className="text-[#3B6E8F]">Mentors</span></>}
+//     {isInterviewerList && <>All <span className="text-[#3B6E8F]">Interviewers</span></>}
+//   </h2>
 
-//       {/* Grid Cards */}
+//   {/* FILTER BAR */}
+//   <div className="flex gap-3">
+//     <input
+//       type="text"
+//       placeholder="Search name..."
+//       value={searchName}
+//       onChange={(e) => {
+//         setSearchName(e.target.value);
+//         setPage(1);
+//       }}
+//       className="px-4 py-2 border rounded-xl w-52 bg-white/70 backdrop-blur-md outline-none"
+//     />
+
+//     <input
+//       type="text"
+//       placeholder="Search designation..."
+//       value={searchDesignation}
+//       onChange={(e) => {
+//         setSearchDesignation(e.target.value);
+//         setPage(1);
+//       }}
+//       className="px-4 py-2 border rounded-xl w-52 bg-white/70 backdrop-blur-md outline-none"
+//     />
+//   </div>
+// </div>
+
+
 //       <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
 //         {visibleList.map((item) => (
-//           <InternCard
-//             key={item.userId}
-//             intern={item}
-//             onClick={() => openProfile(item.userId)}
-//           />
+//           <InternCard key={item.userId} intern={item} onClick={() => {}} />
 //         ))}
 //       </div>
 
-//       {/* Pagination */}
-//       <div className="flex justify-center gap-4 mt-8">
-//         <button
-//           onClick={() => setPage((p) => Math.max(1, p - 1))}
-//           disabled={page === 1}
-//           className="px-4 py-2 bg-[#96C2DB] text-white rounded-xl disabled:bg-gray-300"
-//         >
-//           Prev
-//         </button>
+//      {/* Pagination — minimal clean style */}
+// <div className="flex justify-center items-center gap-3 mt-10">
 
-//         <button
-//           onClick={() =>
-//             setPage((p) =>
-//               p < Math.ceil(list.length / ITEMS_PER_PAGE) ? p + 1 : p
-//             )
-//           }
-//           disabled={page === Math.ceil(list.length / ITEMS_PER_PAGE)}
-//           className="px-4 py-2 bg-[#96C2DB] text-white rounded-xl disabled:bg-gray-300"
-//         >
-//           Next
-//         </button>
-//       </div>
+//   {/* Left Arrow */}
+//   <button
+//     onClick={() => {
+//       setPage((p) => Math.max(1, p - 1));
+//       scrollToTop();
+//     }}
+//     disabled={page === 1}
+//     className={`w-10 h-10 flex items-center justify-center rounded-xl border 
+//       ${page === 1 ? "border-gray-300 text-gray-400" : "border-[#96C2DB] text-[#1E2A35] hover:bg-[#96C2DB]/20"}`}
+//   >
+//     ‹
+//   </button>
+
+//   {/* Active Page */}
+//   <div className="w-10 h-10 flex items-center justify-center rounded-xl 
+//                   bg-[#96C2DB] text-white font-semibold shadow-md">
+//     {page}
+//   </div>
+
+//   {/* Right Arrow */}
+//   <button
+//     onClick={() => {
+//       const max = Math.ceil(list.length / ITEMS_PER_PAGE);
+//       if (page < max) setPage(page + 1);
+//       scrollToTop();
+//     }}
+//     disabled={page === Math.ceil(list.length / ITEMS_PER_PAGE)}
+//     className={`w-10 h-10 flex items-center justify-center rounded-xl border 
+//       ${
+//         page === Math.ceil(list.length / ITEMS_PER_PAGE)
+//           ? "border-gray-300 text-gray-400"
+//           : "border-[#96C2DB] text-[#1E2A35] hover:bg-[#96C2DB]/20"
+//       }`}
+//   >
+//     ›
+//   </button>
+// </div>
+
+
 //     </>
 //   );
 // };
@@ -342,50 +249,66 @@
 
 
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import InternCard from "../../components/Resources/InternCard";
 import { ChevronLeft } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
-const BASE = "http://localhost:8080/interngo";
+const BASE = "http://localhost:8080"; // json-server root
 
 const ITEMS_PER_PAGE = 12;
 
 const ResourcesList: React.FC = () => {
-  const { year, batch } = useParams(); // ⬅ NEW: read both params
+  const { year, batch } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
 
   const [list, setList] = useState<any[]>([]);
+  const [searchName, setSearchName] = useState("");
+  const [searchDesignation, setSearchDesignation] = useState("");
   const [page, setPage] = useState(1);
 
-  const path = location.pathname;
+  const topRef = useRef<HTMLDivElement>(null);
 
-  const isInternList = path.includes("/intern/list");
-  const isMentorList = path.includes("/mentor/list");
-  const isInterviewerList = path.includes("/interviewer/list");
+  const isInternList = location.pathname.includes("/intern/list");
+  const isMentorList = location.pathname.includes("/mentor/list");
+  const isInterviewerList = location.pathname.includes("/interviewer/list");
+
+  // Scroll to top when pagination changes
+  useEffect(() => {
+    topRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [page]);
 
   useEffect(() => {
     if (isInternList) loadInterns();
-    else if (isMentorList) loadMentors();
-    else if (isInterviewerList) loadInterviewers();
-  }, [year, batch, path]);
+    if (isMentorList) loadMentors();
+    if (isInterviewerList) loadInterviewers();
+  }, [year, batch, location.pathname]);
 
-  // ---------------------------
-  // 🔹 INTERN LIST MODE
-  // ---------------------------
+  // ----------------------------------------
+  // LOAD INTERNS (Supports year/batch/all)
+  // ----------------------------------------
   const loadInterns = async () => {
-    const profRes = await fetch(`${BASE}/professional`);
+    const profRes = await fetch(`${BASE}/interngo/professional`);
     const profList = await profRes.json();
 
-    // Filter by selected YEAR + BATCH
-    const filtered = profList.filter(
-      (p: any) => p.year === year && p.batch === batch
-    );
+    let filtered = profList;
 
-    const profileRes = await fetch(`${BASE.replace("/interngo", "")}/interngo/profiles`);
+    // If year is NOT "all", filter by year
+    if (year !== "all") {
+      filtered = filtered.filter((p: any) => p.year === year);
+    }
+
+    // If batch is NOT "all", filter by batch
+    if (batch !== "all") {
+      filtered = filtered.filter(
+        (p: any) => p.batch.toLowerCase() === batch?.toLowerCase()
+      );
+    }
+
+    const profileRes = await fetch(`${BASE}/profiles`);
     const profiles = await profileRes.json();
 
     const final = filtered.map((prof: any) => {
@@ -406,13 +329,14 @@ const ResourcesList: React.FC = () => {
     });
 
     setList(final);
+    setPage(1);
   };
 
-  // ---------------------------
-  // 🔹 MENTOR LIST MODE
-  // ---------------------------
+  // ----------------------------------------
+  // LOAD MENTORS
+  // ----------------------------------------
   const loadMentors = async () => {
-    const profileRes = await fetch(`${BASE.replace("/interngo", "")}/interngo/profiles`);
+    const profileRes = await fetch(`${BASE}/profiles`);
     const profiles = await profileRes.json();
 
     const mentors = profiles.filter((p: any) => p.role === "mentor");
@@ -427,13 +351,14 @@ const ResourcesList: React.FC = () => {
     }));
 
     setList(final);
+    setPage(1);
   };
 
-  // ---------------------------
-  // 🔹 INTERVIEWER LIST MODE
-  // ---------------------------
+  // ----------------------------------------
+  // LOAD INTERVIEWERS
+  // ----------------------------------------
   const loadInterviewers = async () => {
-    const profileRes = await fetch(`${BASE.replace("/interngo", "")}/interngo/profiles`);
+    const profileRes = await fetch(`${BASE}/profiles`);
     const profiles = await profileRes.json();
 
     const interviewers = profiles.filter((p: any) => p.role === "interviewer");
@@ -448,24 +373,56 @@ const ResourcesList: React.FC = () => {
     }));
 
     setList(final);
+    setPage(1);
   };
 
-  // Pagination
+  // ----------------------------------------
+  // FILTER BAR
+  // ----------------------------------------
+  const filteredList = list.filter((item) => {
+    const nameMatch = item.name.toLowerCase().includes(searchName.toLowerCase());
+    const designationMatch = item.designation
+      ?.toLowerCase()
+      .includes(searchDesignation.toLowerCase());
+
+    return nameMatch && designationMatch;
+  });
+
+  // PAGINATION
   const pageStart = (page - 1) * ITEMS_PER_PAGE;
-  const visibleList = list.slice(pageStart, pageStart + ITEMS_PER_PAGE);
+  const visibleList = filteredList.slice(pageStart, pageStart + ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
 
   const goBack = () => {
     if (user?.role === "admin") navigate("/admin/resources");
-    else if (user?.role === "mentor") navigate("/mentor/resources");
-    else if (user?.role === "interviewer") navigate("/interviewer/resources");
+    if (user?.role === "mentor") navigate("/mentor/resources");
+    if (user?.role === "interviewer") navigate("/interviewer/resources");
   };
 
-  const openProfile = (uid: string) => {
-    navigate(`/admin/profile/${uid}`);
+  // ----------------------------------------
+  // HEADER TITLE
+  // ----------------------------------------
+  const renderTitle = () => {
+    if (isMentorList) return <>All <span className="text-[#3B6E8F]">Mentors</span></>;
+    if (isInterviewerList) return <>All <span className="text-[#3B6E8F]">Interviewers</span></>;
+
+    if (year === "all") {
+      return <>All <span className="text-[#3B6E8F]">Interns</span></>;
+    }
+
+    return (
+      <>
+        Interns of <span className="text-[#3B6E8F]">{batch}</span> —{" "}
+        <span className="text-[#3B6E8F]">{year}</span>
+      </>
+    );
   };
 
   return (
     <>
+      <div ref={topRef}></div>
+
+      {/* BACK */}
       <button
         onClick={goBack}
         className="flex items-center gap-2 mb-4 text-[#3B6E8F] hover:underline"
@@ -473,48 +430,79 @@ const ResourcesList: React.FC = () => {
         <ChevronLeft size={20} /> Back
       </button>
 
-      {/* Header */}
-      <h2 className="text-3xl font-bold text-[#1E2A35] mb-6">
-        {isInternList && (
-          <>
-            Interns of <span className="text-[#3B6E8F]">{batch}</span> —{" "}
-            <span className="text-[#3B6E8F]">{year}</span>
-          </>
-        )}
-        {isMentorList && <>All <span className="text-[#3B6E8F]">Mentors</span></>}
-        {isInterviewerList && <>All <span className="text-[#3B6E8F]">Interviewers</span></>}
-      </h2>
+      {/* HEADER + SEARCH */}
+      <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+        <h2 className="text-3xl font-bold text-[#1E2A35]">{renderTitle()}</h2>
 
+        {/* SEARCH FILTERS */}
+        {isInternList && (
+          <div className="flex gap-3">
+            <input
+              type="text"
+              placeholder="Search name..."
+              value={searchName}
+              onChange={(e) => {
+                setSearchName(e.target.value);
+                setPage(1);
+              }}
+              className="px-4 py-2 border rounded-xl w-52 bg-white/70 backdrop-blur-md outline-none"
+            />
+
+            <input
+              type="text"
+              placeholder="Search designation..."
+              value={searchDesignation}
+              onChange={(e) => {
+                setSearchDesignation(e.target.value);
+                setPage(1);
+              }}
+              className="px-4 py-2 border rounded-xl w-52 bg-white/70 backdrop-blur-md outline-none"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* CARDS */}
       <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
         {visibleList.map((item) => (
-          <InternCard
-            key={item.userId}
-            intern={item}
-            onClick={() => openProfile(item.userId)}
-          />
+          <InternCard key={item.userId} intern={item} onClick={() => {}} />
         ))}
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center gap-4 mt-8">
+      {/* PAGINATION */}
+      <div className="flex justify-center items-center gap-3 mt-10">
+        {/* Left Arrow */}
         <button
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page === 1}
-          className="px-4 py-2 bg-[#96C2DB] text-white rounded-xl disabled:bg-gray-300"
+          className={`w-10 h-10 flex items-center justify-center rounded-xl border 
+            ${
+              page === 1
+                ? "border-gray-300 text-gray-400"
+                : "border-[#96C2DB] text-[#1E2A35] hover:bg-[#96C2DB]/20"
+            }`}
         >
-          Prev
+          ‹
         </button>
 
+        {/* Active Page */}
+        <div className="w-10 h-10 flex items-center justify-center rounded-xl 
+                        bg-[#96C2DB] text-white font-semibold shadow-md">
+          {page}
+        </div>
+
+        {/* Right Arrow */}
         <button
-          onClick={() =>
-            setPage((p) =>
-              p < Math.ceil(list.length / ITEMS_PER_PAGE) ? p + 1 : p
-            )
-          }
-          disabled={page === Math.ceil(list.length / ITEMS_PER_PAGE)}
-          className="px-4 py-2 bg-[#96C2DB] text-white rounded-xl disabled:bg-gray-300"
+          onClick={() => page < totalPages && setPage(page + 1)}
+          disabled={page === totalPages}
+          className={`w-10 h-10 flex items-center justify-center rounded-xl border 
+            ${
+              page === totalPages
+                ? "border-gray-300 text-gray-400"
+                : "border-[#96C2DB] text-[#1E2A35] hover:bg-[#96C2DB]/20"
+            }`}
         >
-          Next
+          ›
         </button>
       </div>
     </>
