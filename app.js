@@ -1,14 +1,20 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import sequelize from "./config/mysql_database.js";
 import connectMongoDB from "./config/mongodb_database.js";
+
 dotenv.config();
 
 const app = express();
 
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
-app.use(cors());
 app.use(express.json());
 
 //import tables & collections 
@@ -23,6 +29,7 @@ import User from "./src/modules/user/user_model.js";
 
 // Import Routes
 import userRoutes from "./src/modules/user/user_routes.js";
+import taskRoutes from "./src/modules/task/task_routes.js";
 
 // MySQL
 sequelize
@@ -38,9 +45,10 @@ app.listen(PORT, () => {
   console.log(` Server listening on port ${PORT}`);
 });
 
-
+app.use(cookieParser());
 app.get("/main", (req,res)=>{
     res.send("hello from interngo")
 })
 
-app.use("/api/users", userRoutes)
+app.use("/interngo", userRoutes)
+app.use("/interngo", taskRoutes)
