@@ -291,8 +291,56 @@ const ResourcesList: React.FC = () => {
   // LOAD INTERNS (Supports year/batch/all)
   // ----------------------------------------
   const loadInterns = async () => {
-    const profRes = await fetch(`${BASE}/interngo/professional`);
+    console.log(">>> USERS", await (await fetch(`${BASE}/users`)).json());
+console.log(">>> PROFILES", await (await fetch(`${BASE}/profiles`)).json());
+console.log(">>> PROFESSIONAL", await (await fetch(`${BASE}/interngo/professional`)).json());
+console.log(">>> PARAMS", year, batch);
+
+    const profRes = await fetch(`${BASE}/professionalInfo`);
     const profList = await profRes.json();
+
+    // ⭐⭐ CASE: ALL INTERNS — IGNORE PROFESSIONAL/BATCH/YEAR FILTERS ⭐⭐
+if (year === "all" && batch === "all") {
+  const usersRes = await fetch(`${BASE}/users`);
+  const users = await usersRes.json();
+
+  const profileRes = await fetch(`${BASE}/profiles`);
+  const profiles = await profileRes.json();
+
+  const profRes = await fetch(`${BASE}/professionalInfo`);
+  const professional = await profRes.json();
+
+  const profileMap = new Map();
+  profiles.forEach((p: any) => profileMap.set(p.userId, p));
+
+  const professionalMap = new Map();
+  professional.forEach((p: any) => professionalMap.set(p.userId, p));
+
+  const interns = users.filter((u: any) => u.role === "intern");
+
+  const fullList = interns.map((u: any) => {
+    const key = u.uid || u.id;   // FIXED
+    const pro = professionalMap.get(key);
+    const prof = profileMap.get(key);
+
+    return {
+      role: "intern",
+      name: prof?.user?.name || u.name || "Unknown",
+      email: u.email || "",
+      userId: key,
+      empId: pro?.empId || "--",
+      designation: pro?.designation || "--",
+      batch: pro?.batch || "--",
+      status: pro?.status || "--",
+      year: pro?.year || "--",
+      profilePicture: prof?.user?.profilePicture || "",
+    };
+  });
+
+  setList(fullList);
+  setPage(1);
+  return;
+}
 
     let filtered = profList;
 
@@ -335,46 +383,121 @@ const ResourcesList: React.FC = () => {
   // ----------------------------------------
   // LOAD MENTORS
   // ----------------------------------------
+  // const loadMentors = async () => {
+  //   const profileRes = await fetch(`${BASE}/profiles`);
+  //   const profiles = await profileRes.json();
+
+  //   const mentors = profiles.filter((p: any) => p.role === "mentor");
+
+  //   const final = mentors.map((m: any) => ({
+  //     role: "mentor",
+  //     name: m.user.name,
+  //     email: m.user.email,
+  //     primarySkill: m.skills?.primarySkills?.[0] || "Not Provided",
+  //     userId: m.userId,
+  //     profilePicture: m.user.profilePicture || "",
+  //   }));
+
+  //   setList(final);
+  //   setPage(1);
+  // };
+
+
   const loadMentors = async () => {
-    const profileRes = await fetch(`${BASE}/profiles`);
-    const profiles = await profileRes.json();
+  const usersRes = await fetch(`${BASE}/users`);
+  const users = await usersRes.json();
 
-    const mentors = profiles.filter((p: any) => p.role === "mentor");
+  const profileRes = await fetch(`${BASE}/profiles`);
+  const profiles = await profileRes.json();
 
-    const final = mentors.map((m: any) => ({
+  const professionalRes = await fetch(`${BASE}/professionalInfo`);
+  const professional = await professionalRes.json();
+
+  const mentors = users.filter((u: any) => u.role === "mentor");
+
+  const final = mentors.map((u: any) => {
+    const id = u.uid || u.id;
+
+    const profile = profiles.find((p: any) => p.userId === id);
+    const pro = professional.find((p: any) => p.userId === id);
+
+    return {
       role: "mentor",
-      name: m.user.name,
-      email: m.user.email,
-      primarySkill: m.skills?.primarySkills?.[0] || "Not Provided",
-      userId: m.userId,
-      profilePicture: m.user.profilePicture || "",
-    }));
+      userId: id,
+      name: profile?.user?.name || u.email.split("@")[0] || "--",
+      email: u.email,
+      primarySkill: profile?.skills?.primarySkills?.[0] || "--",
+      designation: pro?.designation || "--",
+      batch: pro?.batch || "--",
+      year: pro?.year || "--",
+      status: pro?.status || "--",
+      profilePicture: profile?.user?.profilePicture || "",
+    };
+  });
 
-    setList(final);
-    setPage(1);
-  };
+  setList(final);
+  setPage(1);
+};
+
 
   // ----------------------------------------
   // LOAD INTERVIEWERS
   // ----------------------------------------
+  // const loadInterviewers = async () => {
+  //   const profileRes = await fetch(`${BASE}/profiles`);
+  //   const profiles = await profileRes.json();
+
+  //   const interviewers = profiles.filter((p: any) => p.role === "interviewer");
+
+  //   const final = interviewers.map((m: any) => ({
+  //     role: "interviewer",
+  //     name: m.user.name,
+  //     email: m.user.email,
+  //     primarySkill: m.skills?.primarySkills?.[0] || "Not Provided",
+  //     userId: m.userId,
+  //     profilePicture: m.user.profilePicture || "",
+  //   }));
+
+  //   setList(final);
+  //   setPage(1);
+  // };
+
+
   const loadInterviewers = async () => {
-    const profileRes = await fetch(`${BASE}/profiles`);
-    const profiles = await profileRes.json();
+  const usersRes = await fetch(`${BASE}/users`);
+  const users = await usersRes.json();
 
-    const interviewers = profiles.filter((p: any) => p.role === "interviewer");
+  const profileRes = await fetch(`${BASE}/profiles`);
+  const profiles = await profileRes.json();
 
-    const final = interviewers.map((m: any) => ({
+  const professionalRes = await fetch(`${BASE}/professionalInfo`);
+  const professional = await professionalRes.json();
+
+  const interviewers = users.filter((u: any) => u.role === "interviewer");
+
+  const final = interviewers.map((u: any) => {
+    const id = u.uid || u.id;
+
+    const profile = profiles.find((p: any) => p.userId === id);
+    const pro = professional.find((p: any) => p.userId === id);
+
+    return {
       role: "interviewer",
-      name: m.user.name,
-      email: m.user.email,
-      primarySkill: m.skills?.primarySkills?.[0] || "Not Provided",
-      userId: m.userId,
-      profilePicture: m.user.profilePicture || "",
-    }));
+      userId: id,
+      name: profile?.user?.name || u.email.split("@")[0] || "--",
+      email: u.email,
+      primarySkill: profile?.skills?.primarySkills?.[0] || "--",
+      designation: pro?.designation || "--",
+      batch: pro?.batch || "--",
+      year: pro?.year || "--",
+      status: pro?.status || "--",
+      profilePicture: profile?.user?.profilePicture || "",
+    };
+  });
 
-    setList(final);
-    setPage(1);
-  };
+  setList(final);
+  setPage(1);
+};
 
   // ----------------------------------------
   // FILTER BAR
@@ -393,11 +516,30 @@ const ResourcesList: React.FC = () => {
   const visibleList = filteredList.slice(pageStart, pageStart + ITEMS_PER_PAGE);
   const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
 
+ 
+
   const goBack = () => {
-    if (user?.role === "admin") navigate("/admin/resources");
-    if (user?.role === "mentor") navigate("/mentor/resources");
-    if (user?.role === "interviewer") navigate("/interviewer/resources");
-  };
+  if (user?.role === "admin") {
+    // If admin is inside intern listing (any year/batch or all/all)
+    if (isInternList) {
+      navigate("/admin/resources/intern/select"); 
+      return;
+    }
+    navigate("/admin/resources"); // default fallback
+    return;
+  }
+
+  if (user?.role === "mentor") {
+    navigate("/mentor/resources");
+    return;
+  }
+
+  if (user?.role === "interviewer") {
+    navigate("/interviewer/resources");
+    return;
+  }
+};
+
 
   // ----------------------------------------
   // HEADER TITLE
@@ -465,7 +607,17 @@ const ResourcesList: React.FC = () => {
       {/* CARDS */}
       <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6">
         {visibleList.map((item) => (
-          <InternCard key={item.userId} intern={item} onClick={() => {}} />
+          // <InternCard key={item.userId} intern={item} onClick={() => {}} />
+          <InternCard
+  key={item.userId}
+  intern={item}
+  onClick={() => {
+    if (user?.role === "admin") navigate(`/admin/profile/${item.userId}`);
+    if (user?.role === "mentor") navigate(`/mentor/profile/${item.userId}`);
+    if (user?.role === "interviewer") navigate(`/interviewer/profile/${item.userId}`);
+  }}
+/>
+
         ))}
       </div>
 

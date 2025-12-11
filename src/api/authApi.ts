@@ -1,47 +1,68 @@
+
+
+// const BASE = "http://localhost:8080/interngo";
+
+// // ----------------------
+// // LOGIN (POST)
+// // ----------------------
 // export async function loginUser(email: string, password: string) {
-//   const res = await fetch(
-//     `http://localhost:8080/users?email=${email}&password=${password}`
-//   );
+//   const res = await fetch(`${BASE}/login`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ email, password }),
+//   });
 
-//   const data = await res.json();
-
-//   if (!data || data.length === 0) {
-//     throw new Error("Invalid email or password");
+//   if (!res.ok) {
+//     const err = await res.json();
+//     throw new Error(err.error || "Login failed");
 //   }
 
-//   return data[0]; // returns { uid, email, role, token }
+//   const user = await res.json();
+
+//   return {
+//     uid: user.uid,
+//     email: user.email,
+//     role: user.role,
+//     token: user.token,
+//     profilePicture: user.profilePicture || "",
+//   };
 // }
 
 
-// src/api/authApi.ts
 
-const BASE = "http://localhost:8080/interngo";
 
-// ----------------------
-// LOGIN (POST)
-// ----------------------
+
+
+
+
+
+
+///dharan's use for db
+
+
+
+
+const BASE = "http://localhost:4000/interngo";
+
+
 export async function loginUser(email: string, password: string) {
   const res = await fetch(`${BASE}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
+    credentials: "include" 
   });
-
   if (!res.ok) {
     const err = await res.json();
-    throw new Error(err.error || "Login failed");
+    throw new Error(err.message || "Login failed");
   }
-
-  const user = await res.json();
-
+  const data = await res.json();
+  const user = data.user;
   return {
     uid: user.uid,
+    name: user.name,
     email: user.email,
     role: user.role,
-    token: user.token,
-    profilePicture: user.profilePicture || "",
+    profilePicture: user.profileImage || null,
   };
 }
-
-
-

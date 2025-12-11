@@ -463,11 +463,9 @@ interns.push({
     doc.save(fileName);
   };
 
-  // =======================================================
-  // ======================== UI ============================
-  // =======================================================
-  // Two-step: if no year selected show year cards; if year selected but no batch show batch cards; else show daily view
+  
   return (
+    
     <div className="relative min-h-[80vh] px-4 py-6">
       {/* BLURRED BACKGROUND */}
       <motion.div
@@ -482,8 +480,9 @@ interns.push({
       />
 
      {/* ================== YEAR + BATCH ON SAME PAGE (COMBINED) ================== */}
+     
 {!selectedBatch && !selectedYear && (
-  <AnimatePresence mode="wait">
+  
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -547,13 +546,13 @@ interns.push({
 
   </div>
   </motion.div>
-  </AnimatePresence>
+  
 )}
 
 
       {/* ================== AFTER BATCH SELECTED: DAILY VIEW ================== */}
+      
       {selectedYear && selectedBatch && (
-        <AnimatePresence mode="wait">
         <div className="bg-white/60 backdrop-blur-2xl border border-[#96C2DB]/40 rounded-3xl p-6 shadow-xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -780,9 +779,11 @@ setInternsTasks({});
             </button>
           </div>
         </div>
-        </AnimatePresence>
+        
       )}
+    
     </div>
+    
   );
 };
 

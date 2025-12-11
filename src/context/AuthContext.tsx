@@ -2,151 +2,181 @@
 
 
 
-
-
-
 // import React, { createContext, useContext, useEffect, useState } from "react";
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
-// import app from "../firebase";
 
 // interface User {
 //   uid: string;
+//   name?: string;
 //   email: string;
 //   role: "admin" | "mentor" | "interviewer" | "intern";
-//   token?: string;
+//   profilePicture?: string | null;
+//   batch?: string | null;
 // }
 
 // interface AuthContextType {
 //   user: User | null;
-//   login: (user: User) => void;
-//   logout: () => void;
+//   loading: boolean;
+//   login: (user: User) => void;     // only used after /login
+//   logout: () => Promise<void>;
 // }
 
 // const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// const BASE = "http://localhost:4000/interngo";
 
-// export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 //   const [user, setUser] = useState<User | null>(null);
-//   const auth = getAuth(app);
+//   const [loading, setLoading] = useState(true);
 
-//   // ✅ Restore from Firebase Auth or LocalStorage
+//   // ⭐ Restore session from backend cookie
 //   useEffect(() => {
-//     const stored = localStorage.getItem("user");
-//     if (stored) setUser(JSON.parse(stored));
+//     async function checkSession() {
+//       try {
+//         const res = await fetch(`${BASE}/me`, {
+//           method: "GET",
+//           credentials: "include",       // ⭐ required
+//         });
 
-//     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-//       if (firebaseUser) {
-//         const firebaseUserData: User = {
-//           uid: firebaseUser.uid,
-//           email: firebaseUser.email || "",
-//           role: "intern", // default for Firebase sign-in (can be updated later)
-//         };
-//         setUser(firebaseUserData);
-//         localStorage.setItem("user", JSON.stringify(firebaseUserData));
+//         if (res.ok) {
+//           const data = await res.json();
+//           setUser(data.user);           // backend returns user object
+//         } else {
+//           setUser(null);
+//         }
+//       } catch (err) {
+//         setUser(null);
+//       } finally {
+//         setLoading(false);
 //       }
-//     });
+//     }
 
-//     return () => unsubscribe();
+//     checkSession();
 //   }, []);
 
+//   // ⭐ Called ONLY after login page API success
 //   const login = (userData: User) => {
 //     setUser(userData);
-//     localStorage.setItem("user", JSON.stringify(userData));
 //   };
 
-//   const logout = () => {
+//   // ⭐ Logout → remove cookies from backend + reset state
+//   const logout = async () => {
+//     try {
+//       await fetch(`${BASE}/logout`, {
+//         method: "POST",
+//         credentials: "include",
+//       });
+//     } catch {}
 //     setUser(null);
-//     localStorage.removeItem("user");
 //   };
 
 //   return (
-//     <AuthContext.Provider value={{ user, login, logout }}>
-//       {children}
+//     <AuthContext.Provider value={{ user, login, logout, loading }}>
+//       {!loading && children}
 //     </AuthContext.Provider>
 //   );
 // };
 
 // export const useAuth = () => {
-//   const context = useContext(AuthContext);
-//   if (!context) throw new Error("useAuth must be used within AuthProvider");
-//   return context;
+//   const ctx = useContext(AuthContext);
+//   if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
+//   return ctx;
 // };
 
 
 
 
-// src/context/AuthContext.tsx
+
+///dharan's use for db 
+
+
+
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "../firebase";
-
+const BASE = "http://localhost:4000/interngo"; // your backend URL
+// ========================================
+// USER TYPE
+// ========================================
 interface User {
   uid: string;
+  name?: string;
   email: string;
   role: "admin" | "mentor" | "interviewer" | "intern";
-  token?: string;
-  profilePicture?: string; // ⭐ NEW — To load DP globally
+  profilePicture?: string | null;
+  batch?: string | null;
 }
-
+// ========================================
+// AUTH CONTEXT TYPE
+// ========================================
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   login: (user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
-
+// ========================================
+// CONTEXT CREATION
+// ========================================
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+// ========================================
+// PROVIDER
+// ========================================
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const auth = getAuth(app);
-
-  // ⭐ Restore user from localStorage OR firebase
+  const [loading, setLoading] = useState(true);
+  // ----------------------------------------
+  // :rocket: Restore logged-in user from backend cookie
+  // ----------------------------------------
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (stored) {
-      setUser(JSON.parse(stored));
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        const firebaseUserData: User = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email || "",
-          role: "intern", // default for Firebase login (same as before)
-          profilePicture: "", // ⭐ NEW — so DP field always exists
-        };
-
-        setUser(firebaseUserData);
-        localStorage.setItem("user", JSON.stringify(firebaseUserData));
+    async function restoreSession() {
+      try {
+        const res = await fetch(`${BASE}/me`, {
+          method: "GET",
+          credentials: "include", // REQUIRED for cookies
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
-    });
-
-    return () => unsubscribe();
+    }
+    restoreSession();
   }, []);
-
-  // ⭐ LOGIN from backend (interngo/login)
+  // ----------------------------------------
+  // :rocket: LOGIN — Only set user returned from /login
+  // ----------------------------------------
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
   };
-
-  // ⭐ LOGOUT
-  const logout = () => {
+  // ----------------------------------------
+  // :rocket: LOGOUT — Clears cookies via backend
+  // ----------------------------------------
+  const logout = async () => {
+    try {
+      await fetch(`${BASE}/logout`, {
+        method: "POST",
+        credentials: "include", // send cookies
+      });
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
     setUser(null);
-    localStorage.removeItem("user");
   };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
-
+// ========================================
+// CUSTOM HOOK
+// ========================================
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
+  return ctx;
 };

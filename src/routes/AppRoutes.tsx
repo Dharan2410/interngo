@@ -26,11 +26,9 @@ import InteractionModule from "../components/InteractionModule";
 import InternHelpDesk from "../pages/intern/HelpPage";
 import PendingTickets from "../pages/common/PendingTickets";
 import ResourcesList from "../pages/common/ResourcesList";
-import ResourcesBatchSelect from "../pages/Admin/ResourcesBatchSelect";
-import BatchSelect from "../pages/common/BatchSelect";
-import YearSelect from "../pages/common/YearSelect"
 import YearBatchSelect from "../pages/common/YearBatchSelect";
 import RoleSelect from "../pages/common/RoleSelect";
+import GoogleCallback from "../pages/auth/GoogleCallback";
 export default function AppRoutes() {
   const location = useLocation();
 
@@ -41,9 +39,12 @@ export default function AppRoutes() {
         <Route path="/" element={<SignIn />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/auth/google/callback" element={<GoogleCallback />} />
+
 
         {/* Admin */}
-        <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><DashboardLayout title="Admin Panel" /></ProtectedRoute>}>
+        <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><DashboardLayout /></ProtectedRoute>}>
+        <Route path="profile/:userId" element={<ProfileCards />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="profile" element={<ProfileCards />} />
 <Route path="profile/edit" element={<ProfileForm />} />
@@ -51,41 +52,35 @@ export default function AppRoutes() {
           <Route path="interactions" element={<InteractionModule />} />
           <Route path="pending-tickets" element={<PendingTickets />} />
          <Route path="resources" element={<RoleSelect />} />
-
-{/* <Route path="resources/intern/years" element={<YearSelect />} /> */}
-{/* <Route path="resources/intern/batches/:year" element={<BatchSelect />} /> */}
 <Route path="resources/intern/select" element={<YearBatchSelect />} />
 <Route path="resources/intern/list/all/all" element={<ResourcesList />} />
 <Route path="resources/intern/list/:year/:batch" element={<ResourcesList />} />
-
 <Route path="resources/mentor/list" element={<ResourcesList />} />
 <Route path="resources/interviewer/list" element={<ResourcesList />} />
 
         </Route>
 
         {/* Mentor */}
-        <Route path="/mentor" element={<ProtectedRoute allowedRoles={["mentor"]}><DashboardLayout title="Mentor Panel" /></ProtectedRoute>}>
+        <Route path="/mentor" element={<ProtectedRoute allowedRoles={["mentor"]}><DashboardLayout /></ProtectedRoute>}>
           <Route path="dashboard" element={<MentorDashboard />} />
           <Route path="profile" element={<ProfileCards />} />
 <Route path="profile/edit" element={<ProfileForm />} />
           <Route path="daily-update" element={<DailyUpdateBase role="mentor"/>} />
           <Route path="interactions" element={<InteractionModule />} />
           <Route path="pending-tickets" element={<PendingTickets />} />
-          <Route path="resources/:batch" element={<ResourcesList />} />
         </Route>
 
         {/* Interviewer */}
-        <Route path="/interviewer" element={<ProtectedRoute allowedRoles={["interviewer"]}><DashboardLayout title="Interviewer Panel" /></ProtectedRoute>}>
+        <Route path="/interviewer" element={<ProtectedRoute allowedRoles={["interviewer"]}><DashboardLayout  /></ProtectedRoute>}>
           <Route path="dashboard" element={<InterviewerDashboard />} />
           <Route path="profile" element={<ProfileCards />} />
 <Route path="profile/edit" element={<ProfileForm />} />
           <Route path="daily-update" element={<DailyUpdateBase role="interviewer"/>} />
           <Route path="interactions" element={<InteractionModule />} />
-          <Route path="resources/:batch" element={<ResourcesList />} />
         </Route>
 
         {/* Intern */}
-        <Route path="/intern" element={<ProtectedRoute allowedRoles={["intern"]}><DashboardLayout title="Intern Dashboard" /></ProtectedRoute>}>
+        <Route path="/intern" element={<ProtectedRoute allowedRoles={["intern"]}><DashboardLayout/></ProtectedRoute>}>
           <Route path="dashboard" element={<InternDashboard />} />
           <Route path="profile" element={<ProfileCards />} />
 <Route path="profile/edit" element={<ProfileForm />} />

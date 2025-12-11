@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-
+import { ChevronLeft } from "lucide-react";
 const BASE = "http://localhost:8080/interngo";
 
 interface YearGroup {
@@ -51,6 +51,9 @@ const YearBatchSelect: React.FC = () => {
     else if (user?.role === "interviewer")
       navigate(`/interviewer/resources/intern/list/${year}/${batch}`);
   };
+  const goBack = () => {
+  navigate("/admin/resources");
+  }
 
   return (
     <>
@@ -60,6 +63,12 @@ const YearBatchSelect: React.FC = () => {
 
       <motion.div className="absolute w-80 h-80 bg-[#96C2DB] rounded-full 
         mix-blend-multiply blur-3xl opacity-40 bottom-20 right-10 -z-10" />
+        <button
+        onClick={goBack}
+        className="flex items-center gap-2 mb-4 text-[#3B6E8F] hover:underline"
+      >
+        <ChevronLeft size={20} /> Back
+      </button>
 
       <h2 className="text-3xl font-bold text-[#1E2A35] mb-10 relative z-10">
         Select <span className="text-[#3B6E8F]">Year & Batch</span>

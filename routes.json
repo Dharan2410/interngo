@@ -3,5 +3,6 @@
 
   "/interngo/profile/:role/:userId": "/interngo/profile/:role/:userId",
 
+   "/interngo/professional": "/professionalInfo",
   "/interngo/professional/:userId": "/interngo/professional/:userId"
 }

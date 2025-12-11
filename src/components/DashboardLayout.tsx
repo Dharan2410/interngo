@@ -17,13 +17,13 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import logo from "../../public/logo.png"
 
 interface LayoutProps {
-  title: string;
   children?: React.ReactNode;
 }
 
-const DashboardLayout: React.FC<LayoutProps> = ({ title, children }) => {
+const DashboardLayout: React.FC<LayoutProps> = ({children }) => {
   const [hovered, setHovered] = useState(false);
   const { user, logout } = useAuth();
   const location = useLocation();
@@ -84,17 +84,13 @@ const DashboardLayout: React.FC<LayoutProps> = ({ title, children }) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         animate={{ width: hovered ? 230 : 70 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2 }}
         className="
-          fixed left-0 top-0 bottom-0 bg-white/40 backdrop-blur-xl 
+          fixed left-0 top-16 bottom-0 bg-white/40 backdrop-blur-xl 
           shadow-lg border-r border-[#96C2DB]/40
           flex flex-col py-6 z-30 transition-all
         "
       >
-        <div className="text-center text-[#08212d] font-extrabold text-2xl mb-6 tracking-widest">
-          {hovered ? "Interngo" : "IN"}
-        </div>
-
         {/* Menu */}
         <nav className="flex flex-col gap-2 px-2">
           {menuItems.map((item) => {
@@ -115,10 +111,15 @@ const DashboardLayout: React.FC<LayoutProps> = ({ title, children }) => {
               >
                 <span className="text-lg">{item.icon}</span>
                 {hovered && (
-                  <span className="text-sm font-medium whitespace-nowrap">
-                    {item.name}
-                  </span>
-                )}
+  <motion.span
+    initial={{ opacity: 0, x: -10 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.2, delay: 0.30 }}
+    className="text-sm font-medium whitespace-nowrap"
+  >
+    {item.name}
+  </motion.span>
+)}
               </Link>
             );
           })}
@@ -126,14 +127,21 @@ const DashboardLayout: React.FC<LayoutProps> = ({ title, children }) => {
       </motion.aside>
 
       {/* 🌊 Main Content */}
-      <div className="flex-1 ml-[70px]">
+      <div className="flex-1 ml-[70px] mt-16">
 
         {/* Header */}
         <header
-          className="fixed top-0 left-[70px] right-0 h-16 bg-white/40 backdrop-blur-xl
-                   border-b border-[#96C2DB]/50 flex justify-between items-center px-8 shadow-md z-20"
-        >
-          <h1 className="text-2xl font-bold text-[#08212d]">{title}</h1>
+  className="fixed top-0 left-0 right-0 h-16 bg-white/40 backdrop-blur-xl
+             border-b border-[#96C2DB]/50 flex justify-between items-center px-8 shadow-md z-20"
+>
+
+<img 
+  src={logo}
+  alt="Interngo Logo"
+  className="h-10 object-contain"
+/>
+
+          
 
           <div className="flex items-center gap-6">
 
@@ -162,7 +170,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({ title, children }) => {
         </header>
 
         {/* BODY */}
-        <main className="pt-24 px-10 pb-10">
+        <main className="pt-16 px-10 pb-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
