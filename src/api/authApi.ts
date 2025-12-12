@@ -37,32 +37,61 @@
 
 
 
-///dharan's use for db
+// ///dharan's use for db
 
 
+
+
+// const BASE = "http://localhost:4000/interngo";
+
+
+// export async function loginUser(email: string, password: string) {
+//   const res = await fetch(`${BASE}/login`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ email, password }),
+//     credentials: "include" 
+//   });
+//   if (!res.ok) {
+//     const err = await res.json();
+//     throw new Error(err.message || "Login failed");
+//   }
+//   const data = await res.json();
+//   const user = data.user;
+//   return {
+//     uid: user.uid,
+//     name: user.name,
+//     email: user.email,
+//     role: user.role,
+//     profilePicture: user.profileImage || null,
+//   };
+// }
 
 
 const BASE = "http://localhost:4000/interngo";
-
 
 export async function loginUser(email: string, password: string) {
   const res = await fetch(`${BASE}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
-    credentials: "include" 
+    credentials: "include"
   });
+
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Login failed");
   }
-  const data = await res.json();
-  const user = data.user;
+
+  const user = await res.json();   // your server returns user directly
+
   return {
-    uid: user.uid,
+    id: user.uid,
     name: user.name,
     email: user.email,
     role: user.role,
-    profilePicture: user.profileImage || null,
+
+    // 🔥 Correct final field matching DB + Auth Context + UI
+    profileImage: user.profileImage || "",
   };
 }

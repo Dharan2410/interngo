@@ -1,8 +1,11 @@
 {
   "/interngo/login": "/interngo/login",
 
-  "/interngo/profile/:role/:userId": "/interngo/profile/:role/:userId",
+  "/interngo/profile/:userId": "/interngo/profile/:userId",
 
-   "/interngo/professional": "/professionalInfo",
-  "/interngo/professional/:userId": "/interngo/professional/:userId"
+  "/interngo/professional": "/interngo/professional",
+  "/interngo/professional/:userId": "/interngo/professional/:userId",
+
+  "/interngo/dailyupdate/:userId/:date": "/interngo/dailyupdate/:userId/:date",
+  "/interngo/dailyupdate/batch/:batch/:date": "/interngo/dailyupdate/batch/:batch/:date"
 }

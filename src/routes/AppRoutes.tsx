@@ -29,6 +29,7 @@ import ResourcesList from "../pages/common/ResourcesList";
 import YearBatchSelect from "../pages/common/YearBatchSelect";
 import RoleSelect from "../pages/common/RoleSelect";
 import GoogleCallback from "../pages/auth/GoogleCallback";
+import Attendance from "../pages/Admin/attendance/AdminAttendanceBase"
 export default function AppRoutes() {
   const location = useLocation();
 
@@ -57,6 +58,7 @@ export default function AppRoutes() {
 <Route path="resources/intern/list/:year/:batch" element={<ResourcesList />} />
 <Route path="resources/mentor/list" element={<ResourcesList />} />
 <Route path="resources/interviewer/list" element={<ResourcesList />} />
+<Route path="attendance" element={<Attendance/>} />
 
         </Route>
 

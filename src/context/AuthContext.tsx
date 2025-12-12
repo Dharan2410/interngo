@@ -21,7 +21,7 @@
 // }
 
 // const AuthContext = createContext<AuthContextType | undefined>(undefined);
-// const BASE = "http://localhost:4000/interngo";
+// const BASE = "http://localhost:8080/interngo";
 
 // export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 //   const [user, setUser] = useState<User | null>(null);
@@ -100,7 +100,7 @@ interface User {
   name?: string;
   email: string;
   role: "admin" | "mentor" | "interviewer" | "intern";
-  profilePicture?: string | null;
+  profileImage?: string | null;
   batch?: string | null;
 }
 // ========================================

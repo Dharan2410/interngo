@@ -221,7 +221,7 @@ const InterviewerDashboard: React.FC = () => {
       {/* Welcome Section */}
       <div className="mb-8 relative z-10">
         <h2 className="text-3xl font-bold text-[#1E2A35]">
-          Welcome, <span className="text-[#3B6E8F]">{user?.email}</span>
+          Welcome, <span className="text-[#3B6E8F]">{user?.name}</span>
         </h2>
         <p className="text-lg mt-1 text-[#3A4750]">
           You are logged in as{" "}

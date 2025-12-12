@@ -1,10 +1,10 @@
 import React from "react";
 import DashboardLayout from "../../components/DashboardLayout";
-import DailyUpdateBase from "../../components/DailyUpdateBase";
+import DailyUpdateBase from "../common/DailyUpdateBase";
 
 const MentorDailyUpdate = () => {
   return (
-    <DashboardLayout title ="Mentor Daily Update">
+    <DashboardLayout >
       <DailyUpdateBase role="mentor" />
     </DashboardLayout>
   );

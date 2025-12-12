@@ -23,10 +23,10 @@
 //     setIsLoading(true);
 
 //     try {
-//       // 🔥 CALL JSON SERVER BACKEND
+//       // CALL JSON SERVER BACKEND
 //       const user = await loginUser(email, password);
 
-//       // 🔥 SAVE USER IN CONTEXT
+//       // SAVE USER IN CONTEXT
 //       login({
 //     uid: user.uid,
 //     // name: user.name,
@@ -37,7 +37,7 @@
 // });
 
 
-//       // 🔥 REDIRECT BASED ON ROLE
+//       //  REDIRECT BASED ON ROLE
 //       const roleRoutes: Record<string, string> = {
 //         admin: "/admin/dashboard",
 //         intern: "/intern/dashboard",
@@ -233,13 +233,14 @@ const SignIn: React.FC = () => {
       const user = await loginUser(email, password);
 
       // 🔥 SAVE USER IN CONTEXT
-      login({
-      uid: user.uid,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      profilePicture: user.profilePicture,
-    });
+     login({
+  uid: user.id,
+  name: user.name,
+  email: user.email,
+  role: user.role,
+  profileImage: user.profileImage || "",
+});
+
 
       console.log(user)
 

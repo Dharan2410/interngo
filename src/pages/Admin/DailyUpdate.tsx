@@ -1,10 +1,10 @@
 
 import React from "react";
-import DailyUpdateBase from "../../components/DailyUpdateBase";
+import DailyUpdateBase from "../common/DailyUpdateBase";
 import DashboardLayout from "../../components/DashboardLayout";
 
 const AdminDailyUpdate = () => (
-    <DashboardLayout title ="Admin Daily Update">
+    <DashboardLayout>
     <DailyUpdateBase role="admin" />
     </DashboardLayout>
 );

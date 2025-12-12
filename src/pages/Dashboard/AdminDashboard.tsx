@@ -16,7 +16,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
   if (!user?.role || !user?.uid) return;
 
-  fetch(`http://localhost:8080/interngo/profile/${user.role}/${user.uid}`)
+  fetch(`http://localhost:4000/interngo/profile/${user.role}/${user.uid}`)
     .then((res) => res.json())
     .then((data) => {
       setProfilePic(data?.user?.profilePicture || "");
@@ -60,7 +60,7 @@ const AdminDashboard: React.FC = () => {
 
   <div>
     <h2 className="text-3xl font-bold text-[#1E2A35]">
-      Welcome, <span className="text-[#3B6E8F]">{user?.email}</span>
+      Welcome, <span className="text-[#3B6E8F]">{user?.name}</span>
     </h2>
     <p className="text-lg mt-1 text-[#3A4750]">
       You are logged in as{" "}

@@ -15,6 +15,7 @@ import {
   LogOut,
   Bell,
   HelpCircle,
+  ClipboardList
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import logo from "../../public/logo.png"
@@ -37,6 +38,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({children }) => {
     admin: [
       { name: "Dashboard", icon: <LayoutDashboard />, path: "/admin/dashboard" },
       { name: "Profile", icon: <User />, path: "/admin/profile" },
+    { name: "Attendance", icon: <ClipboardList />, path: "/admin/attendance" },
       { name: "Resources", icon: <BookOpen />, path: "/admin/resources" },
       { name: "Plans", icon: <Calendar />, path: "/admin/plans" },
       { name: "Daily Update", icon: <MessageSquare />, path: "/admin/daily-update" },
