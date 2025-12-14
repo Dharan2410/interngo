@@ -29,7 +29,8 @@ import ResourcesList from "../pages/common/ResourcesList";
 import YearBatchSelect from "../pages/common/YearBatchSelect";
 import RoleSelect from "../pages/common/RoleSelect";
 import GoogleCallback from "../pages/auth/GoogleCallback";
-import Attendance from "../pages/Admin/attendance/AdminAttendanceBase"
+import Attendance from "../pages/attendance/AttendanceHome"
+import AttendanceSheet from "../pages/attendance/AttendanceSheet"
 export default function AppRoutes() {
   const location = useLocation();
 
@@ -44,7 +45,7 @@ export default function AppRoutes() {
 
 
         {/* Admin */}
-        <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><DashboardLayout /></ProtectedRoute>}>
+        {/* <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><DashboardLayout /></ProtectedRoute>}>
         <Route path="profile/:userId" element={<ProfileCards />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="profile" element={<ProfileCards />} />
@@ -60,7 +61,43 @@ export default function AppRoutes() {
 <Route path="resources/interviewer/list" element={<ResourcesList />} />
 <Route path="attendance" element={<Attendance/>} />
 
-        </Route>
+        </Route> */}
+
+
+        <Route
+  path="/admin"
+  element={
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <DashboardLayout />
+    </ProtectedRoute>
+  }
+>
+  <Route path="dashboard" element={<AdminDashboard />} />
+
+  {/* View ANY user's profile */}
+  <Route path="profile/:userId" element={<ProfileCards />} />
+
+  {/* Admin editing own profile */}
+  <Route path="profile" element={<ProfileCards />} />
+  <Route path="profile/edit" element={<ProfileForm />} />
+
+  <Route path="daily-update" element={<DailyUpdateBase role="admin" />} />
+  <Route path="interactions" element={<InteractionModule />} />
+  <Route path="pending-tickets" element={<PendingTickets />} />
+  <Route path="resources" element={<RoleSelect />} />
+
+  <Route path="resources/intern/select" element={<YearBatchSelect />} />
+  <Route path="resources/intern/list/all/all" element={<ResourcesList />} />
+  <Route path="resources/intern/list/:year/:batch" element={<ResourcesList />} />
+  <Route path="resources/mentor/list" element={<ResourcesList />} />
+  <Route path="resources/interviewer/list" element={<ResourcesList />} />
+  <Route path="attendance" element={<Attendance />} />
+  <Route
+  path="attendance/mark/:year/:batch/:date"
+  element={<AttendanceSheet />}
+/>
+</Route>
+
 
         {/* Mentor */}
         <Route path="/mentor" element={<ProtectedRoute allowedRoles={["mentor"]}><DashboardLayout /></ProtectedRoute>}>

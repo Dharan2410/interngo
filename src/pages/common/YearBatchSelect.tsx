@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { ChevronLeft } from "lucide-react";
-const BASE = "http://localhost:8080/interngo";
+const BASE = "http://localhost:4000";
 
 interface YearGroup {
   year: string;
@@ -17,12 +17,14 @@ const YearBatchSelect: React.FC = () => {
   const [groups, setGroups] = useState<YearGroup[]>([]);
 
   useEffect(() => {
-    fetch(`${BASE}/professional`)
-      .then((res) => res.json())
-      .then((data) => {
-        const yearMap: Record<string, Set<string>> = {};
+  fetch(`${BASE}/users`)
+    .then((res) => res.json())
+    .then((data) => {
+      const yearMap: Record<string, Set<string>> = {};
 
-        data.forEach((item: any) => {
+      data
+        .filter((u: any) => u.role === "intern") // Only interns used for grouping
+        .forEach((item: any) => {
           const year = String(item.year || "").trim();
           const batch = String(item.batch || "").trim();
 
@@ -32,14 +34,15 @@ const YearBatchSelect: React.FC = () => {
           if (batch) yearMap[year].add(batch);
         });
 
-        const grouped = Object.keys(yearMap).map((year) => ({
-          year,
-          batches: Array.from(yearMap[year]),
-        }));
+      const grouped = Object.keys(yearMap).map((year) => ({
+        year,
+        batches: Array.from(yearMap[year]),
+      }));
 
-        setGroups(grouped);
-      });
-  }, []);
+      setGroups(grouped);
+    });
+}, []);
+
 
   const handleBatchClick = (year: string, batch: string) => {
     if (user?.role === "admin")
@@ -117,7 +120,10 @@ const YearBatchSelect: React.FC = () => {
           </div>
         ))}
         {/* ALL INTERNS CARD */}
-<div className="flex justify-center mb-10 relative z-10">
+{/* ALL INTERNS + NOT ASSIGNED */}
+<div className="flex justify-center gap-6 mb-10 relative z-10 px-4">
+
+  {/* VIEW ALL INTERNS */}
   <motion.div
     whileHover={{ scale: 1.05 }}
     onClick={() => {
@@ -131,7 +137,7 @@ const YearBatchSelect: React.FC = () => {
     className="
       cursor-pointer bg-white/80 backdrop-blur-2xl 
       border border-[#96C2DB]/50 rounded-3xl 
-      p-8 w-full max-w-xl text-center shadow-lg 
+      p-8 w-full max-w-md text-center shadow-lg 
       hover:shadow-2xl transition-all
     "
   >
@@ -139,6 +145,33 @@ const YearBatchSelect: React.FC = () => {
       View All Interns
     </h3>
   </motion.div>
+
+  {/* NOT ASSIGNED CARD */}
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    onClick={() => {
+      if (user?.role === "admin")
+        navigate(`/admin/resources/intern/list/not-assigned/all`);
+      else if (user?.role === "mentor")
+        navigate(`/mentor/resources/intern/list/not-assigned/all`);
+      else if (user?.role === "interviewer")
+        navigate(`/interviewer/resources/intern/list/not-assigned/all`);
+    }}
+    className="
+      cursor-pointer bg-white/80 backdrop-blur-2xl 
+      border border-[#96C2DB]/50 rounded-3xl 
+      p-8 w-full max-w-md text-center shadow-lg 
+      hover:shadow-2xl transition-all
+    "
+  >
+    <h3 className="text-2xl font-bold text-[#1E2A35]">
+      Not Assigned
+    </h3>
+    <p className="text-sm text-[#3A4750] mt-1">
+      Interns without batch/year
+    </p>
+  </motion.div>
+
 </div>
       </div>
     </>

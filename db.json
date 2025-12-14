@@ -112,7 +112,7 @@
     },
     {
       "uid": "intern-001",
-      "name": "Gopika",
+      "name": "Gopika muruganantham",
       "email": "gopika@finestcoder.com",
       "password": "123",
       "role": "intern",
@@ -134,9 +134,10 @@
       "secondaryskills": [
         "Python",
         "Django",
-        "C++"
+        "C++",
+        "Cloud Computing"
       ],
-      "empId": "INT1004",
+      "empId": "456",
       "empEmail": "john.intern@example.com",
       "batch": "Batch-1",
       "year": "2025",
@@ -146,8 +147,174 @@
       "phase": "Phase-1",
       "refreshToken": null,
       "googleAuth": false,
-      "experienceYears": ""
+      "experienceYears": "",
+      "companyEmail": "john.intern@example.com",
+      "joiningDate": "2025-01-10",
+      "status": "Active",
+      "userId": "intern-001"
+    },
+    {
+      "uid": "intern-002",
+      "name": "Gopika saran",
+      "email": "gopsaran@finestcoder.com",
+      "password": "123",
+      "role": "intern",
+      "personalEmail": "gopsaran@finestcoder.com",
+      "phone": "7455485241",
+      "dob": "",
+      "gender": "Female",
+      "bloodGroup": "A-",
+      "currentAddress": "",
+      "permanentAddress": "",
+      "college": "",
+      "degree": "",
+      "educationYear": "2028-2040",
+      "primaryskills": [
+        ""
+      ],
+      "secondaryskills": [],
+      "experienceYears": "",
+      "empId": "",
+      "companyEmail": "",
+      "designation": "",
+      "batch": "batch 1",
+      "year": "2026",
+      "phase": "",
+      "joiningDate": "",
+      "status": "Inactive",
+      "userId": "intern-002"
     }
   ],
-  "dailyUpdates": []
+  "tasks": [
+    {
+      "id": 1765709211887.576,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "asdfghj",
+      "plannedActivities": "asdfghj",
+      "completedActivities": "asdfghj",
+      "estimatedHours": 1,
+      "actualHours": 1,
+      "taskStatus": "Completed"
+    },
+    {
+      "id": 1765709211905.9155,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "fghutyuk",
+      "plannedActivities": "wqert",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211906.9258,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "asdf",
+      "plannedActivities": "sdfgrh",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211906.2944,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "sdfgh",
+      "plannedActivities": "sdfghj",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211907.5193,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "ertyu",
+      "plannedActivities": "dfgh",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211909.6099,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "ertyui",
+      "plannedActivities": "scdvfgbhnj",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211910.801,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "rtyui",
+      "plannedActivities": "dsfgh",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211910.3657,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "rtyui",
+      "plannedActivities": "sadfgh",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211911.2551,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "asdfghj",
+      "plannedActivities": "sdfgh",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    },
+    {
+      "id": 1765709211912.4487,
+      "userId": "intern-001",
+      "taskDate": "2025-12-14",
+      "taskName": "rtyui",
+      "plannedActivities": "sdfgrhj",
+      "completedActivities": "",
+      "estimatedHours": 1,
+      "actualHours": null,
+      "taskStatus": "Pending"
+    }
+  ],
+  "attendance": [
+    {
+      "id": 1765715802810,
+      "userId": "intern-001",
+      "year": "2025",
+      "batch": "Batch-1",
+      "date": "2025-12-14",
+      "session1": "Present",
+      "session2": "Absent"
+    },
+    {
+      "id": 1765715824276,
+      "userId": "intern-002",
+      "year": "2026",
+      "batch": "batch 1",
+      "date": "2025-12-14",
+      "session1": "wfh",
+      "session2": "wfh"
+    }
+  ]
 }

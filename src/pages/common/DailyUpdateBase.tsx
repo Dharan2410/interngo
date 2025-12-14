@@ -123,47 +123,50 @@ const DailyUpdateBase: React.FC<{ role: "admin" | "mentor" | "interviewer" }> = 
     setMonthShown(newDate);
   };
 
-  useEffect(() => {
+
+useEffect(() => {
   const loadMeta = async () => {
     try {
-      const profRes = await fetch("http://localhost:8080/professionalInfo");
-      const profilesRes = await fetch("http://localhost:8080/profiles");
-
-      if (!profRes.ok || !profilesRes.ok) {
-        console.error("Failed to load professionalInfo or profiles");
+      const res = await fetch("http://localhost:4000/interngo/users");
+      if (!res.ok) {
+        console.error("Failed to load users");
         return;
       }
 
-      const profArr = await profRes.json();
-      const profilesArr = await profilesRes.json();
-
-      if (!Array.isArray(profArr) || !Array.isArray(profilesArr)) {
-        console.error("professionalInfo or profiles is not an array");
+      const users = await res.json();
+      if (!Array.isArray(users)) {
+        console.error("Users is not an array");
         return;
       }
 
-   
-      setProfessionalInfoList(profArr);
-      setProfilesList(profilesArr);
 
+      setProfessionalInfoList(users);
+      setProfilesList(users);
+
+      // -------- Extract years ----------
       const yearsSet = new Set<string>();
-      profArr.forEach((p: any) => {
-        if (p.year) yearsSet.add(String(p.year));
+      users.forEach((u: any) => {
+        if (u.year && u.year !== "N/A") {
+          yearsSet.add(String(u.year));
+        }
       });
 
-      const yearsList = Array.from(yearsSet).sort();
-      setYears(yearsList);
+      setYears(Array.from(yearsSet).sort());
 
+      // -------- Group year → batches ----------
       const yearMap: Record<string, Set<string>> = {};
 
-      profArr.forEach((p: any) => {
-        const year = String(p.year || "").trim();
-        const batch = String(p.batch || "").trim();
+      users.forEach((u: any) => {
+        if (u.role !== "intern") return;
+        const year = String(u.year || "").trim();
+        const batch = String(u.batch || "").trim();
 
-        if (!year) return;
+        if (!year || year === "N/A") return;
 
         if (!yearMap[year]) yearMap[year] = new Set();
-        if (batch) yearMap[year].add(batch);
+        if (batch && batch !== "N/A") {
+          yearMap[year].add(batch);
+        }
       });
 
       const groupList = Object.keys(yearMap).map((year) => ({
@@ -171,7 +174,7 @@ const DailyUpdateBase: React.FC<{ role: "admin" | "mentor" | "interviewer" }> = 
         batches: Array.from(yearMap[year]),
       }));
 
-      setYearGroups(groupList); 
+      setYearGroups(groupList);
     } catch (err) {
       console.error("loadMeta error:", err);
     }
@@ -465,8 +468,7 @@ interns.push({
 
   
   return (
-    
-    <div className="relative min-h-[80vh] px-4 py-6">
+    <div className="relative min-h-[80vh] px-4 py-6"> 
       {/* BLURRED BACKGROUND */}
       <motion.div
         className="absolute w-72 h-72 bg-[#C6DFF1] rounded-full blur-3xl opacity-40 top-0 left-0 -z-10"
@@ -480,7 +482,7 @@ interns.push({
       />
 
      {/* ================== YEAR + BATCH ON SAME PAGE (COMBINED) ================== */}
-     
+     <AnimatePresence mode="wait">
 {!selectedBatch && !selectedYear && (
   
   <motion.div
@@ -490,7 +492,8 @@ interns.push({
     transition={{ duration: 0.4, ease: "easeOut" }}
     className="space-y-16 relative z-10 w-full"
   >
-  <div className="space-y-16 relative z-10 w-full">
+   <div className="space-y-16 relative z-10 w-full"> 
+  
 
     {yearGroups.map((group) => (
       <div key={group.year} className="space-y-6">
@@ -544,7 +547,8 @@ interns.push({
       </div>
     ))}
 
-  </div>
+  </div> 
+  
   </motion.div>
   
 )}
@@ -553,7 +557,15 @@ interns.push({
       {/* ================== AFTER BATCH SELECTED: DAILY VIEW ================== */}
       
       {selectedYear && selectedBatch && (
-        <div className="bg-white/60 backdrop-blur-2xl border border-[#96C2DB]/40 rounded-3xl p-6 shadow-xl">
+        
+        <>
+         <motion.div
+      key="daily-view"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <button
@@ -778,12 +790,12 @@ setInternsTasks({});
               Export PDF
             </button>
           </div>
-        </div>
-        
+       </motion.div>
+        </>
       )}
+      </AnimatePresence>
     
-    </div>
-    
+</div>
   );
 };
 

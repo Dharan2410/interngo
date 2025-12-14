@@ -1,11 +1,13 @@
 {
-  "/interngo/login": "/interngo/login",
+  "/interngo/profile/:userId": "/users?uid=:userId",
+  "/interngo/users": "/users",
 
-  "/interngo/profile/:userId": "/interngo/profile/:userId",
+  "/interngo/check-phone/:phone": "/interngo/check-phone/:phone",
 
-  "/interngo/professional": "/interngo/professional",
-  "/interngo/professional/:userId": "/interngo/professional/:userId",
+  "/interngo/createTask": "/tasks",
+  "/interngo/getTasks": "/tasks",
+  "/interngo/getTasksByDate/:userId/:date": "/tasks?userId=:userId&date=:date",
+  "/interngo/updateTask/:id": "/tasks/:id",
+  "/interngo/deleteTask/:id": "/tasks/:id"
 
-  "/interngo/dailyupdate/:userId/:date": "/interngo/dailyupdate/:userId/:date",
-  "/interngo/dailyupdate/batch/:batch/:date": "/interngo/dailyupdate/batch/:batch/:date"
 }

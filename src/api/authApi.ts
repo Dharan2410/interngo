@@ -90,8 +90,6 @@ export async function loginUser(email: string, password: string) {
     name: user.name,
     email: user.email,
     role: user.role,
-
-    // 🔥 Correct final field matching DB + Auth Context + UI
     profileImage: user.profileImage || "",
   };
 }

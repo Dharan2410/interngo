@@ -31,7 +31,10 @@ const WeekStrip: React.FC<WeekStripProps> = ({
             key={d.toISOString()}
             onClick={() => !disabled && onSelectDate(d)}
             disabled={disabled}
-            className={`min-w-[120px] rounded-xl p-4 border transition 
+            className={`w-[130px] h-[130px] 
+rounded-2xl px-5 py-4
+flex flex-col items-center justify-center
+ border transition 
                 ${
                   selected
                     ? "bg-[#3B6E8F] text-white border-[#3B6E8F]"

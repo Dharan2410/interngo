@@ -31,7 +31,7 @@ const TaskEditorCard: React.FC<TaskEditorCardProps> = ({
   if (tasks.length === 0) {
     return (
       <div className="text-sm text-[#3A4750] py-6 text-center">
-        No tasks yet — click &quot;Add Task&quot;
+        No tasks yet 
       </div>
     );
   }
