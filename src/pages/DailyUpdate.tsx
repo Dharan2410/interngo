@@ -27,7 +27,7 @@
 //   completedActivities: string;
 //   estimatedTime: string;
 //   actualTime: string;
-//   status: "pending" | "completed";
+//   status: "Pending" | "Completed";
 //   __editing?: string;
 //   __editingId?: string;
 // };
@@ -63,7 +63,7 @@
 //   completedActivities: "",
 //   estimatedTime: "",
 //   actualTime: "",
-//   status: "pending",
+//   status: "Pending",
 // });
 
 // // ==========================
@@ -109,7 +109,7 @@
 //   // -----------------------------
 //   const saveTasksToBackend = async (userId: string, taskDate: string) => {
 //     const totalMinutes = tasks.reduce((acc, t) => {
-//       if (t.status === "completed") {
+//       if (t.status === "Completed") {
 //         const num = parseFloat(t.actualTime || "0");
 //         if (!isNaN(num) && num >= 0) {
 //           let hours = Math.floor(num);
@@ -290,7 +290,7 @@
 //   };
 
 //   const totalMinutes = tasks.reduce((acc, t) => {
-//     if (t.status === "completed") {
+//     if (t.status === "Completed") {
 //       const num = parseFloat(t.actualTime || "0");
 //       if (!isNaN(num) && num >= 0) {
 //         let hrs = Math.floor(num);
@@ -488,7 +488,7 @@ type TaskRow = {
   completedActivities: string;
   estimatedTime: string;
   actualTime: string;
-  status: "pending" | "completed";
+  status: "Pending" | "Completed";
   __editing?: string;
   __editingId?: string;
 };
@@ -524,7 +524,7 @@ const emptyTask = (): TaskRow => ({
   completedActivities: "",
   estimatedTime: "",
   actualTime: "",
-  status: "pending",
+  status: "Pending",
 });
 
 // ==========================
@@ -570,7 +570,7 @@ const DailyUpdate: React.FC = () => {
   // -----------------------------
   const saveTasksToBackend = async (userId: string, taskDate: string) => {
     const totalMinutes = tasks.reduce((acc, t) => {
-      if (t.status === "completed") {
+      if (t.status === "Completed") {
         const num = parseFloat(t.actualTime || "0");
         if (!isNaN(num) && num >= 0) {
           let hours = Math.floor(num);
@@ -751,7 +751,7 @@ const DailyUpdate: React.FC = () => {
   };
 
   const totalMinutes = tasks.reduce((acc, t) => {
-    if (t.status === "completed") {
+    if (t.status === "Completed") {
       const num = parseFloat(t.actualTime || "0");
       if (!isNaN(num) && num >= 0) {
         let hrs = Math.floor(num);

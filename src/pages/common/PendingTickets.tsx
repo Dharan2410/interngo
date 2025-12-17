@@ -10,7 +10,7 @@
 // // TODO: Replace with real API call based on role & userId, eg:
 // // const res = await fetch(`/api/tickets?recipientRole=${role}&recipientId=${userId}`);
 // // setTickets(res.data);
-// type TicketStatus = "PENDING" | "RESOLVED";
+// type TicketStatus = "Pending" | "RESOLVED";
 // type TicketPriority = "Low" | "Medium" | "High";
 
 // interface Ticket {
@@ -33,7 +33,7 @@
 //     raisedByName: "Intern A",
 //     raisedByRole: "intern",
 //     priority: "High",
-//     status: "PENDING",
+//     status: "Pending",
 //     recipientRole: "admin",
 //   },
 //   {
@@ -43,7 +43,7 @@
 //     raisedByName: "Intern B",
 //     raisedByRole: "intern",
 //     priority: "Medium",
-//     status: "PENDING",
+//     status: "Pending",
 //     recipientRole: "mentor",
 //     recipientId: "m1",
 //   },
@@ -57,7 +57,7 @@
 //   const userId = user?.uid;
 
 //   const [tickets, setTickets] = useState<Ticket[]>([]);
-//   const [activeTab, setActiveTab] = useState<"pending" | "resolved">("pending");
+//   const [activeTab, setActiveTab] = useState<"Pending" | "resolved">("Pending");
 
 //   useEffect(() => {
 //     // ----------------------------------------------------------------
@@ -94,7 +94,7 @@
 //   };
 
 //   const visibleTickets = tickets.filter(
-//     (t) => t.status === (activeTab === "pending" ? "PENDING" : "RESOLVED")
+//     (t) => t.status === (activeTab === "Pending" ? "Pending" : "RESOLVED")
 //   );
 
 //   return (
@@ -108,9 +108,9 @@
 
 //           <div className="flex gap-3">
 //             <button
-//               onClick={() => setActiveTab("pending")}
+//               onClick={() => setActiveTab("Pending")}
 //               className={`px-4 py-2 rounded-xl font-semibold ${
-//                 activeTab === "pending"
+//                 activeTab === "Pending"
 //                   ? "bg-blue-500 text-white"
 //                   : "bg-white/10 border border-white/20 hover:bg-white/20"
 //               }`}
@@ -145,7 +145,7 @@
 //         <motion.div whileHover={{ scale: 1.01 }} className={cardClass}>
 //           {visibleTickets.length === 0 ? (
 //             <p className="text-center text-sm text-white/70">
-//               No {activeTab === "pending" ? "pending" : "resolved"} help
+//               No {activeTab === "Pending" ? "Pending" : "resolved"} help
 //               requests.
 //             </p>
 //           ) : (
@@ -179,7 +179,7 @@
 //                     <span
 //                       className={`inline-flex items-center gap-1 text-xs px-3 py-1 rounded-full font-semibold ${statusColors[t.status]}`}
 //                     >
-//                       {t.status === "PENDING" ? "PENDING" : "RESOLVED"}
+//                       {t.status === "Pending" ? "Pending" : "RESOLVED"}
 //                     </span>
 
 //                     {/* PRIORITY BADGE */}
@@ -195,7 +195,7 @@
 //                       onClick={() => handleToggleStatus(t.id)}
 //                       className="mt-1 text-[11px] px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/20"
 //                     >
-//                       Mark as {t.status === "PENDING" ? "Resolved" : "Pending"}
+//                       Mark as {t.status === "Pending" ? "Resolved" : "Pending"}
 //                     </button>
 //                     */}
 //                   </div>

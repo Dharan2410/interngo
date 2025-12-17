@@ -12,7 +12,7 @@
 //     completedActivities: string;
 //     estimatedTime: string;
 //     actualTime: string;
-//     status: "pending" | "completed";
+//     status: "Pending" | "Completed";
     
 //   }[];
 // }

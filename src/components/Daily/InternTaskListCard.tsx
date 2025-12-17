@@ -9,7 +9,7 @@
 //   completedActivities: string;
 //   estimatedTime: string;
 //   actualTime: string;
-//   status: "pending" | "completed";
+//   status: "Pending" | "Completed";
 // };
 
 // interface Props {
@@ -93,7 +93,7 @@
 //                   className={`
 //                     px-3 py-1 rounded-full text-xs font-semibold
 //                     ${
-//                       t.status === "completed"
+//                       t.status === "Completed"
 //                         ? "bg-green-200 text-green-700"
 //                         : "bg-red-200 text-yellow-700"
 //                     }

@@ -4,7 +4,7 @@ import InternCard from "../../components/Resources/InternCard";
 import { ChevronLeft } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
-const BASE = "http://localhost:4000"; // json-server root
+const BASE = "http://localhost:4000/interngo"; // json-server root
 
 const ITEMS_PER_PAGE = 12;
 
@@ -57,8 +57,10 @@ const mapIntern = (u: any) => ({
 
 
 const loadInterns = async () => {
-  const res = await fetch(`${BASE}/users`);
-  const users = await res.json();
+  const res = await fetch(`${BASE}/getallprofiles`);
+  const data = await res.json();
+  const users = data.users
+  
 
   // 1️⃣ Only interns
   const interns = users.filter((u: any) => u.role === "intern");
@@ -120,8 +122,9 @@ const loadInterns = async () => {
 
 
 const loadMentors = async () => {
-  const usersRes = await fetch(`${BASE}/users`);
-  const users = await usersRes.json();
+  const usersRes = await fetch(`${BASE}/getallprofiles`);
+  const data = await usersRes.json();
+  const users = data.users
 
   const mentors = users.filter((u: any) => u.role === "mentor");
 
@@ -148,8 +151,10 @@ const loadMentors = async () => {
 
 
 const loadInterviewers = async () => {
-  const usersRes = await fetch(`${BASE}/users`);
-  const users = await usersRes.json();
+  const usersRes = await fetch(`${BASE}/getallprofiles`);
+  const data = await usersRes.json();
+  const users = data.users
+
 
   const interviewers = users.filter((u: any) => u.role === "interviewer");
 

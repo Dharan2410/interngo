@@ -121,7 +121,7 @@ server.get("/interngo/tasks/:userId/:date", (req, res) => {
     completedActivities: t.completedActivities || "",
     estimatedTime: String(t.estimatedHours),
     actualTime: t.actualHours ? String(t.actualHours) : "",
-    status: t.taskStatus === "Completed" ? "completed" : "pending",
+    status: t.taskStatus === "Completed" ? "Completed" : "Pending",
   }));
 
   const totalMinutes = rows.reduce((acc, t) => {
@@ -162,7 +162,7 @@ server.put("/interngo/tasks/:userId/:date", (req, res) => {
         estimatedHours: Number(t.estimatedTime),
         actualHours: t.actualTime ? Number(t.actualTime) : null,
         taskStatus:
-          t.status === "completed" ? "Completed" : "Pending",
+          t.status === "Completed" ? "Completed" : "Pending",
       })
       .write();
   });
@@ -212,7 +212,7 @@ server.get("/interngo/tasks/batch/:year/:date", (req, res) => {
         estimatedTime: String(t.estimatedHours),
         actualTime: t.actualHours ? String(t.actualHours) : "",
         status:
-          t.taskStatus === "Completed" ? "completed" : "pending",
+          t.taskStatus === "Completed" ? "Completed" : "Pending",
       })),
     };
   });

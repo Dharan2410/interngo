@@ -211,7 +211,7 @@
           "completedActivities": "sdfghj",
           "estimatedTime": "1",
           "actualTime": "1",
-          "status": "pending",
+          "status": "Pending",
           "__editing": "",
           "__editingId": "haqjlfmulip"
         },
@@ -222,7 +222,7 @@
           "completedActivities": "wertyui",
           "estimatedTime": "1",
           "actualTime": "1",
-          "status": "completed",
+          "status": "Completed",
           "__editing": "",
           "__editingId": "47yq5h8wn2y"
         },
@@ -233,7 +233,7 @@
           "completedActivities": "",
           "estimatedTime": "1",
           "actualTime": "",
-          "status": "pending",
+          "status": "Pending",
           "__editing": "",
           "__editingId": "a3gbtin088g"
         }
@@ -252,7 +252,7 @@
           "completedActivities": "sdfghuji",
           "estimatedTime": "1",
           "actualTime": "1",
-          "status": "completed",
+          "status": "Completed",
           "__editing": "",
           "__editingId": "r8y00k8hduz"
         }
@@ -271,7 +271,7 @@
           "completedActivities": "",
           "estimatedTime": "5",
           "actualTime": "",
-          "status": "pending",
+          "status": "Pending",
           "__editing": "",
           "__editingId": "yn6v0bdolgw"
         },
@@ -282,7 +282,7 @@
           "completedActivities": "",
           "estimatedTime": "7",
           "actualTime": "",
-          "status": "pending",
+          "status": "Pending",
           "__editing": "",
           "__editingId": "xh96n49pliy"
         }

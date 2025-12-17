@@ -8,7 +8,7 @@
 //   completedActivities: string;
 //   estimatedTime: string;
 //   actualTime: string;
-//   status: "pending" | "completed";
+//   status: "Pending" | "Completed";
 //   __editing?: string;
 //   __editingId?: string;
 // };
@@ -121,8 +121,8 @@
 //                 }
 //                 className="p-2 rounded-md bg-white/80 border border-[#96C2DB]/40 text-sm text-[#1E2A35] focus:outline-none focus:ring-1 focus:ring-[#3B6E8F]"
 //               >
-//                 <option value="pending">Pending</option>
-//                 <option value="completed">Completed</option>
+//                 <option value="Pending">Pending</option>
+//                 <option value="Completed">Completed</option>
 //               </select>
 //               {isToday && (
 //                 <button

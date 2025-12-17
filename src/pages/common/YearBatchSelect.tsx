@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { ChevronLeft } from "lucide-react";
 
-const BASE = "http://localhost:4000";
+const BASE = "http://localhost:4000/interngo";
 
 interface YearGroup {
   year: string;
@@ -21,8 +21,9 @@ const YearBatchSelect: React.FC = () => {
   const [groups, setGroups] = useState<YearGroup[]>([]);
 
   useEffect(() => {
-  fetch(`${BASE}/users`)
+  fetch(`${BASE}/getallprofiles`)
     .then((res) => res.json())
+    .then((user)=>user.users)
     .then((data) => {
      const yearMap: Record<string, Map<string, string>> = {};
 

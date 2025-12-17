@@ -847,6 +847,19 @@ import type { TaskRow} from "../../api/dailyUpdateApi";
 const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 const yyyyMMdd = (d: Date) =>
   `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const normalizeBatch = (batch?: string) => {
+  if (!batch) return "";
+
+  return batch
+    .toLowerCase()
+    .trim()
+    .replace(/[_-]/g, " ")      // batch-1 → batch 1
+    .replace(/\s+/g, " ")       // extra spaces
+    .replace(/batch\s*/g, "batch ") // ensure spacing
+    .replace(/\b0+(\d+)/g, "$1");   // batch 01 → batch 1
+};
+
+
 
 const startOfWeek = (date: Date) => {
   const d = new Date(date);
@@ -991,7 +1004,9 @@ useEffect(() => {
         }
       });
 
-      const groupList = Object.keys(yearMap).map((year) => ({
+      const groupList = Object.keys(yearMap)
+      .sort((a, b) => parseInt(b) - parseInt(a))
+      .map((year) => ({
         year,
         batches: Array.from(yearMap[year]),
       }));
