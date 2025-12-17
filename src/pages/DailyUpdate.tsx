@@ -462,10 +462,6 @@
 
 
 
-// ===========================================
-// FINAL INTERN DAILY UPDATE FILE (BACKEND API)
-// ===========================================
-
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -775,9 +771,6 @@ const DailyUpdate: React.FC = () => {
   const hrs = Math.floor(totalMinutes / 60);
   const mins = totalMinutes % 60;
 
-  // ===================================================
-  // UI STARTS HERE — NO CHANGES DONE
-  // ===================================================
   return (
     <>
       {/* Popup */}

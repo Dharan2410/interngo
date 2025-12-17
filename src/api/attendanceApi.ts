@@ -8,7 +8,7 @@
 //   overall: "Present" | "Absent" | "Half Day";
 // }
 
-// export const fetchAttendance = async (
+// export const fetchAttendanceBatch = async (
 //   year: string,
 //   batch: string,
 //   date: string
@@ -37,27 +37,77 @@
 
 
 
-const BASE = "http://localhost:4000/interngo";
+const BASE = "http://localhost:4000";
 
-// GET attendance for batch + date
+// ---------- NORMALIZER ----------
+const normalizeBatch = (batch: string) =>
+  batch.toLowerCase().replace(/[\s-_]/g, "");
+
+// ---------- FETCH + MERGE ----------
 export const fetchAttendanceBatch = async (
   year: string,
   batch: string,
   date: string
 ) => {
-  const res = await fetch(
-    `${BASE}/attendance?year=${year}&batch=${batch}&date=${date}`
+  // 1️⃣ Fetch users
+  const usersRes = await fetch(`${BASE}/interngo/users`);
+  const users = await usersRes.json();
+
+  const interns = users.filter(
+    (u: any) =>
+      u.role === "intern" &&
+      String(u.year) === String(year) &&
+      normalizeBatch(u.batch || "") === normalizeBatch(batch)
   );
 
-  if (!res.ok) return []; // 🛡️ prevent crash
-  return res.json();
+  // 2️⃣ Fetch attendance
+  const attRes = await fetch(`${BASE}/attendance`);
+  const attendance = await attRes.json();
+
+  // 3️⃣ Merge users + attendance
+  return interns.map((intern: any) => {
+    const record = attendance.find(
+      (a: any) =>
+        a.userId === intern.uid &&
+        a.date === date
+    );
+
+    return {
+      userId: intern.uid,
+      name: intern.name,
+      batch: intern.batch,
+      year: intern.year,
+      session1: record?.session1?.toLowerCase() || "present",
+      session2: record?.session2?.toLowerCase() || "present",
+    };
+  });
 };
 
-// SAVE or UPDATE attendance
-export const saveAttendance = async (data: any) => {
+// ---------- SAVE (UPSERT) ----------
+export const saveAttendance = async (payload: any) => {
+  const res = await fetch(`${BASE}/attendance`);
+  const data = await res.json();
+
+  const existing = data.find(
+    (a: any) =>
+      a.userId === payload.userId &&
+      a.date === payload.date
+  );
+
+  // UPDATE
+  if (existing) {
+    return fetch(`${BASE}/attendance/${existing.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...existing, ...payload }),
+    });
+  }
+
+  // CREATE
   return fetch(`${BASE}/attendance`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   });
 };
+

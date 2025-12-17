@@ -27,6 +27,11 @@ const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 const yyyyMMdd = (d: Date) =>
   `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
+
+const normalizeBatch = (batch: string) =>
+  batch.toLowerCase().replace(/[\s-]/g, "");
+
+
 const startOfWeek = (date: Date) => {
   const d = new Date(date);
   const day = (d.getDay() + 6) % 7;
@@ -154,25 +159,36 @@ useEffect(() => {
       setYears(Array.from(yearsSet).sort());
 
       // -------- Group year → batches ----------
-      const yearMap: Record<string, Set<string>> = {};
+     const yearMap: Record<string, Map<string, string>> = {};
 
-      users.forEach((u: any) => {
-        if (u.role !== "intern") return;
-        const year = String(u.year || "").trim();
-        const batch = String(u.batch || "").trim();
+users.forEach((u: any) => {
+  if (u.role !== "intern") return;
 
-        if (!year || year === "N/A") return;
+  const year = String(u.year || "").trim();
+  const rawBatch = String(u.batch || "").trim();
 
-        if (!yearMap[year]) yearMap[year] = new Set();
-        if (batch && batch !== "N/A") {
-          yearMap[year].add(batch);
-        }
-      });
+  if (!year || year === "N/A" || !rawBatch || rawBatch === "N/A") return;
 
-      const groupList = Object.keys(yearMap).map((year) => ({
-        year,
-        batches: Array.from(yearMap[year]),
-      }));
+  const normalized = normalizeBatch(rawBatch);
+
+  if (!yearMap[year]) yearMap[year] = new Map();
+
+  if (!yearMap[year].has(normalized)) {
+    const num = rawBatch.replace(/[^0-9]/g, "");
+    const display = num ? `Batch-${num}` : rawBatch;
+
+    yearMap[year].set(normalized, display);
+  }
+});
+
+
+     const groupList = Object.keys(yearMap)
+     .sort((a, b) => parseInt(b) - parseInt(a))
+     .map((year) => ({
+  year,
+  batches: Array.from(yearMap[year].values()),
+}));
+
 
       setYearGroups(groupList);
     } catch (err) {
@@ -223,11 +239,13 @@ useEffect(() => {
 
         // Now filter records by the selectedBatch using professionalInfoList:
         // find professional entries that match year+batch => get userIds set
-        const profMatches = professionalInfoList.filter(
-          (p) =>
-            String(p.year) === String(selectedYear) &&
-            String(p.batch).toLowerCase() === String(selectedBatch).toLowerCase()
-        );
+       const profMatches = professionalInfoList.filter(
+  (p) =>
+    String(p.year) === String(selectedYear) &&
+    normalizeBatch(String(p.batch || "")) ===
+      normalizeBatch(String(selectedBatch))
+);
+
 
         const userIdSet = new Set(profMatches.map((p) => p.userId));
 
@@ -571,7 +589,7 @@ interns.push({
               <button
                 onClick={() => {
   setSelectedBatch("");
-setSelectedYear("");   // 🔥 THIS IS THE FIX
+setSelectedYear("");
 setInternList([]);
 setInternsTasks({});
 

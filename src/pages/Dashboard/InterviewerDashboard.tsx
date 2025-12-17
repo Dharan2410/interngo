@@ -189,7 +189,7 @@
 
 
 
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -198,6 +198,14 @@ import { CalendarDays, ClipboardCheck } from "lucide-react";
 const InterviewerDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [announcements, setAnnouncements] = useState<any[]>([]);
+useEffect(() => {
+  fetch("http://localhost:4000/interngo/announcements")
+    .then((res) => res.json())
+    .then((data) => setAnnouncements(data))
+    .catch(() => setAnnouncements([]));
+}, []);
+
 
   return (
     <>
@@ -228,6 +236,64 @@ const InterviewerDashboard: React.FC = () => {
           <span className="font-semibold text-[#3B6E8F]">{user?.role}</span>.
         </p>
       </div>
+
+
+      {/* 📢 ANNOUNCEMENTS (VIEW ONLY) */}
+<motion.div
+  whileHover={{ scale: 1.02 }}
+  className="
+    bg-white/60 backdrop-blur-2xl
+    border border-[#96C2DB]/40
+    rounded-3xl p-6
+    shadow-xl transition-all
+    mb-12
+  "
+>
+  {/* Header (NO +New button) */}
+  <div className="flex items-center gap-2 mb-4">
+    <span className="text-lg">📢</span>
+    <h3 className="text-lg font-semibold text-[#1E2A35]">
+      Announcements
+    </h3>
+  </div>
+
+  {/* Content */}
+  {announcements.length === 0 ? (
+    <div className="bg-gray-50 rounded-xl py-10 text-center text-sm text-gray-500">
+      🚀 No announcements yet. Stay tuned!
+    </div>
+  ) : (
+    <div className="space-y-3">
+      {announcements.map((a) => (
+        <div
+          key={a.id}
+          className="
+            flex items-start gap-3
+            px-4 py-3 rounded-xl
+            bg-gray-50 border border-gray-200
+            hover:bg-gray-100 transition
+          "
+        >
+          <span className="mt-1">📌</span>
+
+          <div className="flex-1">
+            <p className="font-medium text-[#1E2A35]">
+              {a.title}
+            </p>
+            <p className="text-sm text-gray-600">
+              {a.message}
+            </p>
+          </div>
+
+          <span className="text-xs text-gray-400 whitespace-nowrap">
+            {new Date(a.createdAt).toLocaleDateString()}
+          </span>
+        </div>
+      ))}
+    </div>
+  )}
+</motion.div>
+
 
       {/* Dashboard Cards */}
       <div className="grid sm:grid-cols-2 gap-6 relative z-10">

@@ -10,7 +10,7 @@ interface SelectedDateCardProps {
   isToday: boolean;
   onAddTask?: () => void;
 
-  showTotalTime?: boolean; // 🔥 NEW PROP
+  showTotalTime?: boolean; 
 }
 
 const SelectedDateCard: React.FC<SelectedDateCardProps> = ({

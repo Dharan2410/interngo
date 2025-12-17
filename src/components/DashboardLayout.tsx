@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, Outlet, useNavigate } from "react-router-dom";
@@ -18,7 +16,7 @@ import {
   ClipboardList
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import logo from "../../public/logo.png"
+import logo from "../assets/logo.png"
 
 interface LayoutProps {
   children?: React.ReactNode;

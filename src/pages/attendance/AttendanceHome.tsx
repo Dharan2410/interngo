@@ -164,6 +164,10 @@ const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 const yyyyMMdd = (d: Date) =>
   `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
+const normalizeBatch = (batch: string) =>
+  batch.toLowerCase().replace(/[\s-]/g, "");
+
+
 const startOfWeek = (date: Date) => {
   const d = new Date(date);
   const day = (d.getDay() + 6) % 7; // Monday start
@@ -191,7 +195,6 @@ const AttendanceHome: React.FC = () => {
     return t;
   }, []);
 
-  // ---------------- DATE STATES (🔥 SAME AS DAILY UPDATE) ----------------
   const [selectedDate, setSelectedDate] = useState<Date>(today);
   const [weekStart, setWeekStart] = useState<Date>(startOfWeek(today));
   const [monthShown, setMonthShown] = useState<Date>(today);
@@ -209,26 +212,40 @@ const AttendanceHome: React.FC = () => {
     fetch(`${BASE}/interngo/users`)
       .then((r) => r.json())
       .then((users) => {
-        const map: Record<string, Set<string>> = {};
+        const map: Record<string, Map<string, string>> = {};
 
-        users
-          .filter((u: any) => u.role === "intern")
-          .forEach((u: any) => {
-            if (!u.year || !u.batch) return;
-            if (!map[u.year]) map[u.year] = new Set();
-            map[u.year].add(u.batch);
-          });
+users
+  .filter((u: any) => u.role === "intern")
+  .forEach((u: any) => {
+    if (!u.year || !u.batch) return;
 
-        setGroups(
-          Object.keys(map).map((year) => ({
-            year,
-            batches: Array.from(map[year]),
-          }))
-        );
+    const year = String(u.year).trim();
+    const rawBatch = String(u.batch).trim();
+
+    const normalized = normalizeBatch(rawBatch);
+
+    if (!map[year]) map[year] = new Map();
+
+    if (!map[year].has(normalized)) {
+      const num = rawBatch.replace(/[^0-9]/g, "");
+      const display = num ? `Batch-${num}` : rawBatch;
+
+      map[year].set(normalized, display);
+    }
+  });
+
+setGroups(
+  Object.keys(map)
+  .sort((a, b) => parseInt(b) - parseInt(a))
+  .map((year) => ({
+    year,
+    batches: Array.from(map[year].values()),
+  }))
+);
+
       });
   }, []);
 
-  // ---------------- DATE HANDLERS (🔥 CRITICAL FIX) ----------------
   const isFuture = (d: Date) => d.getTime() > today.getTime();
 
   const onSelectDate = (d: Date) => {

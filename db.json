@@ -9,18 +9,17 @@
       "phone": "9876500000",
       "slackId": "UADMIN001",
       "profileImage": "https://example.com/profile/admin.jpg",
-      "personalEmail": "",
+      "personalEmail": "admin@finestcoder.com",
       "dob": "1990-01-01",
       "gender": "female",
       "bloodGroup": "A+",
       "currentAddress": "Corporate Street, Bangalore",
       "permanentAddress": "Corporate Street, Bangalore",
-      "degree": "MBA",
-      "college": "IIM Bangalore",
-      "educationYear": "2015",
+      "degree": "B.E-CSE",
+      "college": "PSG college ",
+      "educationYear": "2022-2026",
       "primaryskills": [
-        "Leadership",
-        "Management"
+        "Leadership"
       ],
       "secondaryskills": [
         "Communication",
@@ -35,7 +34,8 @@
       "activeStatus": true,
       "phase": "N/A",
       "refreshToken": null,
-      "googleAuth": false
+      "googleAuth": false,
+      "experienceYears": ""
     },
     {
       "uid": "mentor-001",
@@ -174,7 +174,7 @@
       ],
       "secondaryskills": [],
       "experienceYears": "",
-      "empId": "",
+      "empId": "123",
       "companyEmail": "",
       "designation": "",
       "batch": "batch 1",
@@ -295,26 +295,89 @@
       "estimatedHours": 1,
       "actualHours": null,
       "taskStatus": "Pending"
+    },
+    {
+      "id": 1765950692238.0083,
+      "userId": "intern-001",
+      "taskDate": "2025-12-17",
+      "taskName": "dfghjk",
+      "plannedActivities": "xcvbhjk",
+      "completedActivities": "dfghjkl",
+      "estimatedHours": 1,
+      "actualHours": 1,
+      "taskStatus": "Completed"
     }
   ],
   "attendance": [
     {
-      "id": 1765715802810,
       "userId": "intern-001",
       "year": "2025",
       "batch": "Batch-1",
-      "date": "2025-12-14",
-      "session1": "Present",
-      "session2": "Absent"
+      "date": "2025-12-15",
+      "session1": "wfh",
+      "session2": "wfh",
+      "id": 1
     },
     {
-      "id": 1765715824276,
+      "userId": "intern-002",
+      "year": "2025",
+      "batch": "Batch-1",
+      "date": "2025-12-15",
+      "session1": "wfh",
+      "session2": "wfh",
+      "id": 2
+    },
+    {
+      "userId": "intern-001",
+      "year": "2025",
+      "batch": "Batch-1",
+      "date": "2025-12-16",
+      "session1": "wfh",
+      "session2": "wfh",
+      "id": 3
+    },
+    {
+      "userId": "intern-002",
+      "year": "2025",
+      "batch": "Batch-1",
+      "date": "2025-12-16",
+      "session1": "wfh",
+      "session2": "wfh",
+      "id": 4
+    },
+    {
       "userId": "intern-002",
       "year": "2026",
-      "batch": "batch 1",
-      "date": "2025-12-14",
-      "session1": "wfh",
-      "session2": "wfh"
+      "batch": "Batch-1",
+      "date": "2025-12-17",
+      "session1": "present",
+      "session2": "present",
+      "id": 5
+    },
+    {
+      "userId": "intern-001",
+      "year": "2025",
+      "batch": "Batch-1",
+      "date": "2025-12-17",
+      "session1": "present",
+      "session2": "present",
+      "id": 6
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1765959638808,
+      "title": "happy birthday ",
+      "message": "happy porandhanal vijiiiii mental ",
+      "priority": "normal",
+      "createdAt": "2025-12-17T08:20:38.808Z"
+    },
+    {
+      "id": 1765959694134,
+      "title": "mentals da ",
+      "message": "world's 1 st mental award goes to mr.sabareesh",
+      "priority": "normal",
+      "createdAt": "2025-12-17T08:21:34.134Z"
     }
   ]
 }
