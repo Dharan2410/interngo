@@ -132,7 +132,7 @@
 
 import React from "react";
 
-type Status = "present" | "absent" | "wfh";
+type Status = "present" | "absent";
 
 interface Props {
   name?: string;
@@ -143,7 +143,7 @@ interface Props {
 }
 
 
-const order: Status[] = ["present", "absent", "wfh"];
+const order: Status[] = ["present", "absent"];
 
 const nextStatus = (current: Status): Status => {
   const idx = order.indexOf(current);
@@ -152,8 +152,7 @@ const nextStatus = (current: Status): Status => {
 
 const colorMap: Record<Status, string> = {
   present: " bg-green-100 text-green-700",
-  absent: " bg-red-100 text-red-700",
-  wfh: " bg-orange-100 text-orange-700",
+  absent: " bg-red-100 text-red-700"
 };
 
 const AttendanceRow: React.FC<Props> = ({

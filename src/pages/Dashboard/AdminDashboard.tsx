@@ -46,7 +46,7 @@ const finalProfileImage =
       />
 
 {/* PROFILE + HEADER */}
-<div className="flex items-center gap-4 mb-8 relative z-10">
+<div className="flex items-center gap-4 mb-8 relative z-10 mt-0.5">
 
   {/* Profile Image */}
   <img

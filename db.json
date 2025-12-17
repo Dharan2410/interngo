@@ -297,12 +297,23 @@
       "taskStatus": "Pending"
     },
     {
-      "id": 1765950692238.0083,
+      "id": 1765961612978.9521,
       "userId": "intern-001",
       "taskDate": "2025-12-17",
       "taskName": "dfghjk",
       "plannedActivities": "xcvbhjk",
       "completedActivities": "dfghjkl",
+      "estimatedHours": 1,
+      "actualHours": 1,
+      "taskStatus": "Completed"
+    },
+    {
+      "id": 1765961612979.8845,
+      "userId": "intern-001",
+      "taskDate": "2025-12-17",
+      "taskName": "sdfghjkl",
+      "plannedActivities": "dfghjk",
+      "completedActivities": "cghj",
       "estimatedHours": 1,
       "actualHours": 1,
       "taskStatus": "Completed"
