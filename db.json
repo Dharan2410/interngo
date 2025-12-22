@@ -243,5 +243,20 @@
       "id": 2
     }
   ],
-  "interactionSchedules": []
+  "scheduledInteractions": [
+    {
+      "internId": "intern-001",
+      "internName": "Gopika muruganantham",
+      "internEmail": "gopika@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-22",
+      "time": "12:00",
+      "duration": 60,
+      "interactionId": "1",
+      "metricId": "1",
+      "interactionName": "javascript ",
+      "id": 1
+    }
+  ]
 }

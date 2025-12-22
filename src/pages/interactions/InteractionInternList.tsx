@@ -1,4 +1,9 @@
-
+import {
+  scheduleInteraction,
+  updateInteraction,
+  removeInteraction,
+  getScheduledByInteraction,
+} from "../../api/interactionsApi";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
@@ -14,6 +19,7 @@ const normalizeBatch = (batch: string) =>
 const InteractionInternList = () => {
   const navigate = useNavigate();
   const { interactionId, year, batch } = useParams();
+const [metricId, setMetricId] = useState<string | null>(null);
 
   const [users, setUsers] = useState<any[]>([]);
   const [list, setList] = useState<any[]>([]);
@@ -26,47 +32,101 @@ const InteractionInternList = () => {
   const topRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+  if (!interactionId) return;
+
+  getScheduledByInteraction(interactionId).then((scheduled) => {
+    setList((prev) =>
+      prev.map((i) => {
+       const match = scheduled.find(
+  (s: any) =>
+    s.internId === i.internId &&
+    String(s.interactionId) === String(interactionId)
+);
+
+
+        return match
+          ? {
+              ...i,
+              ...match,
+              scheduled: true,
+            }
+          : i;
+      })
+    );
+  });
+}, [interactionId]);
+
+
+
+  useEffect(() => {
     topRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [page]);
 
-  useEffect(() => {
-    fetch(`http://localhost:4000/metricDefinitions/${interactionId}`)
-      .then((r) => r.json())
-      .then((d) => setInteractionName(d?.name || "Interaction"));
-  }, [interactionId]);
+//   useEffect(() => {
+//     fetch(`http://localhost:4000/metricDefinitions/${interactionId}`)
+//       .then((r) => r.json())
+//       .then((d) => setInteractionName(d?.name || "Interaction"));
+//   }, [interactionId]);
 
-  useEffect(() => {
-    const load = async () => {
-      const res = await fetch(`${BASE}/users`);
-      const json = await res.json();
+useEffect(() => {
+  if (!interactionId) return;
 
-      const all = Array.isArray(json) ? json : json.users || [];
-      setUsers(all);
+  fetch(`http://localhost:4000/metricDefinitions/${interactionId}`)
+    .then((r) => r.json())
+    .then((d) => {
+      setInteractionName(d?.name || "Interaction");
+      setMetricId(String(d?.id)); // ✅ STORE metricId
+    });
+}, [interactionId]);
 
-      const interns = all
-        .filter(
-          (u: any) =>
-            u.role === "intern" &&
-            String(u.year) === String(year) &&
-            normalizeBatch(u.batch || "") === normalizeBatch(batch || "")
-        )
-        .map((i: any) => ({
-          internId: i.uid,
-          internName: i.name,
-          internEmail: i.email,
-          batch: i.batch,
-          year: i.year,
-          designation: i.designation,
-          interactionName,
-          scheduled: false,
-        }));
 
-      setList(interns);
-      setPage(1);
-    };
 
-    load();
-  }, [year, batch, interactionName]);
+useEffect(() => {
+  const load = async () => {
+    const usersRes = await fetch(`${BASE}/users`);
+    const usersJson = await usersRes.json();
+    const all = Array.isArray(usersJson) ? usersJson : usersJson.users || [];
+    setUsers(all);
+
+    const interns = all
+      .filter(
+        (u: any) =>
+          u.role === "intern" &&
+          String(u.year) === String(year) &&
+          normalizeBatch(u.batch || "") === normalizeBatch(batch || "")
+      )
+      .map((i: any) => ({
+        internId: i.uid,
+        internName: i.name,
+        internEmail: i.email,
+        batch: i.batch,
+        year: i.year,
+        designation: i.designation,
+      }));
+
+    const scheduled = interactionId
+      ? await getScheduledByInteraction(interactionId)
+      : [];
+
+    const merged = interns.map((i : any) => {
+      const match = scheduled.find(
+        (s: any) =>
+          s.internId === i.internId &&
+          String(s.interactionId) === String(interactionId)
+      );
+
+      return match
+        ? { ...i, ...match, scheduled: true }
+        : { ...i, scheduled: false };
+    });
+
+    setList(merged);
+    setPage(1);
+  };
+
+  load();
+}, [year, batch, interactionId]);
+
 
   const mentors = users.filter((u) => u.role === "mentor");
   const interviewers = users.filter((u) => u.role === "interviewer");
@@ -75,38 +135,106 @@ const InteractionInternList = () => {
   const visible = list.slice(pageStart, pageStart + ITEMS_PER_PAGE);
   const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE);
 
-  const saveSchedule = (form: any) => {
-    setList((prev) =>
-      prev.map((i) =>
-        i.internId === form.internId
-          ? {
-              ...i,
-              ...form,
-              interactionName,
-              mentorName:
-                mentors.find((m) => m.uid === form.mentorId)?.name,
-              interviewerName:
-                interviewers.find(
-                  (iv) => iv.uid === form.interviewerId
-                )?.name,
-              scheduled: true,
-            }
-          : i
-      )
-    );
-    setOpen(false);
+
+//   const saveSchedule = async (form: any) => {
+//   const payload = {
+//     ...form,
+//     interactionId,
+//     interactionName,
+//   };
+
+//   const existing = list.find(
+//     (i) =>
+//       i.internId === form.internId &&
+//       String(i.interactionId) === String(interactionId) &&
+//       i.id
+//   );
+
+//   let saved;
+
+//   if (existing) {
+//     saved = await updateInteraction(existing.id, payload);
+//   } else {
+//     saved = await scheduleInteraction(payload);
+//   }
+
+//   setList((prev) =>
+//     prev.map((i) =>
+//       i.internId === saved.internId
+//         ? {
+//             ...i,
+//             ...saved,
+//             mentorName:
+//               mentors.find((m) => m.uid === saved.mentorId)?.name,
+//             interviewerName:
+//               interviewers.find((iv) => iv.uid === saved.interviewerId)?.name,
+//             scheduled: true,
+//           }
+//         : i
+//     )
+//   );
+
+//   setOpen(false);
+// };
+
+const saveSchedule = async (form: any) => {
+  const payload = {
+    ...form,
+    interactionId,        // already present
+    metricId,             // ✅ NEW (from metricDefinitions)
+    interactionName,
   };
 
-  const removeSchedule = () => {
-    setList((prev) =>
-      prev.map((i) =>
-        i.internId === selected.internId
-          ? { ...i, scheduled: false }
-          : i
-      )
-    );
-    setOpen(false);
-  };
+  const existing = list.find(
+    (i) =>
+      i.internId === form.internId &&
+      String(i.interactionId) === String(interactionId) &&
+      i.id
+  );
+
+  let saved;
+
+  if (existing) {
+    saved = await updateInteraction(existing.id, payload);
+  } else {
+    saved = await scheduleInteraction(payload);
+  }
+
+  setList((prev) =>
+    prev.map((i) =>
+      i.internId === saved.internId
+        ? {
+            ...i,
+            ...saved,
+            mentorName:
+              mentors.find((m) => m.uid === saved.mentorId)?.name,
+            interviewerName:
+              interviewers.find((iv) => iv.uid === saved.interviewerId)?.name,
+            scheduled: true,
+          }
+        : i
+    )
+  );
+
+  setOpen(false);
+};
+
+const removeSchedule = async () => {
+  if (!selected?.id) return;
+
+  await removeInteraction(selected.id);
+
+  setList((prev) =>
+    prev.map((i) =>
+      i.internId === selected.internId
+        ? { ...i, scheduled: false }
+        : i
+    )
+  );
+
+  setOpen(false);
+};
+
 
   return (
     <div className="p-6">
