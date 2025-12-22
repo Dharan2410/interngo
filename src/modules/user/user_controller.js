@@ -1,5 +1,6 @@
 import User from "./user_model.js"
-
+import cloudinary from "../../../config/cloudinary.js";
+import streamifier from "streamifier";
 
 export const addUser = async(req,res) => {
     try{
@@ -22,46 +23,56 @@ export const addUser = async(req,res) => {
 
 }
 
-export const editProfile = async (req,res)=>{
-    try
-    {
-        const {name,email,phone, slackid,profileImage,dob,gender,address,degree,college,batch,skills } = req.body
+export const editProfile = async (req, res) => {
+  try {
+    const userId = req.params.userId;
 
-        const userid = req.user?.id;
-        if(!userid)
-            return res.status(401).json({message:"unAuthorized user"})
+    let updateData = req.body;
 
-        const updateData = Object.fromEntries(
-            Object.entries(req.body).filter(([k,v])=> v!== undefined)
-        )
+    // If image file exists → upload to Cloudinary
+    if (req.file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const upload = cloudinary.uploader.upload_stream(
+          { folder: "profile_images", resource_type: "image" },
+          (err, result) => {
+            if (err) reject(err);
+            else resolve(result);
+          }
+        );
 
-        const updatedUser = await User.findByIdAndUpdate(userid,updateData,{
-            new:true,
-            runValidators:true
+        streamifier.createReadStream(req.file.buffer).pipe(upload);
+      });
 
-        })
-
-        res.status(200).json({
-            message:"profile edited successfully",
-            user:updatedUser
-        })
-
+      updateData.profileImage = uploadResult.secure_url;
+      updateData.profileImagePublicId = uploadResult.public_id;
     }
-    catch(error){
-        console.error("updating the profile failed:", error.message)
-        res.status(500).json({message:"error occured in editing the profile"})
-    }
-}
+
+    const updated = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    console.log(updated)
+    res.status(200).json({
+      success: true,
+      user: updated,
+    });
+  } catch (err) {
+    console.error("Edit profile error:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
 
 
 export const viewProfile = async(req,res) => {
     try{
 
-        const userid = req.user.id
-        const userdata = await User.findById(userid)
+        const {userId} = req.params
+        const userdata = await User.findById(userId)
 
-        if(!user)
+        if(!userdata)
             return res.status(404).json({ message: "User not found" });
+
         res.status(200).json({
             message:"user data fetched successfully",
             user:userdata
@@ -75,7 +86,7 @@ export const viewProfile = async(req,res) => {
 
 export const getallProfiles = async(req,res) => {
     try{
-        const allprofiles = await User.find({isActive:true})
+        const allprofiles = await User.find({activeStatus:true})
         res.status(200).json({
             message:"all profiles fetched successfully",
             users:allprofiles
@@ -189,9 +200,9 @@ export const searchByYearAndBatch = async (req, res) => {
   }
 };
 
-export const searchbyrole = async (res,req) => {
+export const searchbyrole = async (req, res) => {
     try{
-        const {role} = res.query
+        const {role} = req.query
 
         if(!role)
             return res.status(400).json({message:"provide role"})
@@ -201,6 +212,7 @@ export const searchbyrole = async (res,req) => {
         if(users.length === 0 )
             return res.status(404).json({message:"users not found by using role"})
 
+        console.log(users)
         res.status(200).json({
             message:"users found",
             users
@@ -225,3 +237,24 @@ export const getDeactivatedUser = async(req,res) => {
         res.status(500).json({ message: "Error fetching allprofile" });  
     }
 }
+
+export const uploadAvatar = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+
+    // multer-storage-cloudinary sets req.file.path (or req.file.secure_url)
+    const url = req.file.path || req.file.secure_url || req.file.url;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.profileImage = url;
+    await user.save();
+
+    return res.status(200).json({ message: "Profile image uploaded", profileImage: url });
+  } catch (err) {
+    console.error("uploadAvatar error:", err);
+    return res.status(500).json({ message: "Upload failed" });
+  }
+};

@@ -6,7 +6,6 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
       trim: true,
     },
 
@@ -40,42 +39,81 @@ const userSchema = new Schema(
     profileImage: {
       type: String,
     },
+    
+    profileImagePublicId:{ 
+      type: String 
+    },
 
     dob: { 
       type: String
     },
     gender: { 
-      type: String, enum: ["male", "female", "other"] 
+      type: String,
     },
-    address: { 
+
+    bloodGroup:{
+      type:String
+    },
+
+    currentAddress : {
+      type: String
+    },
+
+    permanentAddress: { 
       type: String 
     },
     degree: {
       type: String,
     },
-    institute: {
+    college: {
       type: String
     },
 
-    year:{
+    educationYear:{
       type:String
+    },
+
+    primaryskills:[
+      {
+        type: String,
+      },
+    ],
+
+    secondaryskills:[
+      {
+        type:String,
+      }
+    ],
+
+    empId:{
+      type:String,
+    },
+
+    empEmail:{
+      type: String,
     },
 
     batch:{
       type: String
     },
 
-    skills: [
-      {
-        type: String,
-      },
-    ],
+    year:{
+      type: String
+    },
 
-    designation: {  
+    phase:{
+      type: String
+    },
+
+    dateofjoining:{
+      type:Date,
+    },
+
+    designation: {    
       type: String,
     },
 
-    isActive: {
+    activeStatus: {
       type: Boolean,
       default: true,
     },

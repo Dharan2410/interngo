@@ -25,14 +25,14 @@ export const setAuthCookies = (res, accessToken, refreshToken) => {
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: false,  
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 60 * 60 * 1000, 
   });
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: false,  
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 };

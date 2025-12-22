@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import passport from "./config/passport.js"
 import cookieParser from "cookie-parser";
 import sequelize from "./config/mysql_database.js";
 import connectMongoDB from "./config/mongodb_database.js";
@@ -30,6 +31,8 @@ import User from "./src/modules/user/user_model.js";
 // Import Routes
 import userRoutes from "./src/modules/user/user_routes.js";
 import taskRoutes from "./src/modules/task/task_routes.js";
+import attendanceRoutes from "./src/modules/attendance/attendance_routes.js";
+import metricsRoutes from "./src/modules/metrics/metrics_routes.js"
 
 // MySQL
 sequelize
@@ -49,6 +52,8 @@ app.use(cookieParser());
 app.get("/main", (req,res)=>{
     res.send("hello from interngo")
 })
-
+app.use(passport.initialize());
 app.use("/interngo", userRoutes)
-app.use("/interngo", taskRoutes)
+app.use("/interngo/tasks", taskRoutes)
+app.use("/interngo/attendance", attendanceRoutes)
+app.use("/interngo/interaction",metricsRoutes)

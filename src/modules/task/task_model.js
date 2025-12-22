@@ -11,10 +11,11 @@ const Task = sequelize.define("Task", {
 
   userId: {
     type: DataTypes.STRING(24), 
+    allowNull:false,
     required:true
   },
 
-  taskName: {
+  topic: {
     type: DataTypes.TEXT,
     allowNull: false,
     required:true
@@ -31,18 +32,18 @@ const Task = sequelize.define("Task", {
     allowNull: true,
   },
 
-  estimatedHours: {
+  estimatedTime: {
     type: DataTypes.FLOAT,
     allowNull: false,
     required:true
   },
 
-  actualHours: {
+  actualTime: {
     type: DataTypes.FLOAT,
     allowNull: true,
   },
 
-  taskStatus: {
+  status: {
     type: DataTypes.ENUM("Pending", "Completed"),
     defaultValue: "Pending",
   },

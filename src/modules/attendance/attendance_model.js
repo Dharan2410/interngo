@@ -21,13 +21,13 @@ const Attendance = sequelize.define("Attendance", {
   session1Status: {
     type: DataTypes.ENUM("Present", "Absent"),
     allowNull: false,
-    defaultValue: "Absent",
+    defaultValue: "Present",
   },
 
   session2Status: {
     type: DataTypes.ENUM("Present", "Absent"),
     allowNull: false,
-    defaultValue: "Absent",
+    defaultValue: "Present",
   },
 
   overallStatus: {
@@ -38,16 +38,6 @@ const Attendance = sequelize.define("Attendance", {
   markedBy: {
     type: DataTypes.STRING(24), // MongoDB _id of admin/mentor
     allowNull: false,
-  },
-
-  remarks: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-  },
-
-  method: {
-    type: DataTypes.ENUM("Manual", "Auto", "Slack"),
-    defaultValue: "Manual",
   },
 }, {
   tableName: "attendance",

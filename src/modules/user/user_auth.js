@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import admin from "../../../config/firebase_admin.js";
 import User from "./user_model.js";
 import { generateTokens, setAuthCookies } from "../../utils/tokens_utils.js";
 
@@ -10,7 +9,7 @@ const REFRESH_TOKEN_EXPIRY = "7d";
 // ------------------ REGISTER ------------------
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    const {email, password} = req.body;
 
     const exists = await User.findOne({ email });
     if (exists)
@@ -19,10 +18,9 @@ export const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      name,
       email,
       password: hashedPassword,
-      role: "intern",
+      role: "admin",
       authProvider: "manual",
     });
 
@@ -35,6 +33,7 @@ export const registerUser = async (req, res) => {
 
     res.status(201).json({ message: "Registration successful" });
   } catch (err) {
+    console.error(err)
     res.status(500).json({ message: "Error occurred" });
   }
 };
@@ -57,7 +56,16 @@ export const loginUser = async (req, res) => {
 
     setAuthCookies(res, accessToken, refreshToken);
 
-    res.status(200).json({ message: "Login successful", role: user.role });
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        uid: user.id,                
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profileImage: user.profileImage || null,
+      }
+    });
   } catch (err) {
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -65,31 +73,55 @@ export const loginUser = async (req, res) => {
 
 
 // ------------------ GOOGLE LOGIN ------------------
-export const googleLogin = async (req, res) => {
-  try {
-    const decoded = await admin.auth().verifyIdToken(req.body.token);
-    const { email, name, picture } = decoded;
 
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = await User.create({
-        email,
-        name,
-        profileImage: picture,
-        authProvider: "google",
-        role: "intern",
-      });
+const FRONTEND_CALLBACK = "http://localhost:5173/auth/google/callback";
+
+export const googleLogin = async (req, res) => 
+  {
+  try {
+    if (!req.user) {
+      return res.redirect("/signin");
     }
 
-    const { accessToken, refreshToken } = generateTokens(user);
-    user.refreshToken = refreshToken;
-    await user.save();
+    const user = req.user;
 
-    setAuthCookies(res, accessToken, refreshToken);
+    const email = user.email || user.emails?.[0]?.value;
+    if (!email) {
+      console.error("googleLogin: email missing from passport profile", user);
+      // Fallback: redirect to signin with error query param (or show an error)
+      return res.redirect("/signin?error=google_no_email");
+    }
 
-    res.status(200).json({ message: "Google login successful" });
-  } catch (err) {
-    res.status(401).json({ message: "Invalid Firebase token" });
+      let dbUser = await User.findOne({ email: user.email });
+      if (!dbUser) {
+        dbUser = await User.create({
+          email: user.email,
+          name: user.name || user.displayName || "",
+          profileImage: user.profileImage || user.photos?.[0]?.value || "",
+          authProvider: "google",
+          role: user.role || "intern",
+        });
+      }
+
+      const { accessToken, refreshToken } = generateTokens(dbUser);
+      dbUser.refreshToken = refreshToken;
+      await dbUser.save();
+
+      // set cookies (httpOnly)
+      setAuthCookies(res, accessToken, refreshToken);
+
+      // Redirect to frontend callback page with token and metadata in query params
+      const redirectUrl =
+        `${FRONTEND_CALLBACK}` +
+        `?token=${encodeURIComponent(accessToken)}` +
+        `&uid=${encodeURIComponent(String(dbUser._id))}` +
+        `&role=${encodeURIComponent(dbUser.role)}` +
+        `&email=${encodeURIComponent(dbUser.email || "")}` +
+        `&picture=${encodeURIComponent(dbUser.profileImage || "")}`;
+
+      return res.redirect(redirectUrl);
+    } catch (err) {
+    return res.status(500).json({ message: "Google login failed" });
   }
 };
 

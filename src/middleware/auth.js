@@ -3,25 +3,31 @@ import User from "../modules/user/user_model.js";
 
 export const verifyToken = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
+    // Read token from cookies
+    const token = req.cookies?.accessToken;
+
     if (!token)
-      return res.status(401).json({ message: "Access denied. No token provided." });
+      return res.status(401).json({ message: "No token found in cookies" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     const user = await User.findById(decoded.id);
     if (!user)
-      return res.status(404).json({ message: "User not found." });
+      return res.status(404).json({ message: "User not found" });
 
     req.user = user;
     next();
+    
   } catch (err) {
     console.error("JWT Error:", err.message);
+
     if (err.name === "TokenExpiredError") {
       return res.status(401).json({
-        message: "Access token expired. Please use refresh token to get a new one.",
+        message: "Access token expired, please refresh token",
       });
     }
-    return res.status(403).json({ message: "Invalid token." });
+
+    return res.status(403).json({ message: "Invalid token" });
   }
 };
 
