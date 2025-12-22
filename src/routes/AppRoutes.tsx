@@ -32,6 +32,9 @@ import GoogleCallback from "../pages/auth/GoogleCallback";
 import Attendance from "../pages/attendance/AttendanceHome"
 import AttendanceSheet from "../pages/attendance/AttendanceSheet"
 import AdminAnnouncements from "../pages/AdminAnnouncementPage";
+import InteractionMetricsPage from "../pages/interactions/InteractionMetricsPage";
+import InteractionYearBatchSelect from "../pages/interactions/InteractionYearBatchSelect";
+import InteractionInternList from "../pages/interactions/InteractionInternList";
 export default function AppRoutes() {
   const location = useLocation();
 
@@ -61,7 +64,7 @@ export default function AppRoutes() {
   <Route path="profile/edit" element={<ProfileForm />} />
 
   <Route path="daily-update" element={<DailyUpdateBase role="admin" />} />
-  <Route path="interactions" element={<InteractionModule />} />
+  {/* <Route path="interactions" element={<InteractionModule />} /> */}
   <Route path="pending-tickets" element={<PendingTickets />} />
   <Route path="resources" element={<RoleSelect />} />
 
@@ -76,6 +79,9 @@ export default function AppRoutes() {
   element={<AttendanceSheet />}
   />
 <Route path ="announcement" element={<AdminAnnouncements/>} />
+<Route path ="interactions" element={<InteractionMetricsPage />} />
+<Route path= "interactions/:interactionId/year-batch" element={<InteractionYearBatchSelect/>} />
+<Route path ="interactions/:interactionId/intern/list/:year/:batch" element={<InteractionInternList />} />
 </Route>
 
 

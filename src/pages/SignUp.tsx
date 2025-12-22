@@ -16,6 +16,7 @@ const SignUp: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [name, setName] = useState("");
 
  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,11 +33,19 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
-      setIsLoading(false);
-      return;
-    }
+
+    if (name.trim().length < 3) {
+  setError("Name must be at least 3 characters");
+  setIsLoading(false);
+  return;
+}
+
+
+    if (password.length < 6 || password.length > 10) {
+  setError("Password must be between 6 and 10 characters");
+  setIsLoading(false);
+  return;
+}
 
     if (password !== confirm) {
       setError("Passwords do not match");
@@ -45,35 +54,32 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      // CHECK IF USER EXISTS
-      // const exists = await fetch(
-      //   `http://localhost:4000/users?email=${email}`
-      // ).then((res) => res.json());
+  const res = await fetch("http://localhost:4000/interngo/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      uid: `uid-${Date.now()}`,
+      name,
+      email,
+      password,
+      role: "intern",
+    }),
+  });
 
-      // if (exists.length > 0) {
-      //   setError("User already exists!");
-      //   setIsLoading(false);
-      //   return;
-      // }
-
-      // CREATE USER IN MOCK DB
-      await fetch("http://localhost:4000/interngo/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          uid: `uid-${Date.now()}`,
-          email,
-          password,
-          role: "intern",
-        }),
-      });
-
-      navigate("/signin");
-    } catch (err) {
-      setError("Signup failed. Try again.");
-    } finally {
-      setIsLoading(false);
-    }
+  const data = await res.json(); 
+  if (!res.ok) {
+   
+    setError(data.message || "Signup failed");
+    setIsLoading(false);
+    setTimeout(()=>navigate("/signin"),1500);
+    return;
+  }
+  navigate("/signin");
+} catch (err) {
+  setError("Signup failed. Try again.");
+} finally {
+  setIsLoading(false);
+}
   };
   const pageVariants = {
     initial: { opacity: 0, y: 50 },
@@ -141,6 +147,17 @@ const SignUp: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+          {/* NAME */}
+<input
+  type="text"
+  placeholder="Full Name"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+  className="w-full p-4 bg-white border border-[#96C2DB]/50 rounded-xl
+    focus:ring-2 focus:ring-[#96C2DB] outline-none text-[#1E2A35] placeholder-gray-500 text-lg"
+  required
+/>
+
           {/* EMAIL */}
           <input
             type="email"

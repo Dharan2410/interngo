@@ -230,67 +230,150 @@ server.get("/interngo/users", (req, res) => {
 // ==================================================
 
 // GET attendance by year + batch + date
-server.get("/interngo/attendance", (req, res) => {
-  const { year, batch, date } = req.query;
+// server.get("/interngo/attendance", (req, res) => {
+//   const { year, batch, date } = req.query;
 
-  if (!year || !batch || !date) {
-    return res.status(400).json([]);
-  }
+//   if (!year || !batch || !date) {
+//     return res.status(400).json([]);
+//   }
 
-  const users = db
-    .get("users")
-    .filter({ year, batch, role: "intern" })
+//   const users = db
+//     .get("users")
+//     .filter({ year, batch, role: "intern" })
+//     .value();
+
+//   const attendance = db.get("attendance").value();
+
+//   const result = users.map((u) => {
+//     const record = attendance.find(
+//       (a) => a.userId === u.uid && a.date === date
+//     );
+
+//     return {
+//       userId: u.uid,
+//       name: u.name,
+//       session1: record?.session1 || "Present",
+//       session2: record?.session2 || "Present",
+//     };
+//   });
+
+//   res.json(result); // ✅ ALWAYS ARRAY
+// });
+
+
+
+// GET attendance by DATE (REAL BACKEND FORMAT)
+server.get("/interngo/attendance/:date", (req, res) => {
+  const { date } = req.params;
+
+  const records = db
+    .get("attendance")
+    .filter({ date })
     .value();
 
-  const attendance = db.get("attendance").value();
+  res.json({
+    message: "Attendance fetched successfully",
+    attendance: records,
+  });
+});
 
-  const result = users.map((u) => {
-    const record = attendance.find(
-      (a) => a.userId === u.uid && a.date === date
-    );
+// ===============================
+// SAVE ATTENDANCE — BULK
+// ===============================
+// server.post("/interngo/attendance/bulk", (req, res) => {
+//   const { year, batch, date, attendance } = req.body;
 
-    return {
-      userId: u.uid,
-      name: u.name,
-      session1: record?.session1 || "Present",
-      session2: record?.session2 || "Present",
-    };
+//   if (!year || !batch || !date || !Array.isArray(attendance)) {
+//     return res.status(400).json({
+//       message: "Invalid payload",
+//     });
+//   }
+
+//   attendance.forEach((a) => {
+//     const existing = db
+//       .get("attendance")
+//       .find({ userId: a.userId, date })
+//       .value();
+
+//     if (existing) {
+//       db.get("attendance")
+//         .find({ userId: a.userId, date })
+//         .assign({
+//           session1: a.session1,
+//           session2: a.session2,
+//         })
+//         .write();
+//     } else {
+//       db.get("attendance")
+//         .push({
+//           id: Date.now() + Math.random(),
+//           userId: a.userId,
+//           year,
+//           batch,
+//           date,
+//           session1: a.session1,
+//           session2: a.session2,
+//         })
+//         .write();
+//     }
+//   });
+
+//   res.json({
+//     message: "Attendance saved successfully",
+//     count: attendance.length,
+//   });
+// });
+
+
+
+server.post("/interngo/attendance/bulk", (req, res) => {
+  const { year, batch, date, markedBy, attendance } = req.body;
+
+  if (!year || !batch || !date || !markedBy || !Array.isArray(attendance)) {
+    return res.status(400).json({
+      message: "Invalid payload",
+    });
+  }
+
+  attendance.forEach((a) => {
+    const existing = db
+      .get("attendance")
+      .find({ userId: a.userId, date })
+      .value();
+
+    if (existing) {
+      db.get("attendance")
+        .find({ userId: a.userId, date })
+        .assign({
+          session1: a.session1,
+          session2: a.session2,
+          markedBy,               // ✅ UPDATE
+          markedAt: new Date().toISOString(),
+        })
+        .write();
+    } else {
+      db.get("attendance")
+        .push({
+          id: Date.now() + Math.random(),
+          userId: a.userId,
+          year,
+          batch,
+          date,
+          session1: a.session1,
+          session2: a.session2,
+          markedBy,               // ✅ SAVE
+          markedAt: new Date().toISOString(),
+        })
+        .write();
+    }
   });
 
-  res.json(result); // ✅ ALWAYS ARRAY
+  res.json({
+    message: "Attendance saved successfully",
+    markedBy,
+    count: attendance.length,
+  });
 });
-
-// SAVE / UPDATE attendance
-server.post("/interngo/attendance", (req, res) => {
-  const { userId, year, batch, date, session1, session2 } = req.body;
-
-  const existing = db
-    .get("attendance")
-    .find({ userId, date })
-    .value();
-
-  if (existing) {
-    db.get("attendance")
-      .find({ userId, date })
-      .assign({ session1, session2 })
-      .write();
-  } else {
-    db.get("attendance")
-      .push({
-        id: Date.now(),
-        userId,
-        year,
-        batch,
-        date,
-        session1,
-        session2,
-      })
-      .write();
-  }
-
-  res.json({ success: true });
-});
-
 
 
 // CREATE (ADMIN)
@@ -324,6 +407,113 @@ server.get("/interngo/announcements", (req, res) => {
     .value();
 
   res.json(announcements);
+});
+
+
+// ==================================================
+// HELP DESK
+// ==================================================
+
+// CREATE HELP TICKET (INTERN)
+server.post("/interngo/help-tickets", (req, res) => {
+  const {
+    fromUserId,
+    fromName,
+    role,
+    subject,
+    priority,
+    recipientRole,
+    recipientUserId,
+    message,
+  } = req.body;
+
+  if (!fromUserId || !subject || !priority || !recipientRole || !message) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
+
+  const ticket = {
+    id: Date.now(),
+    fromUserId,
+    fromName,
+    role,
+    subject,
+    priority,
+    recipientRole,          // Admin | Mentor
+    recipientUserId: recipientUserId || null,
+    message,
+    status: "pending",
+    createdAt: new Date().toISOString(),
+  };
+
+  db.get("helpTickets").push(ticket).write();
+
+  res.json({ success: true, ticket });
+});
+
+// GET MY HELP REQUESTS (INTERN)
+server.get("/interngo/help-tickets/my/:userId", (req, res) => {
+  const { userId } = req.params;
+
+  const tickets = db
+    .get("helpTickets")
+    .filter({ fromUserId: userId })
+    .orderBy("createdAt")
+    .reverse()
+    .value();
+
+  res.json(tickets);
+});
+
+// GET PENDING TICKETS (ADMIN)
+server.get("/interngo/help-tickets/admin", (req, res) => {
+  const tickets = db
+    .get("helpTickets")
+    .filter({ recipientRole: "Admin", status: "pending" })
+    .orderBy("createdAt")
+    .reverse()
+    .value();
+
+  res.json(tickets);
+});
+
+// GET PENDING TICKETS (MENTOR)
+server.get("/interngo/help-tickets/mentor/:mentorId", (req, res) => {
+  const { mentorId } = req.params;
+
+  const tickets = db
+    .get("helpTickets")
+    .filter({
+      recipientRole: "Mentor",
+      recipientUserId: mentorId,
+      status: "pending",
+    })
+    .orderBy("createdAt")
+    .reverse()
+    .value();
+
+  res.json(tickets);
+});
+
+// UPDATE TICKET STATUS (ADMIN / MENTOR)
+server.patch("/interngo/help-tickets/:id", (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const existing = db
+    .get("helpTickets")
+    .find({ id: Number(id) })
+    .value();
+
+  if (!existing) {
+    return res.status(404).json({ error: "Ticket not found" });
+  }
+
+  db.get("helpTickets")
+    .find({ id: Number(id) })
+    .assign({ status })
+    .write();
+
+  res.json({ success: true });
 });
 
 server.use(router);

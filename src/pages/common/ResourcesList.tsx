@@ -54,12 +54,22 @@ const mapIntern = (u: any) => ({
 });
 
 
-
-
 const loadInterns = async () => {
-  const res = await fetch(`${BASE}/getallprofiles`);
-  const data = await res.json();
-  const users = data.users
+  const res = await fetch(`${BASE}/users`);
+  const json= await res.json();
+  // const users = data.users
+
+  const users = Array.isArray(json)
+    ? json
+    : Array.isArray(json?.users)
+    ? json.users
+    : [];
+  
+
+// const loadInterns = async () => {
+//   const res = await fetch(`${BASE}/getallprofiles`);
+//   const data = await res.json();
+//   const users = data.users
   
 
   // 1️⃣ Only interns

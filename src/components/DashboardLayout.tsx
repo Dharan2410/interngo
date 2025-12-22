@@ -127,7 +127,7 @@ const DashboardLayout: React.FC<LayoutProps> = ({children }) => {
       </motion.aside>
 
       {/* 🌊 Main Content */}
-      <div className="flex-1 ml-[70px] mt-16">
+      <div className="flex-1 ml-[70px] mt-6">
 
         {/* Header */}
         <header

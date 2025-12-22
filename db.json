@@ -137,7 +137,7 @@
         "C++",
         "Cloud Computing"
       ],
-      "empId": "456",
+      "empId": "",
       "empEmail": "john.intern@example.com",
       "batch": "Batch-1",
       "year": "2025",
@@ -174,221 +174,74 @@
       ],
       "secondaryskills": [],
       "experienceYears": "",
-      "empId": "123",
+      "empId": "",
       "companyEmail": "",
       "designation": "",
       "batch": "batch 1",
-      "year": "2026",
+      "year": "2025",
       "phase": "",
       "joiningDate": "",
       "status": "Inactive",
       "userId": "intern-002"
     }
   ],
-  "tasks": [
-    {
-      "id": 1765709211887.576,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "asdfghj",
-      "plannedActivities": "asdfghj",
-      "completedActivities": "asdfghj",
-      "estimatedHours": 1,
-      "actualHours": 1,
-      "taskStatus": "Completed"
-    },
-    {
-      "id": 1765709211905.9155,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "fghutyuk",
-      "plannedActivities": "wqert",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211906.9258,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "asdf",
-      "plannedActivities": "sdfgrh",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211906.2944,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "sdfgh",
-      "plannedActivities": "sdfghj",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211907.5193,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "ertyu",
-      "plannedActivities": "dfgh",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211909.6099,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "ertyui",
-      "plannedActivities": "scdvfgbhnj",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211910.801,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "rtyui",
-      "plannedActivities": "dsfgh",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211910.3657,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "rtyui",
-      "plannedActivities": "sadfgh",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211911.2551,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "asdfghj",
-      "plannedActivities": "sdfgh",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765709211912.4487,
-      "userId": "intern-001",
-      "taskDate": "2025-12-14",
-      "taskName": "rtyui",
-      "plannedActivities": "sdfgrhj",
-      "completedActivities": "",
-      "estimatedHours": 1,
-      "actualHours": null,
-      "taskStatus": "Pending"
-    },
-    {
-      "id": 1765961612978.9521,
-      "userId": "intern-001",
-      "taskDate": "2025-12-17",
-      "taskName": "dfghjk",
-      "plannedActivities": "xcvbhjk",
-      "completedActivities": "dfghjkl",
-      "estimatedHours": 1,
-      "actualHours": 1,
-      "taskStatus": "Completed"
-    },
-    {
-      "id": 1765961612979.8845,
-      "userId": "intern-001",
-      "taskDate": "2025-12-17",
-      "taskName": "sdfghjkl",
-      "plannedActivities": "dfghjk",
-      "completedActivities": "cghj",
-      "estimatedHours": 1,
-      "actualHours": 1,
-      "taskStatus": "Completed"
-    }
-  ],
-  "attendance": [
-    {
-      "userId": "intern-001",
-      "year": "2025",
-      "batch": "Batch-1",
-      "date": "2025-12-15",
-      "session1": "wfh",
-      "session2": "wfh",
-      "id": 1
-    },
-    {
-      "userId": "intern-002",
-      "year": "2025",
-      "batch": "Batch-1",
-      "date": "2025-12-15",
-      "session1": "wfh",
-      "session2": "wfh",
-      "id": 2
-    },
-    {
-      "userId": "intern-001",
-      "year": "2025",
-      "batch": "Batch-1",
-      "date": "2025-12-16",
-      "session1": "wfh",
-      "session2": "wfh",
-      "id": 3
-    },
-    {
-      "userId": "intern-002",
-      "year": "2025",
-      "batch": "Batch-1",
-      "date": "2025-12-16",
-      "session1": "wfh",
-      "session2": "wfh",
-      "id": 4
-    },
-    {
-      "userId": "intern-002",
-      "year": "2026",
-      "batch": "Batch-1",
-      "date": "2025-12-17",
-      "session1": "present",
-      "session2": "present",
-      "id": 5
-    },
-    {
-      "userId": "intern-001",
-      "year": "2025",
-      "batch": "Batch-1",
-      "date": "2025-12-17",
-      "session1": "present",
-      "session2": "present",
-      "id": 6
-    }
-  ],
+  "tasks": [],
+  "attendance": [],
   "announcements": [
     {
       "id": 1765959638808,
       "title": "happy birthday ",
-      "message": "happy porandhanal vijiiiii mental ",
+      "message": "happy birthday gopika",
       "priority": "normal",
       "createdAt": "2025-12-17T08:20:38.808Z"
+    }
+  ],
+  "helpTickets": [],
+  "metricDefinitions": [
+    {
+      "name": "javascript ",
+      "metrics": [
+        {
+          "title": "attitude ",
+          "maxScore": 10
+        },
+        {
+          "title": "Technical Knowledge",
+          "maxScore": 10
+        },
+        {
+          "title": "Problem Solving",
+          "maxScore": 10
+        },
+        {
+          "title": "Attitude",
+          "maxScore": 10
+        }
+      ],
+      "id": 1
     },
     {
-      "id": 1765959694134,
-      "title": "mentals da ",
-      "message": "world's 1 st mental award goes to mr.sabareesh",
-      "priority": "normal",
-      "createdAt": "2025-12-17T08:21:34.134Z"
+      "name": "DSA",
+      "metrics": [
+        {
+          "title": "Communication",
+          "maxScore": 10
+        },
+        {
+          "title": "Technical Knowledge",
+          "maxScore": 10
+        },
+        {
+          "title": "Problem Solving",
+          "maxScore": 10
+        },
+        {
+          "title": "Attitude",
+          "maxScore": 10
+        }
+      ],
+      "id": 2
     }
-  ]
+  ],
+  "interactionSchedules": []
 }

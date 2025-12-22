@@ -1,41 +1,7 @@
-
-// const BASE = "http://localhost:4000/interngo";
-
-// export async function loginUser(email: string, password: string) {
-//   const res = await fetch(`${BASE}/login`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ email, password }),
-//     credentials: "include"
-//   });
-
-//   if (!res.ok) {
-//     const err = await res.json();
-//     throw new Error(err.message || "Login failed");
-//   }
-
-//   const user = await res.json();   // your server returns user directly
-//   return {
-//     id: user.uid,
-//     name: user.name,
-//     email: user.email,
-//     role: user.role,
-//     profileImage: user.profileImage || "",
-//   };
-// }
-
-
-
-
-
-
-//dhara's use for DB 
-
-
 const BASE = "http://localhost:4000/interngo";
 
 export async function loginUser(email: string, password: string) {
-  const res = await fetch(`${BASE}/signin`, {
+  const res = await fetch(`${BASE}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -47,8 +13,7 @@ export async function loginUser(email: string, password: string) {
     throw new Error(err.message || "Login failed");
   }
 
-  const data = await res.json();   // your server returns user directly
-  const user = data.user
+  const user = await res.json();   // your server returns user directly
   return {
     id: user.uid,
     name: user.name,
@@ -57,3 +22,37 @@ export async function loginUser(email: string, password: string) {
     profileImage: user.profileImage || "",
   };
 }
+
+
+
+
+
+
+// //dhara's use for DB 
+
+
+// const BASE = "http://localhost:4000/interngo";
+
+// export async function loginUser(email: string, password: string) {
+//   const res = await fetch(`${BASE}/signin`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ email, password }),
+//     credentials: "include"
+//   });
+
+//   if (!res.ok) {
+//     const err = await res.json();
+//     throw new Error(err.message || "Login failed");
+//   }
+
+//   const data = await res.json();   // your server returns user directly
+//   const user = data.user
+//   return {
+//     id: user.uid,
+//     name: user.name,
+//     email: user.email,
+//     role: user.role,
+//     profileImage: user.profileImage || "",
+//   };
+// }

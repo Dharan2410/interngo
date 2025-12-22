@@ -1,55 +1,16 @@
-// const BASE = "http://localhost:4000";
-
-// export interface AttendanceRow {
-//   userId: string;
-//   name: string;
-//   session1: "Present" | "Absent" | "WFH";
-//   session2: "Present" | "Absent" | "WFH";
-//   overall: "Present" | "Absent" | "Half Day";
-// }
-
-// export const fetchAttendanceBatch = async (
-//   year: string,
-//   batch: string,
-//   date: string
-// ): Promise<AttendanceRow[]> => {
-//   const res = await fetch(
-//     `${BASE}/interngo/attendance/${year}/${batch}/${date}`
-//   );
-//   if (!res.ok) return [];
-//   return res.json();
-// };
-
-// export const saveAttendance = async (payload: {
-//   userId: string;
-//   year: string;
-//   batch: string;
-//   date: string;
-//   session1: string;
-//   session2: string;
-// }) => {
-//   await fetch(`${BASE}/interngo/attendance`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(payload),
-//   });
-// };
-
-
-
 const BASE = "http://localhost:4000";
 
 // ---------- NORMALIZER ----------
 const normalizeBatch = (batch: string) =>
   batch.toLowerCase().replace(/[\s-_]/g, "");
 
-// ---------- FETCH + MERGE ----------
+// ---------- FETCH ----------
 export const fetchAttendanceBatch = async (
   year: string,
   batch: string,
   date: string
 ) => {
-  // 1️⃣ Fetch users
+  // 1️⃣ Users
   const usersRes = await fetch(`${BASE}/interngo/users`);
   const users = await usersRes.json();
 
@@ -60,54 +21,51 @@ export const fetchAttendanceBatch = async (
       normalizeBatch(u.batch || "") === normalizeBatch(batch)
   );
 
-  // 2️⃣ Fetch attendance
-  const attRes = await fetch(`${BASE}/attendance`);
-  const attendance = await attRes.json();
+  // 2️⃣ Attendance by date
+  const attRes = await fetch(`${BASE}/interngo/attendance/${date}`);
+  const attData = await attRes.json();
 
-  // 3️⃣ Merge users + attendance
+  const attendance = Array.isArray(attData.attendance)
+    ? attData.attendance
+    : [];
+
+  // 3️⃣ Merge (🔥 UNIQUE identity)
   return interns.map((intern: any) => {
     const record = attendance.find(
-      (a: any) =>
-        a.userId === intern.uid &&
-        a.date === date
+      (a: any) => a.userId === intern.uid
     );
 
     return {
-      userId: intern.uid,
+      rowId: intern.uid,     // FRONTEND UNIQUE ID
+      userId: intern.uid,    // BACKEND ID
+      empId: intern.empId || "-", // UI only
       name: intern.name,
-      batch: intern.batch,
       year: intern.year,
+      batch: intern.batch,
       session1: record?.session1?.toLowerCase() || "present",
       session2: record?.session2?.toLowerCase() || "present",
     };
   });
 };
-
-// ---------- SAVE (UPSERT) ----------
-export const saveAttendance = async (payload: any) => {
-  const res = await fetch(`${BASE}/attendance`);
-  const data = await res.json();
-
-  const existing = data.find(
-    (a: any) =>
-      a.userId === payload.userId &&
-      a.date === payload.date
-  );
-
-  // UPDATE
-  if (existing) {
-    return fetch(`${BASE}/attendance/${existing.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...existing, ...payload }),
-    });
-  }
-
-  // CREATE
-  return fetch(`${BASE}/attendance`, {
+export const saveAttendance = async (payload: {
+  year: string;
+  batch: string;
+  date: string;
+  markedBy: string;
+  attendance: {
+    userId: string;
+    session1: string;
+    session2: string;
+  }[];
+}) => {
+  const res = await fetch(`${BASE}/interngo/attendance/bulk`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
-};
 
+  const data = await res.json();
+  console.log("saveAttendance response:", data);
+
+  return data; // ✅ return parsed data
+};
