@@ -1075,11 +1075,6 @@
 
 
 
-
-
-//dhara's use for DB
-
-
 //dhara's use for DB
 
 // // FINAL ProfileForm.tsx — Backend File Upload + No LocalStorage
@@ -1727,7 +1722,8 @@ const handleSave = async () => {
             </div>
           </motion.div>
 
-          {/* EDUCATION */}
+
+                    {/* EDUCATION */}
           <motion.div className={`${cardClass} overflow-visible`}>
             <h3 className="text-2xl text-[#3B6E8F] mb-4">
               Education
@@ -1739,23 +1735,16 @@ const handleSave = async () => {
                   College
                 </label>
                 <input
-  id="educationBatch"
-  className={`${inputClass} ${errors.educationBatch ? "border-red-500" : ""}`}
-  value={formData.educationBatch}
-  onChange={(e) => {
-    const v = e.target.value;
-    setFormData({ ...formData, educationBatch: v });
-
-    // LIVE VALIDATION
-    const msg = validateField("educationBatch", v);
-    setErrors({ ...errors, educationBatch: msg });
-  }}
-  placeholder="Example: 2021-2025"
-/>
-
-{errors.educationBatch && (
-  <p className="text-red-600 text-sm mt-1">{errors.educationBatch}</p>
-)}
+    className={inputClass}
+    value={formData.college}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        college: e.target.value,
+      })
+    }
+    placeholder="College Name"
+  />
 
               </div>
 
@@ -1795,6 +1784,7 @@ const handleSave = async () => {
               </div>
             </div>
           </motion.div>
+
 
           {/* EXPERIENCE */}
           {(role === "mentor" || role === "interviewer") && (

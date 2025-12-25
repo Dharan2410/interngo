@@ -1,88 +1,178 @@
+
+
+
+
 import { motion } from "framer-motion";
-import { Edit } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Hourglass,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 
 interface Props {
   data: any;
-  onClick: () => void;
+  isActive?: boolean;
   onEdit?: () => void;
+  onDelete?: () => void;
+  onViewFeedback?: () => void;
+  hideActions?: boolean;
 }
 
 const InteractionScheduleCard: React.FC<Props> = ({
   data,
-  onClick,
+  isActive,
   onEdit,
+  onDelete,
+  onViewFeedback,
+  hideActions,
 }) => {
-  const isScheduled = Boolean(data.scheduled);
-
   return (
     <motion.div
-      whileHover={{ scale: 1.03 }}
-      onClick={onClick}
-      className="
-        relative cursor-pointer
-        bg-white/80 backdrop-blur-xl
-        border border-[#96C2DB]/40
-        rounded-3xl shadow-md
-        hover:shadow-xl transition-all
-        p-6
-        h-40 w-full
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      whileHover={{
+        scale: 1.04,
+        y: -6,
+        boxShadow: "0px 18px 35px rgba(0,0,0,0.14)",
+      }}
+      className={`
+        relative
+        bg-white rounded-3xl
+        shadow-md hover:shadow-xl
+        border transition-all
+        ${isActive ? "border-green-400" : "border-gray-200"}
+        p-6 h-[220px]
         flex flex-col justify-between
-      "
+      `}
     >
-      {/* EDIT */}
-      {isScheduled && (
+      {/* ---------------- ACTIONS ---------------- */}
+      {/* <div className="absolute top-4 right-4 flex gap-2 z-10">
         <button
           onClick={(e) => {
             e.stopPropagation();
             onEdit?.();
           }}
-          className="absolute top-4 right-4 p-2 bg-[#C6DFF1] rounded-full"
+          className="p-2 rounded-lg hover:bg-[#96C2DB]/30"
+          title="Edit"
         >
-          <Edit size={16} />
+          <Pencil size={18} className="text-[#3B6E8F]" />
         </button>
-      )}
 
-      {/* CONTENT */}
-      {!isScheduled ? (
-        <>
-          <h3 className="text-lg font-bold text-[#1E2A35]">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete?.();
+          }}
+          className="p-2 rounded-lg hover:bg-red-100"
+          title="Delete"
+        >
+          <Trash2 size={18} className="text-red-600" />
+        </button>
+      </div> */}
+
+      {/* ACTIONS */}
+{!hideActions && (
+  <div className="absolute top-4 right-4 flex gap-2">
+    {onEdit && (
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onEdit();
+        }}
+        className="p-1 rounded-lg hover:bg-[#96C2DB]/30"
+        title="Edit"
+      >
+        <Pencil size={16} />
+      </button>
+    )}
+
+    {onDelete && (
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete();
+        }}
+        className="p-1 rounded-lg hover:bg-red-100 text-red-600"
+        title="Delete"
+      >
+        <Trash2 size={16} />
+      </button>
+    )}
+  </div>
+)}
+
+
+      {/* ---------------- ACTIVE DOT ---------------- */}
+      <span
+        className={`
+          absolute top-4 left-4 w-3 h-3 rounded-full
+          ${isActive ? "bg-green-500" : "bg-yellow-400"}
+        `}
+      />
+
+      {/* ---------------- TITLE ---------------- */}
+      <h3 className="text-xl font-bold text-gray-800 pl-4">
+        {data.interactionName}
+      </h3>
+
+      {/* ---------------- PEOPLE ---------------- */}
+      <div className="grid grid-cols-3 text-base mt-2">
+        <div className="text-center">
+          <p className="text-sm text-gray-500">Intern</p>
+          <p className="font-semibold truncate">
             {data.internName}
-          </h3>
-          <p className="text-sm text-[#3A4750]">
-            {data.batch}
           </p>
-          <p className="text-sm text-[#3A4750]">
-            {data.designation}
+        </div>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-500">Mentor</p>
+          <p className="font-semibold truncate">
+            {data.mentorName}
           </p>
-        </>
-      ) : (
-        <>
-          <h3 className="font-bold text-[#1E2A35]">
-            {data.interactionName}
-          </h3>
+        </div>
 
-          <div className="text-sm text-[#3A4750] grid grid-cols-3 gap-2 mt-2">
-            <div>
-              <p className="font-semibold">Intern</p>
-              <p>{data.internName}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Mentor</p>
-              <p>{data.mentorName}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Interviewer</p>
-              <p>{data.interviewerName}</p>
-            </div>
-          </div>
+        <div className="text-center">
+          <p className="text-sm text-gray-500">Interviewer</p>
+          <p className="font-semibold truncate">
+            {data.interviewerName}
+          </p>
+        </div>
+      </div>
 
-          <div className="flex justify-between text-xs text-[#3A4750] mt-2">
-            <span>{data.date}</span>
-            <span>{data.time}</span>
-            <span>{data.duration} mins</span>
-          </div>
-        </>
-      )}
+      {/* ---------------- META ---------------- */}
+      <div className="flex justify-between items-center text-base text-gray-700 mt-2">
+        <div className="flex items-center gap-2">
+          <Calendar size={18} className="text-blue-500" />
+          <span>{data.date}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Clock size={18} className="text-green-500" />
+          <span>{data.startTime || data.time}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Hourglass size={18} className="text-orange-500" />
+          <span>{data.duration} min</span>
+        </div>
+      </div>
+      {data.feedbackStatus === "completed" && onViewFeedback && (
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      onViewFeedback();
+    }}
+    className="mt-4 w-full py-2 rounded-xl 
+               bg-[#3B6E8F] text-white font-semibold
+               hover:opacity-90"
+  >
+    View Feedback
+  </button>
+)}
+
     </motion.div>
   );
 };

@@ -194,32 +194,17 @@
       "message": "happy birthday gopika",
       "priority": "normal",
       "createdAt": "2025-12-17T08:20:38.808Z"
+    },
+    {
+      "id": 1766561199424,
+      "title": "hey ",
+      "message": "merry christmas ",
+      "priority": "important",
+      "createdAt": "2025-12-24T07:26:39.424Z"
     }
   ],
   "helpTickets": [],
   "metricDefinitions": [
-    {
-      "name": "javascript ",
-      "metrics": [
-        {
-          "title": "attitude ",
-          "maxScore": 10
-        },
-        {
-          "title": "Technical Knowledge",
-          "maxScore": 10
-        },
-        {
-          "title": "Problem Solving",
-          "maxScore": 10
-        },
-        {
-          "title": "Attitude",
-          "maxScore": 10
-        }
-      ],
-      "id": 1
-    },
     {
       "name": "DSA",
       "metrics": [
@@ -241,6 +226,50 @@
         }
       ],
       "id": 2
+    },
+    {
+      "name": "FrontEnd ",
+      "metrics": [
+        {
+          "title": "Communication",
+          "maxScore": 10
+        },
+        {
+          "title": "Technical Knowledge",
+          "maxScore": 10
+        },
+        {
+          "title": "Problem Solving",
+          "maxScore": 10
+        },
+        {
+          "title": "Attitude",
+          "maxScore": 10
+        }
+      ],
+      "id": 3
+    },
+    {
+      "name": "java script 1",
+      "metrics": [
+        {
+          "title": "Communication",
+          "maxScore": 10
+        },
+        {
+          "title": "Technical Knowledge",
+          "maxScore": 10
+        },
+        {
+          "title": "Problem Solving",
+          "maxScore": 10
+        },
+        {
+          "title": "Attitude",
+          "maxScore": 10
+        }
+      ],
+      "id": 4
     }
   ],
   "scheduledInteractions": [
@@ -250,13 +279,131 @@
       "internEmail": "gopika@finestcoder.com",
       "mentorId": "mentor-001",
       "interviewerId": "interviewer-001",
-      "date": "2025-12-22",
-      "time": "12:00",
+      "date": "2025-12-25",
+      "time": "12:30",
       "duration": 60,
-      "interactionId": "1",
-      "metricId": "1",
-      "interactionName": "javascript ",
-      "id": 1
+      "interactionId": "2",
+      "metricId": "2",
+      "interactionName": "DSA",
+      "status": "completed",
+      "feedbackStatus": "completed",
+      "id": 1,
+      "feedback": {
+        "givenBy": "mentor",
+        "metrics": [
+          {
+            "title": "Communication",
+            "score": 7,
+            "maxScore": 10
+          },
+          {
+            "title": "Technical Knowledge",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Problem Solving",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Attitude",
+            "score": 10,
+            "maxScore": 10
+          }
+        ],
+        "comments": "good tech knowledge but need to improve communication",
+        "allowInternView": false,
+        "submittedAt": "2025-12-25T16:49:29.237Z"
+      }
+    },
+    {
+      "internId": "intern-001",
+      "internName": "Gopika muruganantham",
+      "internEmail": "gopika@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-25",
+      "time": "12:30",
+      "duration": 30,
+      "interactionId": "2",
+      "metricId": "2",
+      "interactionName": "DSA",
+      "status": "completed",
+      "feedbackStatus": "completed",
+      "id": 2,
+      "feedback": {
+        "givenBy": "mentor",
+        "metrics": [
+          {
+            "title": "Communication",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Technical Knowledge",
+            "score": 6,
+            "maxScore": 10
+          },
+          {
+            "title": "Problem Solving",
+            "score": 5,
+            "maxScore": 10
+          },
+          {
+            "title": "Attitude",
+            "score": 6,
+            "maxScore": 10
+          }
+        ],
+        "comments": "asdfghjkl",
+        "allowInternView": true,
+        "submittedAt": "2025-12-25T16:51:59.879Z"
+      }
+    },
+    {
+      "internId": "intern-001",
+      "internName": "Gopika muruganantham",
+      "internEmail": "gopika@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-25",
+      "time": "12:30",
+      "duration": 60,
+      "interactionId": "4",
+      "metricId": "4",
+      "interactionName": "java script 1",
+      "status": "completed",
+      "feedbackStatus": "completed",
+      "id": 3,
+      "feedback": {
+        "givenBy": "mentor",
+        "metrics": [
+          {
+            "title": "Communication",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Technical Knowledge",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Problem Solving",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Attitude",
+            "score": 10,
+            "maxScore": 10
+          }
+        ],
+        "comments": "ok done ",
+        "allowInternView": true,
+        "submittedAt": "2025-12-25T17:44:08.110Z"
+      }
     }
   ]
 }

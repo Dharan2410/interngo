@@ -22,7 +22,6 @@ import ProfileForm from "../components/ProfileForm";
 import DailyUpdate from "../pages/DailyUpdate";
 // import DailyUpdateBase from "../components/DailyUpdateBase";
 import DailyUpdateBase from "../pages/common/DailyUpdateBase";
-import InteractionModule from "../components/InteractionModule";
 import InternHelpDesk from "../pages/intern/HelpPage";
 import PendingTickets from "../pages/common/PendingTickets";
 import ResourcesList from "../pages/common/ResourcesList";
@@ -35,6 +34,9 @@ import AdminAnnouncements from "../pages/AdminAnnouncementPage";
 import InteractionMetricsPage from "../pages/interactions/InteractionMetricsPage";
 import InteractionYearBatchSelect from "../pages/interactions/InteractionYearBatchSelect";
 import InteractionInternList from "../pages/interactions/InteractionInternList";
+// import ScheduledInteractionList from "../pages/interactions/ScheduledInteractionList";
+import InteractionModule from "../pages/interactions/InteractionModule";
+
 export default function AppRoutes() {
   const location = useLocation();
 
@@ -64,7 +66,6 @@ export default function AppRoutes() {
   <Route path="profile/edit" element={<ProfileForm />} />
 
   <Route path="daily-update" element={<DailyUpdateBase role="admin" />} />
-  {/* <Route path="interactions" element={<InteractionModule />} /> */}
   <Route path="pending-tickets" element={<PendingTickets />} />
   <Route path="resources" element={<RoleSelect />} />
 
@@ -79,9 +80,22 @@ export default function AppRoutes() {
   element={<AttendanceSheet />}
   />
 <Route path ="announcement" element={<AdminAnnouncements/>} />
-<Route path ="interactions" element={<InteractionMetricsPage />} />
+{/* <Route path ="interactions" element={<InteractionYearBatchSelect />} />
 <Route path= "interactions/:interactionId/year-batch" element={<InteractionYearBatchSelect/>} />
-<Route path ="interactions/:interactionId/intern/list/:year/:batch" element={<InteractionInternList />} />
+<Route path="interactions/:interactionId/year-batch/:mode" element={<InteractionYearBatchSelect key={location.pathname} /> }/>
+<Route path="interactions/:interactionId/intern/list/:year/:batch" element={<InteractionInternList />}/>
+<Route path="interactions/:interactionId/scheduled/:year/:batch" element={<ScheduledInteractionList />}/> */}
+<Route path="interactions" element={<InteractionYearBatchSelect />} />
+
+<Route
+  path="interactions/:year/:batch"
+  element={<InteractionMetricsPage />}
+/>
+
+<Route
+  path="interactions/:interactionId/intern/list/:year/:batch"
+  element={<InteractionInternList />}
+/>
 </Route>
 
 
@@ -101,7 +115,7 @@ export default function AppRoutes() {
           <Route path="profile" element={<ProfileCards />} />
 <Route path="profile/edit" element={<ProfileForm />} />
           <Route path="daily-update" element={<DailyUpdateBase role="interviewer"/>} />
-          <Route path="interactions" element={<InteractionModule />} />
+          <Route path="interactions" element={<InteractionModule  />} />
         </Route>
 
         {/* Intern */}

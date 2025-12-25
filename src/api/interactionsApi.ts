@@ -1,24 +1,78 @@
 const BASE = "http://localhost:4000";
 
 /* ---------------- CREATE / SCHEDULE ---------------- */
+// export const scheduleInteraction = async (payload: any) => {
+//   const res = await fetch(`${BASE}/scheduledInteractions`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(payload),
+//   });
+
+//   if (!res.ok) throw new Error("Failed to schedule interaction");
+//   return res.json();
+// };
+
 export const scheduleInteraction = async (payload: any) => {
+  // 1️⃣ Get all scheduled interactions
+  const existingRes = await fetch(`${BASE}/scheduledInteractions`);
+  const existing = await existingRes.json();
+
+  // 2️⃣ Time conflict check (same intern, same date)
+  const conflict = existing.some((i: any) => {
+    if (i.internId !== payload.internId) return false;
+    if (i.date !== payload.date) return false;
+
+    const start = new Date(`${i.date} ${i.startTime}`);
+    const end = new Date(start.getTime() + i.duration * 60000);
+
+    const newStart = new Date(`${payload.date} ${payload.startTime}`);
+    const newEnd = new Date(
+      newStart.getTime() + payload.duration * 60000
+    );
+
+    return newStart < end && newEnd > start;
+  });
+
+  if (conflict) {
+    throw new Error(
+      "Intern already scheduled for an interaction during this time"
+    );
+  }
+
+  // 3️⃣ Save
   const res = await fetch(`${BASE}/scheduledInteractions`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      ...payload,
+      status: "scheduled",
+      feedbackStatus: "pending"
+    }),
   });
 
   if (!res.ok) throw new Error("Failed to schedule interaction");
   return res.json();
 };
 
+
 /* ---------------- UPDATE ---------------- */
-export const updateInteraction = async (
-  id: string,
-  payload: any
-) => {
+// export const updateInteraction = async (
+//   id: string,
+//   payload: any
+// ) => {
+//   const res = await fetch(`${BASE}/scheduledInteractions/${id}`, {
+//     method: "PUT",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(payload),
+//   });
+
+//   if (!res.ok) throw new Error("Failed to update interaction");
+//   return res.json();
+// };
+
+export const updateInteraction = async (id: string, payload: any) => {
   const res = await fetch(`${BASE}/scheduledInteractions/${id}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
@@ -26,6 +80,7 @@ export const updateInteraction = async (
   if (!res.ok) throw new Error("Failed to update interaction");
   return res.json();
 };
+
 
 /* ---------------- DELETE ---------------- */
 export const removeInteraction = async (id: string) => {
@@ -46,5 +101,11 @@ export const getScheduledByInteraction = async (
   );
 
   if (!res.ok) throw new Error("Failed to fetch interactions");
+  return res.json();
+};
+
+
+export const getAllScheduled = async () => {
+  const res = await fetch(`${BASE}/scheduledInteractions`);
   return res.json();
 };
