@@ -16,3 +16,7 @@ export const validateName = (name: string): boolean => {
   const re = /^[A-Za-z\s]{2,}$/;
   return re.test(name);
 };
+
+
+
+
