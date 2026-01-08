@@ -290,6 +290,8 @@ import { useParams } from "react-router-dom";
 import AttendanceRow from "../../components/Attendance/AttendanceRow";
 import { fetchAttendanceBatch, saveAttendance } from "../../api/attendanceApi";
 import { useAuth } from "../../context/AuthContext";
+import Toast from "../../components/Toast";
+
 
 type Status = "present" | "absent";
 type OverallStatus = "Present" | "Absent" | "Half Day";
@@ -304,7 +306,21 @@ const AttendanceSheet: React.FC = () => {
   const { year, batch, date } = useParams();
   const { user } = useAuth();
   const [rows, setRows] = useState<any[]>([]);
- 
+ const [showReportModal, setShowReportModal] = useState(false);
+const [fromDate, setFromDate] = useState("");
+const [toDate, setToDate] = useState("");
+const [downloading, setDownloading] = useState(false);
+const [toast, setToast] = useState<{
+  show: boolean;
+  message: string;
+  type: "success" | "error";
+}>({
+  show: false,
+  message: "",
+  type: "success",
+});
+
+
   // ---------- LOAD ----------
   useEffect(() => {
     fetchAttendanceBatch(year!, batch!, date!)
@@ -321,6 +337,34 @@ const AttendanceSheet: React.FC = () => {
     )
   );
 };
+const downloadAttendanceReport = async () => {
+  if (!year || !batch) return;
+
+  try {
+    setDownloading(true);
+
+    const res = await fetch(
+  `http://localhost:4001/attendance/report?year=${year}&batch=${batch}&from=${fromDate}&to=${toDate}`
+);
+
+
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `attendance_${year}_${batch}_${fromDate}_to_${toDate}.xlsx`;
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+    setShowReportModal(false);
+  } catch (err) {
+    alert("Failed to generate report ❌");
+  } finally {
+    setDownloading(false);
+  }
+};
+
 
   // ---------- BULK MARK (STATE ONLY) ----------
   const markAll = (status: Status) => {
@@ -336,7 +380,7 @@ const AttendanceSheet: React.FC = () => {
 
 
 
-  const handleSaveAll = async () => {
+const handleSaveAll = async () => {
   if (!rows.length || !user?.uid) return;
 
   try {
@@ -344,7 +388,7 @@ const AttendanceSheet: React.FC = () => {
       year: year!,
       batch: batch!,
       date: date!,
-      markedBy:user.uid,
+      markedBy: user.uid,
       attendance: rows.map((r) => ({
         userId: r.userId,
         session1: r.session1,
@@ -352,12 +396,24 @@ const AttendanceSheet: React.FC = () => {
       })),
     });
 
-    alert("Attendance saved successfully ✅");
+    setToast({
+      show: true,
+      message: "Attendance saved successfully ✅",
+      type: "success",
+    });
   } catch {
-    alert("Failed to save attendance ❌");
+    setToast({
+      show: true,
+      message: "Failed to save attendance ❌",
+      type: "error",
+    });
   }
-};
 
+  // auto hide after 2.5s
+  setTimeout(() => {
+    setToast((t) => ({ ...t, show: false }));
+  }, 2500);
+};
 
   // ---------- STATS ----------
   const stats = useMemo(() => {
@@ -418,6 +474,16 @@ const AttendanceSheet: React.FC = () => {
           >
             Save Attendance
           </button>
+          <button
+  onClick={() => setShowReportModal(true)}
+  className="px-6 py-2 rounded-xl font-semibold
+             bg-[#1E2A35] text-white
+             transition-all duration-200
+             hover:scale-105 hover:shadow-lg"
+>
+  Generate Report
+</button>
+
         </div>
       </div>
 
@@ -504,6 +570,54 @@ const AttendanceSheet: React.FC = () => {
           </div>
         ))}
       </div>
+      {showReportModal && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="bg-white rounded-2xl p-6 w-[360px]">
+      <h3 className="text-lg font-semibold mb-4">
+        Generate Attendance Report
+      </h3>
+
+      <label className="block text-sm mb-1">From Date</label>
+      <input
+        type="date"
+        value={fromDate}
+        onChange={(e) => setFromDate(e.target.value)}
+        className="w-full border rounded p-2 mb-3"
+      />
+
+      <label className="block text-sm mb-1">To Date</label>
+      <input
+        type="date"
+        value={toDate}
+        onChange={(e) => setToDate(e.target.value)}
+        className="w-full border rounded p-2 mb-4"
+      />
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => setShowReportModal(false)}
+          className="px-4 py-2 border rounded"
+        >
+          Cancel
+        </button>
+
+        <button
+          disabled={!fromDate || !toDate || downloading}
+          onClick={downloadAttendanceReport}
+          className="px-4 py-2 bg-[#3B6E8F] text-white rounded"
+        >
+          {downloading ? "Generating..." : "Download"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+<Toast
+  show={toast.show}
+  message={toast.message}
+  type={toast.type}
+/>
+
     </div>
   );
 };

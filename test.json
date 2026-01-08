@@ -204,247 +204,95 @@
     }
   ],
   "helpTickets": [],
-  "metrics": [
+  "metricDefinitions": [
     {
-      "id": "m1",
-      "title": "Communication",
-      "maxScore": 10
-    },
-    {
-      "id": "m2",
-      "title": "Learning Curve",
-      "maxScore": 10
-    },
-    {
-      "id": "m3",
-      "title": "Understanding",
-      "maxScore": 10
-    },
-    {
-      "id": "m4",
-      "title": "Capability",
-      "maxScore": 10
-    },
-    {
-      "id": "m5",
-      "title": "Task Completion",
-      "maxScore": 10
-    },
-    {
-      "id": "m6",
-      "title": "Requirement Gathering",
-      "maxScore": 10
-    },
-    {
-      "id": "m7",
-      "title": "Coding Skill",
-      "maxScore": 10
-    },
-    {
-      "id": "m8",
-      "title": "In-depth Knowledge",
-      "maxScore": 10
-    },
-    {
-      "id": "m9",
-      "title": "Experience",
-      "maxScore": 10
-    },
-    {
-      "id": "m10",
-      "title": "Problem Solving",
-      "maxScore": 10
-    },
-    {
-      "id": "m11",
-      "title": "Presentation",
-      "maxScore": 10
-    },
-    {
-      "id": "m12",
-      "title": "Code Quality",
-      "maxScore": 10
-    },
-    {
-      "id": "m13",
-      "title": "Concepts",
-      "maxScore": 10
-    },
-    {
-      "id": "m14",
-      "title": "Contribution",
-      "maxScore": 10
-    },
-    {
-      "id": "m15",
-      "title": "Logical Thinking",
-      "maxScore": 10
-    },
-    {
-      "id": "m16",
-      "title": "Technical Proficiency",
-      "maxScore": 10
-    },
-    {
-      "id": "m17",
-      "title": "Project Presentation",
-      "maxScore": 10
-    },
-    {
-      "id": "m18",
-      "title": "Scenario-Based Questions",
-      "maxScore": 10
-    },
-    {
-      "id": "m19",
-      "title": "Documentation",
-      "maxScore": 10
-    },
-    {
-      "id": "m20",
-      "title": "QA Evaluation",
-      "maxScore": 10
-    }
-  ],
-  "interactions": [
-    {
-      "name": "DSA",
-      "metricIds": [
-        "m3",
-        "m2",
-        "m1",
-        "80d4ded1-d6f4-4bda-96a0-762e2f40e385"
+      "name": "FrontEnd ",
+      "metrics": [
+        {
+          "title": "Communication",
+          "maxScore": 10
+        },
+        {
+          "title": "Technical Knowledge",
+          "maxScore": 10
+        },
+        {
+          "title": "Problem Solving",
+          "maxScore": 10
+        },
+        {
+          "title": "Attitude",
+          "maxScore": 10
+        }
       ],
-      "year": "2026",
-      "batch": "Batch-1",
-      "createdAt": "2026-01-06T09:04:25.572Z",
-      "id": 1
-    },
-    {
-      "name": "javascript ",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3"
-      ],
-      "year": "2026",
-      "batch": "Batch-1",
-      "createdAt": "2026-01-06T09:13:48.085Z",
-      "id": 2
-    },
-    {
-      "name": "DSA 2",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3",
-        "bc0d8f24-b18f-4522-9db6-9cbad39f666f"
-      ],
-      "year": "2026",
-      "batch": "Batch-1",
-      "createdAt": "2026-01-06T09:37:50.195Z",
       "id": 3
     },
     {
-      "name": "DSA",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3",
-        "bc0d8f24-b18f-4522-9db6-9cbad39f666f",
-        "7752f850-a818-4341-8add-9d560537b530"
+      "name": "java script 1",
+      "metrics": [
+        {
+          "title": "Communication",
+          "maxScore": 10
+        },
+        {
+          "title": "Technical Knowledge",
+          "maxScore": 10
+        },
+        {
+          "title": "Problem Solving",
+          "maxScore": 10
+        },
+        {
+          "title": "Attitude",
+          "maxScore": 10
+        },
+        {
+          "title": "gopika ",
+          "maxScore": 10
+        },
+        {
+          "title": "muruga",
+          "maxScore": 10
+        }
       ],
-      "year": "2026",
-      "batch": "Batch-1",
-      "createdAt": "2026-01-06T09:57:47.982Z",
       "id": 4
     },
     {
-      "name": "DSA Final",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3",
-        "m4",
-        "m5",
-        "m6",
-        "m7",
-        "m8",
-        "m9",
-        "m10",
-        "m20",
-        "m19",
-        "m18",
-        "m17",
-        "m16",
-        "m15",
-        "m14",
-        "m13",
-        "m12",
-        "m11"
+      "name": "wfeagrshtyjrkutiyluoi",
+      "metrics": [
+        {
+          "title": "Communication",
+          "maxScore": 10
+        },
+        {
+          "title": "Technical Knowledge",
+          "maxScore": 10
+        },
+        {
+          "title": "Problem Solving",
+          "maxScore": 10
+        },
+        {
+          "title": "Attitude",
+          "maxScore": 10
+        }
       ],
-      "year": "2026",
-      "batch": "Batch-1",
-      "createdAt": "2026-01-06T11:12:23.703Z",
-      "id": 5
-    },
-    {
-      "name": "Java script Final ",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3",
-        "m5",
-        "m4",
-        "m6",
-        "m7",
-        "m8",
-        "m9",
-        "m20",
-        "m19",
-        "m18",
-        "m16",
-        "m15",
-        "m17",
-        "m14",
-        "m13",
-        "m12",
-        "m11"
-      ],
-      "year": "2025",
-      "batch": "Batch-1",
-      "createdAt": "2026-01-06T11:43:17.867Z",
       "id": 6
-    },
-    {
-      "name": "dsa",
-      "metricIds": [
-        "m1"
-      ],
-      "year": "2026",
-      "batch": "Batch-1",
-      "createdAt": "2026-01-07T13:03:25.893Z",
-      "id": 7
     }
   ],
   "scheduledInteractions": [
     {
-      "internId": "intern-002",
-      "internName": "Gopika saran",
-      "internEmail": "gopsaran@finestcoder.com",
+      "internId": "intern-001",
+      "internName": "Gopika muruganantham",
+      "internEmail": "gopika@finestcoder.com",
       "mentorId": "mentor-001",
       "interviewerId": "interviewer-001",
-      "date": "2026-01-06",
+      "date": "2025-12-25",
       "time": "12:30",
       "duration": 60,
-      "mode": "online",
-      "interactionId": "1",
+      "interactionId": "2",
+      "metricId": "2",
       "interactionName": "DSA",
-      "metricIds": [
-        "m3",
-        "m2",
-        "m1"
-      ],
       "status": "completed",
       "feedbackStatus": "completed",
       "id": 1,
@@ -452,263 +300,30 @@
         "givenBy": "mentor",
         "metrics": [
           {
-            "metricId": "m1",
             "title": "Communication",
-            "score": 10,
+            "score": 7,
             "maxScore": 10
           },
           {
-            "metricId": "m2",
             "title": "Technical Knowledge",
             "score": 10,
             "maxScore": 10
           },
           {
-            "metricId": "m3",
             "title": "Problem Solving",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Attitude",
             "score": 10,
             "maxScore": 10
           }
         ],
-        "comments": "qwertyuiop",
+        "comments": "good tech knowledge but need to improve communication",
         "allowInternView": false,
-        "submittedAt": "2026-01-06T09:11:44.222Z"
+        "submittedAt": "2025-12-25T16:49:29.237Z"
       }
-    },
-    {
-      "internId": "intern-002",
-      "internName": "Gopika saran",
-      "internEmail": "gopsaran@finestcoder.com",
-      "mentorId": "mentor-001",
-      "interviewerId": "interviewer-001",
-      "date": "2026-01-07",
-      "time": "12:00",
-      "duration": 180,
-      "mode": "online",
-      "interactionId": "2",
-      "interactionName": "javascript ",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3"
-      ],
-      "status": "completed",
-      "feedbackStatus": "completed",
-      "id": 2,
-      "feedback": {
-        "givenBy": "mentor",
-        "metrics": [
-          {
-            "metricId": "m1",
-            "title": "Communication",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m2",
-            "title": "Technical Knowledge",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m3",
-            "title": "Problem Solving",
-            "score": 10,
-            "maxScore": 10
-          }
-        ],
-        "comments": "qwertyuiop",
-        "allowInternView": true,
-        "submittedAt": "2026-01-06T09:18:01.505Z"
-      }
-    },
-    {
-      "internId": "intern-002",
-      "internName": "Gopika saran",
-      "internEmail": "gopsaran@finestcoder.com",
-      "mentorId": "mentor-001",
-      "interviewerId": "interviewer-001",
-      "date": "2026-01-08",
-      "time": "12:00",
-      "duration": 60,
-      "mode": "online",
-      "interactionId": "5",
-      "interactionName": "DSA Final",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3",
-        "m4",
-        "m5",
-        "m6",
-        "m7",
-        "m8",
-        "m9",
-        "m10",
-        "m20",
-        "m19",
-        "m18",
-        "m17",
-        "m16",
-        "m15",
-        "m14",
-        "m13",
-        "m12",
-        "m11"
-      ],
-      "status": "completed",
-      "feedbackStatus": "completed",
-      "id": 3,
-      "feedback": {
-        "givenBy": "mentor",
-        "metrics": [
-          {
-            "metricId": "m1",
-            "title": "Communication",
-            "score": 0,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m2",
-            "title": "Learning Curve",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m3",
-            "title": "Understanding",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m4",
-            "title": "Capability",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m5",
-            "title": "Task Completion",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m6",
-            "title": "Requirement Gathering",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m7",
-            "title": "Coding Skill",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m8",
-            "title": "In-depth Knowledge",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m9",
-            "title": "Experience",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m10",
-            "title": "Problem Solving",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m11",
-            "title": "Presentation",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m12",
-            "title": "Code Quality",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m13",
-            "title": "Concepts",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m14",
-            "title": "Contribution",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m15",
-            "title": "Logical Thinking",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m16",
-            "title": "Technical Proficiency",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m17",
-            "title": "Project Presentation",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m18",
-            "title": "Scenario-Based Questions",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m19",
-            "title": "Documentation",
-            "score": "",
-            "maxScore": 10
-          },
-          {
-            "metricId": "m20",
-            "title": "QA Evaluation",
-            "score": "",
-            "maxScore": 10
-          }
-        ],
-        "comments": "",
-        "allowInternView": false,
-        "submittedAt": "2026-01-06T11:35:03.539Z"
-      }
-    },
-    {
-      "internId": "intern-002",
-      "internName": "Gopika saran",
-      "internEmail": "gopsaran@finestcoder.com",
-      "mentorId": "mentor-001",
-      "interviewerId": "interviewer-001",
-      "date": "2026-01-09",
-      "time": "12:30",
-      "duration": 60,
-      "mode": "online",
-      "interactionId": "3",
-      "interactionName": "DSA 2",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3",
-        "bc0d8f24-b18f-4522-9db6-9cbad39f666f"
-      ],
-      "status": "scheduled",
-      "feedbackStatus": "pending",
-      "id": 4
     },
     {
       "internId": "intern-001",
@@ -716,158 +331,180 @@
       "internEmail": "gopika@finestcoder.com",
       "mentorId": "mentor-001",
       "interviewerId": "interviewer-001",
-      "date": "2026-01-06",
+      "date": "2025-12-25",
       "time": "12:30",
-      "duration": 60,
-      "mode": "online",
-      "interactionId": "6",
-      "interactionName": "Java script Final ",
-      "metricIds": [
-        "m1",
-        "m2",
-        "m3",
-        "m5",
-        "m4",
-        "m6",
-        "m7",
-        "m8",
-        "m9",
-        "m20",
-        "m19",
-        "m18",
-        "m16",
-        "m15",
-        "m17",
-        "m14",
-        "m13",
-        "m12",
-        "m11"
-      ],
+      "duration": 30,
+      "interactionId": "2",
+      "metricId": "2",
+      "interactionName": "DSA",
       "status": "completed",
       "feedbackStatus": "completed",
-      "id": 5,
+      "id": 2,
       "feedback": {
         "givenBy": "mentor",
         "metrics": [
           {
-            "metricId": "m1",
             "title": "Communication",
             "score": 10,
             "maxScore": 10
           },
           {
-            "metricId": "m2",
-            "title": "Learning Curve",
+            "title": "Technical Knowledge",
+            "score": 6,
+            "maxScore": 10
+          },
+          {
+            "title": "Problem Solving",
+            "score": 5,
+            "maxScore": 10
+          },
+          {
+            "title": "Attitude",
+            "score": 6,
+            "maxScore": 10
+          }
+        ],
+        "comments": "asdfghjkl",
+        "allowInternView": true,
+        "submittedAt": "2025-12-25T16:51:59.879Z"
+      }
+    },
+    {
+      "internId": "intern-001",
+      "internName": "Gopika muruganantham",
+      "internEmail": "gopika@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-25",
+      "time": "12:30",
+      "duration": 60,
+      "interactionId": "4",
+      "metricId": "4",
+      "interactionName": "java script 1",
+      "status": "completed",
+      "feedbackStatus": "completed",
+      "id": 3,
+      "feedback": {
+        "givenBy": "mentor",
+        "metrics": [
+          {
+            "title": "Communication",
             "score": 10,
             "maxScore": 10
           },
           {
-            "metricId": "m3",
-            "title": "Understanding",
+            "title": "Technical Knowledge",
             "score": 10,
             "maxScore": 10
           },
           {
-            "metricId": "m4",
-            "title": "Capability",
+            "title": "Problem Solving",
             "score": 10,
             "maxScore": 10
           },
           {
-            "metricId": "m5",
-            "title": "Task Completion",
-            "score": 8,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m6",
-            "title": "Requirement Gathering",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m7",
-            "title": "Coding Skill",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m8",
-            "title": "In-depth Knowledge",
-            "score": 9,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m9",
-            "title": "Experience",
-            "score": 9,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m11",
-            "title": "Presentation",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m12",
-            "title": "Code Quality",
-            "score": 9,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m13",
-            "title": "Concepts",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m14",
-            "title": "Contribution",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m15",
-            "title": "Logical Thinking",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m16",
-            "title": "Technical Proficiency",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m17",
-            "title": "Project Presentation",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m18",
-            "title": "Scenario-Based Questions",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m19",
-            "title": "Documentation",
-            "score": 10,
-            "maxScore": 10
-          },
-          {
-            "metricId": "m20",
-            "title": "QA Evaluation",
+            "title": "Attitude",
             "score": 10,
             "maxScore": 10
           }
         ],
-        "comments": "sdefrgerhj6u7k8",
-        "allowInternView": false,
-        "submittedAt": "2026-01-06T11:57:52.505Z"
+        "comments": "ok done ",
+        "allowInternView": true,
+        "submittedAt": "2025-12-25T17:44:08.110Z"
       }
+    },
+    {
+      "internId": "intern-002",
+      "internName": "Gopika saran",
+      "internEmail": "gopsaran@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-26",
+      "time": "12:34",
+      "duration": 60,
+      "interactionId": "2",
+      "metricId": "2",
+      "interactionName": "DSA",
+      "status": "completed",
+      "feedbackStatus": "completed",
+      "id": 4,
+      "feedback": {
+        "givenBy": "mentor",
+        "metrics": [
+          {
+            "title": "Communication",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Technical Knowledge",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Problem Solving",
+            "score": 10,
+            "maxScore": 10
+          },
+          {
+            "title": "Attitude",
+            "score": 10,
+            "maxScore": 10
+          }
+        ],
+        "comments": "sedrftyghuijkopl",
+        "allowInternView": true,
+        "submittedAt": "2025-12-26T05:08:03.662Z"
+      }
+    },
+    {
+      "internId": "intern-001",
+      "internName": "Gopika muruganantham",
+      "internEmail": "gopika@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-26",
+      "time": "12:30",
+      "duration": 60,
+      "interactionId": "3",
+      "metricId": "3",
+      "interactionName": "FrontEnd ",
+      "status": "scheduled",
+      "feedbackStatus": "pending",
+      "id": 5
+    },
+    {
+      "internId": "intern-002",
+      "internName": "Gopika saran",
+      "internEmail": "gopsaran@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-27",
+      "time": "11:30",
+      "duration": 30,
+      "interactionId": "4",
+      "metricId": "4",
+      "interactionName": "java script 1",
+      "status": "scheduled",
+      "feedbackStatus": "pending",
+      "id": 6
+    },
+    {
+      "internId": "intern-002",
+      "internName": "Gopika saran",
+      "internEmail": "gopsaran@finestcoder.com",
+      "mentorId": "mentor-001",
+      "interviewerId": "interviewer-001",
+      "date": "2025-12-26",
+      "time": "12:30",
+      "duration": 60,
+      "mode": "online",
+      "interactionId": "3",
+      "metricId": "3",
+      "interactionName": "FrontEnd ",
+      "status": "scheduled",
+      "feedbackStatus": "pending",
+      "id": 8
     }
   ]
 }

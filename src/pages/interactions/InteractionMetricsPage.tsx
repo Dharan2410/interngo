@@ -1,5 +1,11 @@
+
+
+
+
+
+
 // import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+// import { useNavigate, useParams } from "react-router-dom";
 // import {
 //   fetchMetrics,
 //   createMetric,
@@ -9,26 +15,29 @@
 // import InteractionCard from "../../components/interactions/InteractionCard";
 // import CreateInteractionModal from "../../components/interactions/CreateInteractionModal";
 // import type { InteractionMetricDefinition } from "../../types/interaction";
-
-// const tabs = ["Interaction Metrics", "Scheduled Interactions"] as const;
-// type TabType = (typeof tabs)[number];
+// import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 // const InteractionMetricsPage = () => {
 //   const [list, setList] = useState<InteractionMetricDefinition[]>([]);
 //   const [open, setOpen] = useState(false);
-  
 //   const [editing, setEditing] =
 //     useState<InteractionMetricDefinition | null>(null);
+//     const [deleteTarget, setDeleteTarget] =
+//   useState<InteractionMetricDefinition | null>(null);
 
-//   const [activeTab, setActiveTab] =
-//     useState<TabType>("Interaction Metrics");
 
 //   const navigate = useNavigate();
+//   const { year, batch } = useParams<{
+//     year: string;
+//     batch: string;
+//   }>();
 
+//   /* ---------------- FETCH METRICS ---------------- */
 //   useEffect(() => {
 //     fetchMetrics().then(setList);
 //   }, []);
 
+//   /* ---------------- CREATE / UPDATE ---------------- */
 //   const handleSave = async (data: InteractionMetricDefinition) => {
 //     if (editing?.id) {
 //       await fetch(
@@ -54,105 +63,79 @@
 //     setEditing(null);
 //   };
 
-
-// const goToScheduleYearBatch = (interactionId: string) => {
-//   navigate(`/admin/interactions/${interactionId}/year-batch/schedule`);
-// };
-
-// const goToViewYearBatch = (interactionId: string) => {
-//   navigate(`/admin/interactions/${interactionId}/year-batch/view`);
-// };
-
+//   /* ---------------- NAVIGATION ---------------- */
+//   const goToInternList = (interactionId: string) => {
+//     navigate(
+//       `/admin/interactions/${interactionId}/intern/list/${year}/${batch}`
+//     );
+//   };
 
 //   return (
 //     <div className="p-6">
-//       <h1 className="text-2xl font-bold mb-6">
+//       <h1 className="text-2xl font-bold mb-2">
 //         Interactions
 //       </h1>
 
-//       {/* ================= TABS ================= */}
-//       <div className="flex gap-4 mb-8">
-//         {tabs.map((tab) => (
-//           <button
-//             key={tab}
-//             onClick={() => setActiveTab(tab)}
-//             className={`
-//               px-6 py-2 rounded-xl font-semibold transition
-//               ${
-//                 activeTab === tab
-//                   ? "bg-[#96C2DB] text-black shadow"
-//                   : "bg-white/60 border hover:bg-white/80"
-//               }
-//             `}
-//           >
-//             {tab}
-//           </button>
-//         ))}
-//       </div>
+//       <p className="text-gray-600 mb-6">
+//         Year: <b>{year}</b> &nbsp;|&nbsp; Batch: <b>{batch}</b>
+//       </p>
 
-//       {/* ================= TAB CONTENT ================= */}
+//       {/* ================= METRICS GRID ================= */}
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//         <CreateInteractionCard onClick={() => setOpen(true)} />
 
-//       {activeTab === "Interaction Metrics" && (
-//         <>
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-//             <CreateInteractionCard onClick={() => setOpen(true)} />
-
-//             {list.map((item) => (
-
-//               <InteractionCard
-//               key={item.id} 
+//         {list.map((item) => (
+//          <InteractionCard
+//   key={item.id}
 //   interaction={item}
-//   onClick={() => goToScheduleYearBatch(item.id!)}
+//   onClick={() => goToInternList(item.id!)}
 //   onEdit={() => {
 //     setEditing(item);
 //     setOpen(true);
 //   }}
-//   onDelete={async () => {
-//     await deleteMetric(item.id!);
-//     setList((prev) =>
-//       prev.filter((i) => i.id !== item.id)
-//     );
-//   }}
+//   onRequestDelete={() => setDeleteTarget(item)} 
 // />
 
-//             ))}
-//           </div>
 
-//           {open && (
-//             <CreateInteractionModal
-//               initialData={editing}
-//               onClose={() => {
-//                 setOpen(false);
-//                 setEditing(null);
-//               }}
-//               onSave={handleSave}
-//             />
-//           )}
-//         </>
-//       )}
+//         ))}
+//       </div>
 
-//       {/* -------- TAB 2 : SCHEDULED INTERACTIONS -------- */}
-//       {activeTab === "Scheduled Interactions" && (
-//         <>
-//           {list.length === 0 ? (
-//             <p className="text-gray-500">
-//               No interactions created yet.
-//             </p>
-//           ) : (
-//             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-//               {list.map((item) => (
-//                 <InteractionCard
-//                 key={item.id}
-//   interaction={item}
-//   onClick={() => goToViewYearBatch(item.id!)}
-//   showActions={false}   
-// />
+//       {/* ================= MODAL ================= */}
+//       {open && (
+//   <CreateInteractionModal
+//     initialData={editing}
+//     allMetrics={list}   
+//     onClose={() => {
+//       setOpen(false);
+//       setEditing(null);
+//     }}
+//     onSave={handleSave}
+//   />
+// )}
 
-//               ))}
-//             </div>
-//           )}
-//         </>
-//       )}
+//       {deleteTarget && (
+//   <ConfirmDeleteModal
+//     open={true}
+//     onCancel={() => setDeleteTarget(null)}
+//     onConfirm={async () => {
+//       try {
+
+//         await deleteMetric(deleteTarget.id!);
+
+
+//         setList((prev) =>
+//           prev.filter((i) => i.id !== deleteTarget.id)
+//         );
+
+//         setDeleteTarget(null);
+//       } catch (err) {
+//         console.error("Delete failed", err);
+//         alert("Failed to delete interaction");
+//       }
+//     }}
+//   />
+// )}
+
 //     </div>
 //   );
 // };
@@ -162,27 +145,179 @@
 
 
 
+///after flow change 
 
+
+
+
+
+
+// import { useEffect, useState } from "react";
+// import { useNavigate, useParams } from "react-router-dom";
+
+// import {
+//   fetchInteractions,
+//   createInteraction,
+//   updateInteraction,
+//   deleteInteraction,
+// } from "../../api/interactionsApi";
+
+// import type { Interaction } from "../../types/interaction";
+
+// import CreateInteractionCard from "../../components/interactions/CreateInteractionCard";
+// import InteractionCard from "../../components/interactions/InteractionCard";
+// import CreateInteractionModal from "../../components/interactions/CreateInteractionModal";
+// import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
+
+// const InteractionMetricsPage = () => {
+//   const [list, setList] = useState<Interaction[]>([]);
+//   const [open, setOpen] = useState(false);
+//   const [editing, setEditing] = useState<Interaction | null>(null);
+//   const [deleteTarget, setDeleteTarget] =
+//     useState<Interaction | null>(null);
+
+//   const navigate = useNavigate();
+//   const { year, batch } = useParams<{
+//     year: string;
+//     batch: string;
+//   }>();
+
+//   /* ---------------- FETCH INTERACTIONS ---------------- */
+//   useEffect(() => {
+//     if (!year || !batch) return;
+//     fetchInteractions(year, batch).then(setList);
+//   }, [year, batch]);
+
+//   /* ---------------- CREATE / UPDATE ---------------- */
+//   const handleSave = async (data: Interaction) => {
+//     if (editing?.id) {
+//       const updated = await updateInteraction(editing.id, data);
+
+//       setList((prev) =>
+//         prev.map((i) => (i.id === updated.id ? updated : i))
+//       );
+//     } else {
+//       const created = await createInteraction({
+//         ...data,
+//         year: year!,
+//         batch: batch!,
+//       });
+
+//       setList((prev) => [created, ...prev]);
+//     }
+
+//     setOpen(false);
+//     setEditing(null);
+//   };
+
+//   /* ---------------- NAVIGATION ---------------- */
+//   const goToInternList = (interactionId: string) => {
+//     navigate(
+//       `/admin/interactions/${interactionId}/intern/list/${year}/${batch}`
+//     );
+//   };
+
+//   if (!year || !batch) {
+//     return (
+//       <div className="p-6 text-gray-500">
+//         Invalid year or batch
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="p-6">
+//       <h1 className="text-2xl font-bold mb-2">
+//         Interactions
+//       </h1>
+
+//       <p className="text-gray-600 mb-6">
+//         Year: <b>{year}</b> &nbsp;|&nbsp; Batch: <b>{batch}</b>
+//       </p>
+
+//       {/* ================= INTERACTIONS GRID ================= */}
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//         <CreateInteractionCard onClick={() => setOpen(true)} />
+
+//         {list.map((item) => (
+//           <InteractionCard
+//             key={item.id}
+//             interaction={item}
+//             onClick={() => goToInternList(item.id!)}
+//             onEdit={() => {
+//               setEditing(item);
+//               setOpen(true);
+//             }}
+//             onRequestDelete={() => setDeleteTarget(item)}
+//           />
+//         ))}
+//       </div>
+
+//       {/* ================= CREATE / EDIT MODAL ================= */}
+//       {open && (
+//         <CreateInteractionModal
+//           initialData={editing}
+//           allMetrics={list}
+//           onClose={() => {
+//             setOpen(false);
+//             setEditing(null);
+//           }}
+//           onSave={handleSave}
+//         />
+//       )}
+
+//       {/* ================= DELETE CONFIRM ================= */}
+//       {deleteTarget && (
+//         <ConfirmDeleteModal
+//           open={true}
+//           onCancel={() => setDeleteTarget(null)}
+//           onConfirm={async () => {
+//             try {
+//               await deleteInteraction(deleteTarget.id!);
+
+//               setList((prev) =>
+//                 prev.filter((i) => i.id !== deleteTarget.id)
+//               );
+
+//               setDeleteTarget(null);
+//             } catch (err) {
+//               console.error("Delete failed", err);
+//               alert("Failed to delete interaction");
+//             }
+//           }}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default InteractionMetricsPage;
 
 
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import {
-  fetchMetrics,
-  createMetric,
-  deleteMetric,
-} from "../../api/interactionMetricsApi";
+  fetchInteractions,
+  createInteraction,
+  updateInteraction,
+  deleteInteraction,
+} from "../../api/interactionsApi";
+
+import type { Interaction } from "../../types/interaction";
+
 import CreateInteractionCard from "../../components/interactions/CreateInteractionCard";
 import InteractionCard from "../../components/interactions/InteractionCard";
 import CreateInteractionModal from "../../components/interactions/CreateInteractionModal";
-import type { InteractionMetricDefinition } from "../../types/interaction";
+import ConfirmDeleteModal from "../../components/ConfirmDeleteModal";
 
 const InteractionMetricsPage = () => {
-  const [list, setList] = useState<InteractionMetricDefinition[]>([]);
+  const [list, setList] = useState<Interaction[]>([]);
   const [open, setOpen] = useState(false);
-  const [editing, setEditing] =
-    useState<InteractionMetricDefinition | null>(null);
+  const [editing, setEditing] = useState<Interaction | null>(null);
+  const [deleteTarget, setDeleteTarget] =
+    useState<Interaction | null>(null);
 
   const navigate = useNavigate();
   const { year, batch } = useParams<{
@@ -190,30 +325,25 @@ const InteractionMetricsPage = () => {
     batch: string;
   }>();
 
-  /* ---------------- FETCH METRICS ---------------- */
+  /* ---------------- FETCH INTERACTIONS ---------------- */
   useEffect(() => {
-    fetchMetrics().then(setList);
-  }, []);
+    if (!year || !batch) return;
+    fetchInteractions(year, batch).then(setList);
+  }, [year, batch]);
 
   /* ---------------- CREATE / UPDATE ---------------- */
-  const handleSave = async (data: InteractionMetricDefinition) => {
+  const handleSave = async (data: Interaction) => {
     if (editing?.id) {
-      await fetch(
-        `http://localhost:4000/metricDefinitions/${editing.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        }
-      );
-
+      const updated = await updateInteraction(editing.id, data);
       setList((prev) =>
-        prev.map((i) =>
-          i.id === editing.id ? { ...data, id: editing.id } : i
-        )
+        prev.map((i) => (i.id === updated.id ? updated : i))
       );
     } else {
-      const created = await createMetric(data);
+      const created = await createInteraction({
+        ...data,
+        year: year!,
+        batch: batch!,
+      });
       setList((prev) => [created, ...prev]);
     }
 
@@ -228,6 +358,14 @@ const InteractionMetricsPage = () => {
     );
   };
 
+  if (!year || !batch) {
+    return (
+      <div className="p-6 text-gray-500">
+        Invalid year or batch
+      </div>
+    );
+  }
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-2">
@@ -238,7 +376,7 @@ const InteractionMetricsPage = () => {
         Year: <b>{year}</b> &nbsp;|&nbsp; Batch: <b>{batch}</b>
       </p>
 
-      {/* ================= METRICS GRID ================= */}
+      {/* ================= INTERACTIONS GRID ================= */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <CreateInteractionCard onClick={() => setOpen(true)} />
 
@@ -251,25 +389,36 @@ const InteractionMetricsPage = () => {
               setEditing(item);
               setOpen(true);
             }}
-            onDelete={async () => {
-              await deleteMetric(item.id!);
-              setList((prev) =>
-                prev.filter((i) => i.id !== item.id)
-              );
-            }}
+            onRequestDelete={() => setDeleteTarget(item)}
           />
         ))}
       </div>
 
-      {/* ================= MODAL ================= */}
+      {/* ================= CREATE / EDIT MODAL ================= */}
       {open && (
         <CreateInteractionModal
           initialData={editing}
+          allInteractions={list} 
           onClose={() => {
             setOpen(false);
             setEditing(null);
           }}
           onSave={handleSave}
+        />
+      )}
+
+      {/* ================= DELETE CONFIRM ================= */}
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          open={true}
+          onCancel={() => setDeleteTarget(null)}
+          onConfirm={async () => {
+            await deleteInteraction(deleteTarget.id!);
+            setList((prev) =>
+              prev.filter((i) => i.id !== deleteTarget.id)
+            );
+            setDeleteTarget(null);
+          }}
         />
       )}
     </div>

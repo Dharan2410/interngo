@@ -1,19 +1,44 @@
-export interface ScheduleData {
+// export interface ScheduleData {
+//   internId: string;
+//   internName: string;
+//   internEmail?: string;
+
+//   interactionName: string;
+
+//   mentorId?: string;
+//   mentorName?: string;
+
+//   interviewerId?: string;
+//   interviewerName?: string;
+
+//   date?: string;
+//   time?: string;
+//   duration?: number;
+
+//   scheduled?: boolean;
+// }
+
+
+
+
+export interface ScheduledInteraction {
+  id?: string;
+
   internId: string;
   internName: string;
-  internEmail?: string;
+  internEmail: string;
 
+  mentorId: string;
+  interviewerId: string;
+
+  interactionId: string;        // 🔥 REQUIRED
   interactionName: string;
 
-  mentorId?: string;
-  mentorName?: string;
+  date: string;
+  time: string;
+  duration: number;
+  mode?: "online" | "offline";
 
-  interviewerId?: string;
-  interviewerName?: string;
-
-  date?: string;
-  time?: string;
-  duration?: number;
-
-  scheduled?: boolean;
+  status: "scheduled" | "completed" | "feedback_pending";
+  feedbackStatus: "pending" | "completed";
 }

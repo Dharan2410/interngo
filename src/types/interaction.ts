@@ -1,23 +1,24 @@
+
+
+
 // export type Metric = {
 //   title: string;
 //   maxScore: number;
 // };
 
 // export type InteractionMetricDefinition = {
-//   id?: string; // json-server uses id
+//   id?: string;
 //   name: string;
 //   metrics: Metric[];
 // };
 
 
 
-export type Metric = {
-  title: string;
-  maxScore: number;
-};
-
-export type InteractionMetricDefinition = {
+export type Interaction = {
   id?: string;
   name: string;
-  metrics: Metric[];
+  year: string;
+  batch: string;
+  metricIds: string[]; 
+  createdAt?: string;
 };

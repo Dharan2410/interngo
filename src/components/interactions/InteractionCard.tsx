@@ -1,17 +1,103 @@
 
 
 
+// import { motion } from "framer-motion";
+// import { Edit, Trash } from "lucide-react";
+// import type { InteractionMetricDefinition } from "../../types/interaction";
+
+// interface Props {
+//   interaction: InteractionMetricDefinition;
+//   onClick: () => void;
+
+//   // OPTIONAL (only for metrics tab)
+//   onEdit?: () => void;
+//   onDelete?: () => void;
+//   showActions?: boolean;
+// }
+
+// const InteractionCard: React.FC<Props> = ({
+//   interaction,
+//   onClick,
+//   onEdit,
+//   onDelete,
+//   showActions = true, // ✅ default
+// }) => {
+//   return (
+//     <motion.div
+//       whileHover={{ scale: 1.05 }}
+//       onClick={onClick}
+//       className="
+//         relative cursor-pointer
+//         bg-white/70 backdrop-blur-2xl
+//         border border-[#96C2DB]/40
+//         rounded-3xl shadow-md
+//         hover:shadow-xl transition-all
+
+//         h-40
+//         flex flex-col
+//         justify-center
+//         items-center
+//         p-6
+//       "
+//     >
+//       {/* ACTION BUTTONS (ONLY WHEN ENABLED) */}
+//       {showActions && (
+//         <div
+//           className="absolute top-4 right-4 flex gap-2"
+//           onClick={(e) => e.stopPropagation()}
+//         >
+//           {onEdit && (
+//             <button
+//               onClick={onEdit}
+//               className="p-2 rounded-full bg-[#C6DFF1] hover:bg-[#96C2DB]"
+//             >
+//               <Edit size={16} />
+//             </button>
+//           )}
+
+//           {onDelete && (
+//             <button
+//               onClick={onDelete}
+//               className="p-2 rounded-full bg-red-100 hover:bg-red-200"
+//             >
+//               <Trash size={16} />
+//             </button>
+//           )}
+//         </div>
+//       )}
+
+//       {/* INTERACTION NAME */}
+//       <h2
+//         className="
+//           text-lg font-bold text-[#1E2A35]
+//           text-center
+//           leading-snug
+//           line-clamp-2
+//           break-words
+//         "
+//       >
+//         {interaction.name}
+//       </h2>
+//     </motion.div>
+//   );
+// };
+
+// export default InteractionCard;
+
+
+
+
 import { motion } from "framer-motion";
 import { Edit, Trash } from "lucide-react";
-import type { InteractionMetricDefinition } from "../../types/interaction";
+import type { Interaction} from "../../types/interaction";
 
 interface Props {
-  interaction: InteractionMetricDefinition;
+  interaction: Interaction;
   onClick: () => void;
 
   // OPTIONAL (only for metrics tab)
   onEdit?: () => void;
-  onDelete?: () => void;
+  onRequestDelete?: () => void; // 🔥 delete trigger (page handles modal)
   showActions?: boolean;
 }
 
@@ -19,8 +105,8 @@ const InteractionCard: React.FC<Props> = ({
   interaction,
   onClick,
   onEdit,
-  onDelete,
-  showActions = true, // ✅ default
+  onRequestDelete,
+  showActions = true,
 }) => {
   return (
     <motion.div
@@ -28,7 +114,7 @@ const InteractionCard: React.FC<Props> = ({
       onClick={onClick}
       className="
         relative cursor-pointer
-        bg-white/70 backdrop-blur-2xl
+        bg-white
         border border-[#96C2DB]/40
         rounded-3xl shadow-md
         hover:shadow-xl transition-all
@@ -40,24 +126,30 @@ const InteractionCard: React.FC<Props> = ({
         p-6
       "
     >
-      {/* ACTION BUTTONS (ONLY WHEN ENABLED) */}
+      {/* ACTION BUTTONS */}
       {showActions && (
         <div
           className="absolute top-4 right-4 flex gap-2"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()} // 🔒 block card click
         >
           {onEdit && (
             <button
-              onClick={onEdit}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
               className="p-2 rounded-full bg-[#C6DFF1] hover:bg-[#96C2DB]"
             >
               <Edit size={16} />
             </button>
           )}
 
-          {onDelete && (
+          {onRequestDelete && (
             <button
-              onClick={onDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                onRequestDelete();
+              }}
               className="p-2 rounded-full bg-red-100 hover:bg-red-200"
             >
               <Trash size={16} />
